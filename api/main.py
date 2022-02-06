@@ -13,7 +13,7 @@ LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
 versions='beta1'
 Flax=Flax()
-#line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 #handler = WebhookHandler(LINE_CHANNEL_SECRET)
 Friends = friend()
 Schedule  =Schedular()
