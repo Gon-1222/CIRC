@@ -1,4 +1,2 @@
-Flask
-line-bot-sdk
-Jinja2
-Werkzeug
+Flask==2.0.2
+line-bot-sdk==2.0.1
