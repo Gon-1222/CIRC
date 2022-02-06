@@ -16,7 +16,7 @@ LINE_CHANNEL_SECRET = "98cec7c460c13c1d7a211c12b37c0f2c"
 versions='beta1'
 #Flax=Flax()
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
-#handler = WebhookHandler(LINE_CHANNEL_SECRET)
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
 #Friends = friend()
 #Schedule  =Schedular()
 
