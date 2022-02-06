@@ -1,11 +1,13 @@
 {
   "version": 2,
   "regions": ["hnd1"],
-  "functions": {
-    "api/main.py": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
+  "public": false,
+"builds": [
+  {
+    "src": "api/main.py",
+    "use": "@now/python"
+  }
+],
 
   },
   "routes": [
