@@ -5,6 +5,7 @@ from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage,
 from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
+import os
 import json
 import datetime
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
