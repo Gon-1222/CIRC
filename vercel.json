@@ -1,17 +1,20 @@
 {
   "version": 2,
   "regions": ["hnd1"],
+  "public": false,
+  "builds": [{
+    "src": "api/main.py",
+    "use": "@now/python"
+  }]
 
-  },
-  "routes": [
-    {
-        "headers": {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
-        },
-        "src": "/.*",
-        "dest": "api/main.py"
-      }
-  ]
+
+  "routes": [{
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
+    },
+    "src": "/.*",
+    "dest": "api/main.py"
+  }]
 }
