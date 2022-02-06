@@ -12,12 +12,25 @@ CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
 versions='beta1'
+print("1")
 Flax=Flax()
+print("1")
+
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+print("1")
+
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
+print("1")
+
 Friends = friend()
+print("1")
+
 Schedule  =Schedular()
+print("1")
+
 app = Flask(__name__)
+print("1")
+
 #部分テスト用
 @app.route('/test')
 def test():
