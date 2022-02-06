@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-multidatespicker/1.6.6/jquery-ui.multidatespicker.css" rel="stylesheet">
+<style>
+	* {
+		-webkit-appearance: none;
+	}
+
+	html,
+	body {
+		width: 100%;
+		height: 100%;
+		background-color: #eeeeee;
+		font-family: sans-serif;
+	}
+
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		width: 100%;
+		height: 100%
+	}
+
+	.names {
+		display: flex;
+		position: relative;
+		margin-top: 50px;
+		margin-left: 10px;
+		height: 70px;
+		width: 70%;
+		font-size: 60px;
+		margin-bottom: 1em;
+		align-items: center;
+	}
+
+	#name {
+		display: inline-block;
+		background-color: #eeeeee;
+		padding-left: 10px;
+		outline: 0px;
+		border-radius: 0px;
+		border-right: none;
+		border-left: none;
+		border-top: none;
+		border-bottom: 3px solid #222222;
+		height: 101%;
+		font-size: 90%;
+		width: calc(100% - 3em);
+
+		box-sizing: border-box;
+		margin: 0.5em 0;
+	}
+
+	#verification {
+		font-size: 5em;
+		margin-top: 100px;
+		width: 50%;
+		outline: 0px;
+		border: 0px;
+		border-radius: 9999px;
+		background-color: #f7ae35;
+		color: #ffffff;
+		aspect-ratio: 3/1;
+		box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+	}
+</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="names">
+			<span>名前</span> <input type="text" id="name" name="name" placeholder="ここに入力"></input>
+		</div>
+		<div type="text" id="js-datepicker" class="cal">
+			<input type="hidden" class="cal2" id="datepickerValue" name="">
+			<div class="appendDatepicker"></div>
+		</div>
+		<button id="verification">送信</button>
+		<ul id="result"></ul>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" ntegrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-multidatespicker/1.6.6/jquery-ui.multidatespicker.min.js" defer></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(e) {
+			const name = document.getElementById('name');
+			const datepicker = document.getElementById('js-datepicker');
+			const datepickerValue = document.getElementById('datepickerValue');
+			let datepickerAry = new Array;
+			//let selecteddate = new Array;
+			let load_data = {{userdata | tojson}}; //配列に引数を代入
+			name.value = load_data[0];
+			load_data.shift();
+			datepickerAry = load_data;
+			load_data.unshift('2000/1/1');
+			//選択済みのデータに関してのデータ入力処理
+			//渡すのは["2000/1/1"]に選択済みをつなげたやつ
+			//他での扱いは実際の値
+			//
+			//jQieryオブジェクト
+			const $datepicker = $(datepicker);
+			$datepicker.multiDatesPicker({
+				monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+				monthNamesShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+				dayNames: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+				dayNamesMin: ['日', '月', '火', '水', '木', '金', '土'],
+				dateFormat: 'yy/mm/dd',
+				addDates: load_data,
+				nextText: '次へ',
+				prevText: '前へ',
+
+				showOtherMonths: true,
+				selectOtherMonths: true,
+				firstDay: 0,
+				isRTL: false,
+				showMonthAfterYear: true,
+				yearSuffix: '年',
+				numberOfMonths: 1,
+				beforeShow: function(textbox, instance) {
+					$('.appendDatepicker').append($('#ui-datepicker-div'));
+				},
+				minDate: '+0d',
+				onSelect: function(dateText, inst) {
+					//選択した日付がすでに存在するか？
+					const index = datepickerAry.indexOf(dateText);
+					if (datepickerAry.indexOf(dateText) < 0) {
+						//存在しなかったら配列に追加
+						datepickerAry.push(dateText);
+						//inputの中身書き換え
+						datepickerValue.value = datepickerAry;
+					} else {
+						//存在していたら削除
+						datepickerAry.splice(index, 1);
+						//inputの中身書き換え
+						datepickerValue.value = datepickerAry;
+					}
+				}
+			});
+
+
+			const verification = document.getElementById('verification');
+			const result = document.getElementById('result');
+			verification.addEventListener('click', function(e) {
+				if (name.value == "") {
+					alert("名前を入力してください");
+					return 0;
+				}
+				datepickerAry=datepickerAry.filter(item => (item.match('2000/1/1')) == null);
+				//JSON
+				var json = {
+					"UID": getParam('UID'),
+					"name": name.value,
+					"data": datepickerAry
+				};
+				var json_text = JSON.stringify(json);
+				//データを送信
+				xhr = new XMLHttpRequest; //インスタンス作成
+				xhr.onload = function() { //通信が成功した時の処理
+					var res = xhr.responseText;
+					if (xhr.status==202){
+					location.href = "/end";}
+					else{
+						alert('POSTで何らかのエラーが発生しました');
+					}//endへ遷移
+				};
+				xhr.onerror = function() { //エラーが起きた時の処理
+					alert("POST中にエラーが発生しました");
+					return 1;
+				}
+				xhr.open('post', "/postdata", false); //(同期通信)
+				xhr.setRequestHeader('Content-Type', 'application/json');//
+				xhr.send(json_text); //送信実行
+
+				return 0;
+			});
+		});
+
+		function getParam(name, url) {
+			if (!url) url = window.location.href;
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+				results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+	</script>
+	<style>
+		.ui-datepicker {
+			margin: auto;
+			margin-top: 50px;
+			font-size: 5vmin;
+			box-shadow: 0 0 50px rgba(0, 0, 0, 0.3)
+		}
+	</style>
+</body>
+
+</html>
