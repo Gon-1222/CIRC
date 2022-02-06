@@ -7,7 +7,7 @@
     "src": "api/main.py",
     "use": "@now/python"
   }
-],
+]
 
   },
   "routes": [
