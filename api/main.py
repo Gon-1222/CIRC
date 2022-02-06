@@ -134,6 +134,6 @@ def handle_follow(event):
 @handler.add(UnfollowEvent)
 def handle_unfollow(event):
     Friends.remove(event.source.user_id)
-
+print("2")
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug=False)
