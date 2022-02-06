@@ -1,13 +1,6 @@
 {
   "version": 2,
   "regions": ["hnd1"],
-  "public": false,
-"builds": [
-  {
-    "src": "api/main.py",
-    "use": "@now/python"
-  }
-]
 
   },
   "routes": [
