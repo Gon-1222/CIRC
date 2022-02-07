@@ -47,8 +47,9 @@ def checker():
     current_dt=datetime.datetime.now()+datetime.timedelta(days=7)
     str = current_dt.strftime('%Y/%m/%d')
     no = count_part(str)
-    message=''+str+'に'+no+'人が参加可能です'
-    line_bot_api.push_message(username, messages=message)
+    if int(no)>2:
+        message=''+str+'に'+no+'人が参加可能です'
+        line_bot_api.push_message(username, messages=message)
 
     return 'OK',200
 
