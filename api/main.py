@@ -14,7 +14,7 @@ LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 versions='beta1'
 Flax=Flax()
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
-handler = WebhookHandler(LINE_CHANNEL_SECRET)
+handle = WebhookHandler(LINE_CHANNEL_SECRET)
 Friends = friend()
 Schedule  =Schedular()
 
@@ -96,14 +96,14 @@ def callback():
     app.logger.info("Request body: " + body)
     #Webhook bodyをハンドル
     try:
-        handler.handle(body, signature)
+        handle.handle(body, signature)
     except InvalidSignatureError:
         print("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
     return 'OK'
 
 #メッセージが送られたら
-@handler.add(MessageEvent, message=TextMessage)
+@handle.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if event.message.text=='version':
         line_bot_api.reply_message(
@@ -111,7 +111,7 @@ def handle_message(event):
             TextSendMessage(text=versions))
 
 #フォローEvent
-@handler.add(FollowEvent)
+@handle.add(FollowEvent)
 def handle_follow(event):
     Friends.add(event.source.user_id)
     JSON_DIC=Flax.DIC(event.source.user_id)
@@ -121,7 +121,7 @@ def handle_follow(event):
     line_bot_api.push_message(event.source.user_id, messages=container_obj)
 
 #フォロー解除Event
-@handler.add(UnfollowEvent)
+@handle.add(UnfollowEvent)
 def handle_unfollow(event):
     Friends.remove(event.source.user_id)
 print("2")
