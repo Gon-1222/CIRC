@@ -4,12 +4,12 @@ import datetime
 class Schedular:
     data=[]
     def __init__(self):
-        with open("data/schedule.dat","r") as f:
+        with open("tmp/schedule.dat","r") as f:
             self.data = list(csv.reader(f))
     #保存
     def save(self):
         self.organize()
-        with open("data/schedule.dat","w",newline="") as f:
+        with open("tmp/schedule.dat","w",newline="") as f:
             writer = csv.writer(f)
             writer.writerows(self.data)
             print(self.data)
