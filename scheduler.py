@@ -36,7 +36,7 @@ class Schedular:
                 i2.pop(0)#userID
                 i2.pop(1)#Noの削除
                 return i2
-        return ["",""]
+        return [""]
     #各日程の参加メンバーのリスト
     def Member_list(self,date):
         member=[]
