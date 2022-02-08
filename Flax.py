@@ -1,3 +1,4 @@
+import os
 class Flax:
     def DIC(self,IDS):
         url = os.environ["MY_URL"]
