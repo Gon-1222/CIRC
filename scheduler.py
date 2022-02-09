@@ -1,18 +1,41 @@
 import csv
 import copy
 import datetime
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from oauth2client.service_account import ServiceAccountCredentials
+
 class Schedular:
     data=[]
     def __init__(self):
-        with open("tmp/schedule.dat","r") as f:
-            self.data = list(csv.reader(f))
+        JSON_FILE = "service_key.json"
+        ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+
+        gauth = GoogleAuth()
+        scope = ["https://www.googleapis.com/auth/drive"]
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
+        drive = GoogleDrive(gauth)
+        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
+        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
+        file = drive.CreateFile({"id": "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU", "parents": [{"id": ID}]})
+        #file.SetContentString("test")
+        #file.Upload()
+        self.data=json.loads(file.GetContentString())
     #保存
     def save(self):
-        self.organize()
-        with open("tmp/schedule.dat","w",newline="") as f:
-            writer = csv.writer(f)
-            writer.writerows(self.data)
-            print(self.data)
+        save= json.dumps(self.data)
+        JSON_FILE = "service_key.json"
+        ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+
+        gauth = GoogleAuth()
+        scope = ["https://www.googleapis.com/auth/drive"]
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
+        drive = GoogleDrive(gauth)
+        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
+        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
+        file = drive.CreateFile({"id": "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU", "parents": [{"id": ID}]})
+        file.SetContentString(save)
+        file.Upload()
     #データの追加（変更）
     def add(self,userID,datum):
         #元要素削除

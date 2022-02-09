@@ -1,16 +1,40 @@
 import csv
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from oauth2client.service_account import ServiceAccountCredentials
+
 class friend:
     member=[]
     #読み込み
     def __init__(self):
-        with open("tmp/friends.dat","r") as f:
-            reader = csv.reader(f)
-            self.member=[i for i in reader]
+        JSON_FILE = "service_key.json"
+        ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+
+        gauth = GoogleAuth()
+        scope = ["https://www.googleapis.com/auth/drive"]
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
+        drive = GoogleDrive(gauth)
+        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
+        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
+        file = drive.CreateFile({"id": "1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6", "parents": [{"id": ID}]})
+        #file.SetContentString("test")
+        #file.Upload()
+        self.member=json.loads(file.GetContentString())
     #書き込み
     def save(self):
-        with open("tmp/friends.dat","w") as f:
-            writer = csv.writer(f)
-            writer.writerow(self.member)
+        save= json.dumps(self.member)
+        JSON_FILE = "service_key.json"
+        ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+
+        gauth = GoogleAuth()
+        scope = ["https://www.googleapis.com/auth/drive"]
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
+        drive = GoogleDrive(gauth)
+        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
+        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
+        file = drive.CreateFile({"id": "1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6", "parents": [{"id": ID}]})
+        file.SetContentString(save)
+        file.Upload()
     #追加
     def add(self,IDS):
         self.member.append(IDS)
