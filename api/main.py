@@ -2,22 +2,26 @@ from flask import Flask, request, abort,render_template
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage, TextSendMessage,FlexSendMessage
-from Friends import friend
-from scheduler import Schedular
-from Flax import Flax
 import os
 import json
 import datetime
+from Friends import friend
+from scheduler import Schedular
+from Flax import Flax
+from notification import notify
+
+#環境変数
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
-versions='Beta2.0'
-Flax=Flax()
+versions='Beta2.1\n2022/02/09'
+
+#オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
+Flax=Flax()
 Friends = friend()
 Schedule  =Schedular()
-
 app = Flask(__name__)
 
 #部分テスト用
@@ -44,7 +48,7 @@ def month():
 #日々の確認
 @app.route("/checkdate",methods=['POST'])
 def checker():
-    current_dt=datetime.datetime.now()+datetime.timedelta(days=7)
+    current_dt=datetime.datetime.now()+datetime.timedelta(days=1)
     str = current_dt.strftime('%Y/%m/%d')
     no = count_part(str)
     if int(no)>2:
@@ -69,14 +73,11 @@ def question():
 def post():
     data = request.data
     data = json.loads(data)
-    print(data['name'])
-    print(data['UID'])
-    print(data['data'])
     data['data'].insert(0,data['name'])
-    print(data['data'])
     Schedule.add(data['UID'],data['data'])
     Schedule.save()
     return "Accepted",202
+
 #日程送信完了
 @app.route('/end')
 def end():
@@ -118,13 +119,13 @@ def handle_follow(event):
     JSON_DIC=Flax.DIC(event.source.user_id)
     #Flaxメッセージに変えて
     container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
-    #プッシュメッセージを送信
+    #プッシュメッセージを送信(リプライのほうがよくね)
     line_bot_api.push_message(event.source.user_id, messages=container_obj)
 
 #フォロー解除Event
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
     Friends.remove(event.source.user_id)
-print("2")
+print("main.py is Loaded...")
 #if __name__ == "__main__":
 #app.run(host='0.0.0.0',debug=False)
