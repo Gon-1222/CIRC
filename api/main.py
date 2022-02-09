@@ -8,7 +8,7 @@ import datetime
 from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
-from notification import notify
+#from notification import notify
 
 #環境変数
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
