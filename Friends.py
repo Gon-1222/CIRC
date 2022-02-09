@@ -19,7 +19,10 @@ class friend:
         file = drive.CreateFile({"id": "1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6", "parents": [{"id": ID}]})
         #file.SetContentString("test")
         #file.Upload()
-        self.member=json.loads(file.GetContentString())
+        data=file.GetContentString()
+        print(data)
+        print(type(data))
+        self.member=json.loads(data)
     #書き込み
     def save(self):
         save= json.dumps(self.member)
