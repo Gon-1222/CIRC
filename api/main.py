@@ -114,6 +114,7 @@ def handle_message(event):
 @handle.add(FollowEvent)
 def handle_follow(event):
     Friends.add(event.source.user_id)
+    Friends.save()
     JSON_DIC=Flax.DIC(event.source.user_id)
     #Flaxメッセージに変えて
     container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
