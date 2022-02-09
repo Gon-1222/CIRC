@@ -20,7 +20,8 @@ class Schedular:
         file = drive.CreateFile({"id": "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU", "parents": [{"id": ID}]})
         #file.SetContentString("test")
         #file.Upload()
-        self.data=json.loads(file.GetContentString())
+        buf=file.GetContentString()
+        self.data=json.loads(buf)
     #保存
     def save(self):
         save= json.dumps(self.data)
