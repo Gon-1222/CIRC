@@ -16,8 +16,8 @@ class Schedular:
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
         drive = GoogleDrive(gauth)
         #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
-        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
-        file = drive.CreateFile({"id": "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU", "parents": [{"id": ID}]})
+        #ScheduleのID：18r7To69SFEYRbOXwuHVoMYTJS4i-2o2U
+        file = drive.CreateFile({"id": "18r7To69SFEYRbOXwuHVoMYTJS4i-2o2U", "parents": [{"id": ID}]})
         #file.SetContentString("test")
         #file.Upload()
         buf=file.GetContentString()
@@ -33,8 +33,8 @@ class Schedular:
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
         drive = GoogleDrive(gauth)
         #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
-        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
-        file = drive.CreateFile({"id": "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU", "parents": [{"id": ID}]})
+        #ScheduleのID：18r7To69SFEYRbOXwuHVoMYTJS4i-2o2U
+        file = drive.CreateFile({"id": "18r7To69SFEYRbOXwuHVoMYTJS4i-2o2U", "parents": [{"id": ID}]})
         file.SetContentString(save)
         file.Upload()
     #データの追加（変更）
