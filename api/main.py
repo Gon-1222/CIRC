@@ -51,13 +51,13 @@ def month():
 def checker():
     for i in range(1,8,1):
         current_dt=datetime.datetime.now()+datetime.timedelta(days=i)
-        str = current_dt.strftime('%Y/%m/%d')
+        string = current_dt.strftime('%Y/%m/%d')
         no = Schedule.count_part(str)
         Notify.Clean_Up()
         if int(no)>2:
-            if not(str in Notify.data):
-                Notify.Add(str)
-                message=''+str+'に'+str(no)+'人が参加可能です'
+            if not(string in Notify.data):
+                Notify.Add(string)
+                message=''+string+'に'+str(no)+'人が参加可能です'
                 line_bot_api.push_message(Group_ID, messages=message)
 
     return 'OK',200
