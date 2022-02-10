@@ -1,7 +1,7 @@
 class notify:
     data=[]
     #ロード（コンストラクタ）
-    def __init__():
+    def __init__(self):
         JSON_FILE = "service_key.json"
         ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
 
