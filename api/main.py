@@ -14,7 +14,7 @@ from notification import notify
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='Beta2.1\n2022/02/09'
+versions='Beta3.0\n2022/02/10'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -57,7 +57,7 @@ def checker():
         if int(no)>2:
             if not(str in Notify.data):
                 Notify.Add(str)
-                message=''+str+'に'+no+'人が参加可能です'
+                message=''+str+'に'+str(no)+'人が参加可能です'
                 line_bot_api.push_message(Group_ID, messages=message)
 
     return 'OK',200
