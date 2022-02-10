@@ -119,11 +119,12 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=versions))
     if event.message.text=='Members':
-        message=""
+        message="メンバー一覧:"
         for i in Friends.member:
             profile = line_bot_api.get_profile(i)
-            message+=profile.display_name
             message+='\n'
+            message+=profile.display_name
+
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
 
 #フォローEvent
