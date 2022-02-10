@@ -29,8 +29,7 @@ app = Flask(__name__)
 #部分テスト用
 @app.route('/test')
 def test():
-    Schedule.organize()
-    print(Schedule.data)
+    line_bot_api.push_message(Group_ID, TextSendMessage(text="導入確認完了"))
     return'OK',200
 
 #月移行動作
