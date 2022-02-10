@@ -39,7 +39,7 @@ class notify:
         file.SetContentString(save)
         file.Upload()
     #過去の日付を削除する
-    def Crean_Up(self):
+    def Clean_Up(self):
         current_dt=datetime.datetime.now()
         Flag=True
         while(Flag):
