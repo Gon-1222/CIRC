@@ -55,7 +55,9 @@ def checker():
         no = Schedule.count_part(str)
         Notify.Clean_Up()
         if int(no)>2:
+            print("OK1")
             if not(string in Notify.data):
+                print("OK2")
                 Notify.Add(string)
                 message=''+string+'に'+str(no)+'人が参加可能です'
                 line_bot_api.push_message(Group_ID, messages=message)
