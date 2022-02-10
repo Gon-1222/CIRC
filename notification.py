@@ -9,7 +9,7 @@ class notify:
     #ロード（コンストラクタ）
     def __init__(self):
         JSON_FILE = "service_key.json"
-        ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+        ID = os.environ["GOOGLE_ID"]
 
         gauth = GoogleAuth()
         scope = ["https://www.googleapis.com/auth/drive"]
@@ -27,7 +27,7 @@ class notify:
     def save(self):
         save= json.dumps(self.data)
         JSON_FILE = "service_key.json"
-        ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+        ID = os.environ["GOOGLE_ID"]
 
         gauth = GoogleAuth()
         scope = ["https://www.googleapis.com/auth/drive"]
