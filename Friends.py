@@ -45,5 +45,5 @@ class friend:
     def remove(self,IDS):
         self.member.remove(IDS)
     #リストを返す
-    def LIST():
+    def LIST(self):
         return self.member
