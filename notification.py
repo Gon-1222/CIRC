@@ -45,7 +45,7 @@ class notify:
         while(Flag):
             Flag=False
             for i in self.data:
-                buf = datetime.datetime.strptime(i)
+                buf = datetime.datetime.strptime(i,'%Y/%m/%d')
                 if buf<current_dt:
                     self.data.remove(i)
                     Flag=True
