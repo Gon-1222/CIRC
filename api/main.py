@@ -56,7 +56,7 @@ def checker():
         Notify.Clean_Up()
         if int(no)>2:
             if not(str in Notify.data):
-                Notify.add(str)
+                Notify.Add(str)
                 message=''+str+'に'+no+'人が参加可能です'
                 line_bot_api.push_message(Group_ID, messages=message)
 
