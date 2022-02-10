@@ -5,6 +5,7 @@ from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage,
 import os
 import json
 import datetime
+import requests
 from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
@@ -117,6 +118,13 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=versions))
+    if event.message.text=='Members':
+        message=""
+        for i in Friends.member:
+            profile = line_bot_api.get_profile(i)
+            message+=profile.display_name
+            message+='\n'
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
 
 #フォローEvent
 @handle.add(FollowEvent)
