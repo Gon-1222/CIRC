@@ -52,7 +52,7 @@ def checker():
     for i in range(1,8,1):
         current_dt=datetime.datetime.now()+datetime.timedelta(days=i)
         string = current_dt.strftime('%Y/%m/%d')
-        no = Schedule.count_part(str)
+        no = Schedule.count_part(string)
         Notify.Clean_Up()
         if int(no)>2:
             print("OK1")
