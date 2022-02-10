@@ -8,12 +8,12 @@ import datetime
 from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
-#from notification import notify
+from notification import notify
 
 #環境変数
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
-
+Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
 versions='Beta2.1\n2022/02/09'
 
 #オブジェクトの生成
@@ -22,6 +22,7 @@ handle = WebhookHandler(LINE_CHANNEL_SECRET)
 Flax=Flax()
 Friends = friend()
 Schedule  =Schedular()
+Notify = notify()
 app = Flask(__name__)
 
 #部分テスト用
@@ -32,7 +33,7 @@ def test():
     return'OK',200
 
 #月移行動作
-@app.route("/nextmonth",methods=['POST'])
+@app.route("/nextmonth",methods=['GET'])
 def month():
     friend=Friends.LIST()
     #友達それぞれに対して
@@ -46,14 +47,18 @@ def month():
     return 'OK',200
 
 #日々の確認
-@app.route("/checkdate",methods=['POST'])
+@app.route("/checkdate",methods=['GET'])
 def checker():
-    current_dt=datetime.datetime.now()+datetime.timedelta(days=1)
-    str = current_dt.strftime('%Y/%m/%d')
-    no = count_part(str)
-    if int(no)>2:
-        message=''+str+'に'+no+'人が参加可能です'
-        line_bot_api.push_message(username, messages=message)
+    for i in range(1,8,1):
+        current_dt=datetime.datetime.now()+datetime.timedelta(days=i)
+        str = current_dt.strftime('%Y/%m/%d')
+        no = count_part(str)
+        Notify.Clean_Up()
+        if int(no)>2:
+            if not(str in Notify.data):
+                Notify.add(str)
+                message=''+str+'に'+no+'人が参加可能です'
+                line_bot_api.push_message(Group_ID, messages=message)
 
     return 'OK',200
 
@@ -127,5 +132,6 @@ def handle_follow(event):
 def handle_unfollow(event):
     Friends.remove(event.source.user_id)
 print("main.py is Loaded...")
+
 #if __name__ == "__main__":
 #app.run(host='0.0.0.0',debug=False)
