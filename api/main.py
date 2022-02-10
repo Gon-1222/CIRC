@@ -39,7 +39,7 @@ def month():
     #友達それぞれに対して
     for username in friend:
         #JSONのDICを作成して
-        JSON_DIC=Flax.DICT(username)
+        JSON_DIC=Flax.DIC(username)
         #Flaxメッセージに変えて
         container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
         #プッシュメッセージを送信
