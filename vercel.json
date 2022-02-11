@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "regions": ["arn1"],
+  "regions": ["hnd1"],
   "functions": {
     "api/main.py": {
       "memory": 1024,
