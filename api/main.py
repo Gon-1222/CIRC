@@ -15,7 +15,7 @@ from notification import notify
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC1\n2022/02/10'
+versions='RC2\n2022/02/12'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -125,7 +125,11 @@ def handle_message(event):
             message+=profile.display_name
 
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
-
+    if event.message.text=='明日の天気':
+        res=requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
+        data=res.json()
+        message="明日の天気\n"+data["forecasts"][1]["telop"]"\n降水確率\n"" 0~6時:"+data["forecasts"][1]['chanceOfRain']["T00_06"]+"\n 6~12時:"+data["forecasts"][1]['chanceOfRain']["T06_12"]+"\n 12~18時:"+data["forecasts"][1]['chanceOfRain']["T12_18"]+"\n 18~24時:"+data["forecasts"][1]['chanceOfRain']["T18_24"]
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
 #フォローEvent
 @handle.add(FollowEvent)
 def handle_follow(event):
