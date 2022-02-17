@@ -81,15 +81,24 @@
     ion-icon{
       transform:translateY(18%)
     }
+    .tenki{
+      height: 7vw;
+      vertical-align:bottom
+    }
   </style>
 </head>
 
 <body>
   <p class='title'><ion-icon name="bicycle-outline"></ion-icon>参加可能メンバー</p>
 <div class="hako">
-    {% for key, value in data.items() %}
+    {% for key, value in data.items() %}{% set A_list_loop = loop %}
     <div class='items'>
-      <div class='dates'>{{ key }}</div>
+      <nobr><div class='dates'style="display:inline-block">{{ key }}</div>
+          {% for y in forecast_data %}{% if loop.index==A_list_loop.index %}
+            <img class="tenki" src={{y}}  ></ion-icon>
+          {% endif %}
+          {% endfor %}
+        </nobr>
       <div class='names'>
         <span>　</span>
 
