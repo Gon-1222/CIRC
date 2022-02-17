@@ -78,7 +78,7 @@ class Schedular:
     def All_lists(self):
         member_dics={}
         #現在の日付の所得
-        current_dt=datetime.datetime.now()
+        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
         for _ in range(0,30,1):
             #今の日付を文字列に
             current_str=current_dt.strftime('%Y/%m/%d')
@@ -90,7 +90,7 @@ class Schedular:
         return member_dics
     #古いデータは消す
     def organize(self):
-        current_dt=datetime.datetime.now()
+        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
         for i,item in enumerate((self.data)):
             flag=True
             while flag:

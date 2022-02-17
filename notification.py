@@ -40,7 +40,7 @@ class notify:
         file.Upload()
     #過去の日付を削除する
     def Clean_Up(self):
-        current_dt=datetime.datetime.now()
+        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
         Flag=True
         while(Flag):
             Flag=False
