@@ -92,7 +92,9 @@
 			//let selecteddate = new Array;
 			let load_data = {{userdata | tojson}}; //配列に引数を代入
 			name.value = load_data[0];
+			if (load_data!=[]){
 			load_data.shift();
+		}
 			datepickerAry = load_data;
 			load_data.unshift('2000/1/1');
 			//選択済みのデータに関してのデータ入力処理
@@ -193,6 +195,9 @@
 			margin-top: 50px;
 			font-size: 5vmin;
 			box-shadow: 0 0 50px rgba(0, 0, 0, 0.3)
+		}
+		.ui-icon{
+			zoom:250%;
 		}
 	</style>
 </body>

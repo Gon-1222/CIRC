@@ -63,6 +63,17 @@ def checker():
                 line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
                 Notify.save()
     return 'OK',200
+#ブロードキャスト
+@app.route("/broadcastpost",methods=['POST'])
+def broad():
+    data = request.data
+    data = json.loads(data)
+    if data["pass"]!="%L5q3C)(dP-3(h%uwn,L":
+        abort(400)
+    print(data["message"])
+    messages = TextSendMessage(text=data["message"])
+    line_bot_api.broadcast(messages=messages)
+    return 'OK',200
 
 #日程アンケート
 @app.route("/questionaire")
