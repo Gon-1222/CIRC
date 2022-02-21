@@ -46,6 +46,7 @@ class notify:
             Flag=False
             for i in self.data:
                 buf = datetime.datetime.strptime(i,'%Y/%m/%d')
+                buf = buf.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
                 if buf<current_dt:
                     self.data.remove(i)
                     Flag=True

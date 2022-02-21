@@ -25,6 +25,7 @@ class Schedular:
         self.data=json.loads(buf)
     #保存
     def save(self):
+        self.organize()
         save= json.dumps(self.data)
         JSON_FILE = "service_key.json"
         ID = os.environ["GOOGLE_ID"]
@@ -98,6 +99,7 @@ class Schedular:
                 for j in range(3,int(item[2])+3,1):
                     if j>=len(item):break
                     dat=datetime.datetime.strptime(self.data[i][j],'%Y/%m/%d')
+                    dat=dat.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
                     print(j)
                     if dat<current_dt:
                         del self.data[i][j]
