@@ -50,10 +50,9 @@ def month():
 @app.route("/checkdate",methods=['GET'])
 def checker():
     for i in range(1,8,1):
-        current_dt=datetime.datetime.now()+datetime.timedelta(days=i)
+        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)
         string = current_dt.strftime('%Y/%m/%d')
         no = Schedule.count_part(string)
-        Notify.Clean_Up()
         if int(no)>2:
             print("OK1")
             if not(string in Notify.data):

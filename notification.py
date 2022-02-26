@@ -25,6 +25,7 @@ class notify:
         self.data=json.loads(buf)
     #セーブ
     def save(self):
+        Notify.Clean_Up()
         save= json.dumps(self.data)
         JSON_FILE = "service_key.json"
         ID = os.environ["GOOGLE_ID"]
@@ -41,6 +42,8 @@ class notify:
     #過去の日付を削除する
     def Clean_Up(self):
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+        #修正
+        current_dt=current_dt.replace(hour=0,minute=0,second=0,microsecond=0)
         Flag=True
         while(Flag):
             Flag=False

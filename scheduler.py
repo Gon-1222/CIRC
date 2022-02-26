@@ -92,6 +92,8 @@ class Schedular:
     #古いデータは消す
     def organize(self):
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+        #修正
+        current_dt=current_dt.replace(hour=0,minute=0,second=0,microsecond=0)
         for i,item in enumerate((self.data)):
             flag=True
             while flag:
