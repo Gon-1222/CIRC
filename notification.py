@@ -25,7 +25,7 @@ class notify:
         self.data=json.loads(buf)
     #セーブ
     def save(self):
-        Notify.Clean_Up()
+        #Notify.Clean_Up()
         save= json.dumps(self.data)
         JSON_FILE = "service_key.json"
         ID = os.environ["GOOGLE_ID"]

@@ -59,7 +59,7 @@ def checker():
                 print("OK2")
                 Notify.Add(string)
                 message=''+string+'に'+str(no)+'人が参加可能です'
-                line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
+                #line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
                 Notify.save()
     return 'OK',200
 #ブロードキャスト
