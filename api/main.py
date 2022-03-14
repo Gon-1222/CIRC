@@ -15,7 +15,7 @@ from notification import notify
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC3\n2022/02/21'
+versions='RC4\n2022/03/15'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -59,7 +59,7 @@ def checker():
                 print("OK2")
                 Notify.Add(string)
                 message=''+string+'に'+str(no)+'人が参加可能です'
-                #line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
+                line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
                 Notify.save()
     return 'OK',200
 #ブロードキャスト
