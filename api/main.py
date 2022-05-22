@@ -1,7 +1,7 @@
 from flask import Flask, request, abort,render_template
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage, TextSendMessage,FlexSendMessage
+from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage, TextSendMessage,FlexSendMessage,MemberJoinedEvent
 import os
 import json
 import datetime
@@ -154,6 +154,12 @@ def handle_follow(event):
     container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
     #プッシュメッセージを送信(リプライのほうがよくね)
     line_bot_api.push_message(event.source.user_id, messages=container_obj)
+
+@handle.add(MemberJoinedEvent)
+def handle_joined(event):
+    message="ご参加ありがとうございます。\n当サークルでは参加日程の登録などをBOTにより自動化しております。\n私（CIRCBOT）を友だち追加して、参加日程を登録してください。"
+    message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
+    line_bot_api.reply_message(event.reply_token,[TextSendMessage(text=message),TextSendMessage(text=message2)])
 
 #フォロー解除Event
 @handle.add(UnfollowEvent)
