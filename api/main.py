@@ -135,7 +135,6 @@ def handle_message(event):
         for i in Friends.member:
             print(i)
             profile = line_bot_api.get_profile(i)
-            print(profile)
             message+='\n'
             message+=profile.display_name
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
@@ -157,7 +156,7 @@ def handle_follow(event):
     container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
     #プッシュメッセージを送信(リプライのほうがよくね)
     line_bot_api.push_message(event.source.user_id, messages=container_obj)
-
+    return
 @handle.add(MemberJoinedEvent)
 def handle_joined(event):
     message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
@@ -172,6 +171,7 @@ def handle_joined(event):
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
     Friends.remove(event.source.user_id)
+    return
 print("main.py is Loaded...")
 
 #if __name__ == "__main__":
