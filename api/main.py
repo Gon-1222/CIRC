@@ -137,14 +137,15 @@ def handle_message(event):
             profile = line_bot_api.get_profile(i)
             message+='\n'
             message+=profile.display_name
-
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
+
     if event.message.text=='明日の天気':
         res=requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
         data=res.json()
         message="【明日の天気】\n天気:"+data["forecasts"][1]["telop"]+"\n最低気温:"+data["forecasts"][1]["temperature"]["min"]["celsius"]+"℃\n最高気温:"+data["forecasts"][1]["temperature"]["max"]["celsius"]+"℃\n\n降水確率\n"+" 0~6時:"+data["forecasts"][1]['chanceOfRain']["T00_06"]+"\n 6~12時:"+data["forecasts"][1]['chanceOfRain']["T06_12"]+"\n 12~18時:"+data["forecasts"][1]['chanceOfRain']["T12_18"]+"\n 18~24時:"+data["forecasts"][1]['chanceOfRain']["T18_24"]
 
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
+    return
 #フォローEvent
 @handle.add(FollowEvent)
 def handle_follow(event):
@@ -164,7 +165,7 @@ def handle_joined(event):
     container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
     #プッシュメッセージを送信
     line_bot_api.reply_message(event.reply_token,[container_obj,TextSendMessage(text=message2)])
-
+    return
 
 #フォロー解除Event
 @handle.add(UnfollowEvent)
