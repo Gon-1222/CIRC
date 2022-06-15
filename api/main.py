@@ -135,6 +135,7 @@ def handle_message(event):
         for i in Friends.member:
             print(i)
             profile = line_bot_api.get_profile(i)
+            print(profile)
             message+='\n'
             message+=profile.display_name
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
