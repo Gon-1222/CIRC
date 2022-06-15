@@ -157,9 +157,13 @@ def handle_follow(event):
 
 @handle.add(MemberJoinedEvent)
 def handle_joined(event):
-    message="ご参加ありがとうございます。\n当サークルでは参加日程の登録などをBOTにより自動化しております。\n私（CIRCBOT）を友だち追加して、参加日程を登録してください。"
     message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
-    line_bot_api.reply_message(event.reply_token,[TextSendMessage(text=message),TextSendMessage(text=message2)])
+    JSON_DIC=Flax.DIC2()
+    #Flaxメッセージに変えて
+    container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
+    #プッシュメッセージを送信
+    line_bot_api.reply_message(event.reply_token,[container_obj,TextSendMessage(text=message2)])
+    return
 
 #フォロー解除Event
 @handle.add(UnfollowEvent)

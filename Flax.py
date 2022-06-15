@@ -54,3 +54,44 @@ class Flax:
   }
 }
         return Payload
+    def DIC2(self):
+        Payload={
+        "type": "bubble",
+        "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+            "type": "text",
+            "text": "ご参加ありがとうございます！",
+            "weight": "bold",
+            "size": "md",
+            "align": "center"
+            },
+            {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+            {
+                "type": "text",
+                "text": "”CIRC BOT” を友だち追加して、\n日程を登録しましょう！",
+                "wrap": true,
+                "align": "center"
+                },
+                {
+                "type": "button",
+                "action": {
+                "type": "uri",
+                "label": "友だち追加！",
+                "uri": "https://line.me/R/ti/p/@929wpjcj"
+                },
+                "style": "primary",
+                "margin": "30px"
+                }
+                ],
+                "margin": "20px"
+                }
+                ]
+                }
+                }
+        return Payload
