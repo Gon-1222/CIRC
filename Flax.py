@@ -75,7 +75,7 @@ class Flax:
             {
                 "type": "text",
                 "text": "”CIRC BOT” を友だち追加して、\n日程を登録しましょう！",
-                "wrap": true,
+                "wrap": True,
                 "align": "center"
                 },
                 {

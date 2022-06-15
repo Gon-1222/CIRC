@@ -15,7 +15,7 @@ from notification import notify
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC4\n2022/03/15'
+versions='RC6\n2022/06/15'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -163,7 +163,7 @@ def handle_joined(event):
     container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
     #プッシュメッセージを送信
     line_bot_api.reply_message(event.reply_token,[container_obj,TextSendMessage(text=message2)])
-    return
+
 
 #フォロー解除Event
 @handle.add(UnfollowEvent)
