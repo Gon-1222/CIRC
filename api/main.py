@@ -133,6 +133,7 @@ def handle_message(event):
     if event.message.text=='Members':
         message="メンバー一覧:"
         for i in Friends.member:
+            print(i)
             profile = line_bot_api.get_profile(i)
             message+='\n'
             message+=profile.display_name
