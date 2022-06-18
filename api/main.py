@@ -1,4 +1,4 @@
-from flask import Flask, request, abort,render_template
+from flask import Flask, request, abort,render_template,
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage, TextSendMessage,FlexSendMessage,MemberJoinedEvent
@@ -98,12 +98,12 @@ def broad():
     data = json.loads(data)
     #トークンは本当はenvironへ
     if data["pass"]!="%L5q3C)(dP-3(h%uwn,L":
-        abort(400)
+        abort(403)
     print(data["message"])
     messages = TextSendMessage(text=data["message"])
     #line_bot_api.broadcast(messages=messages)!!!Don't Available
     #return 'OK',200
-    return return jsonify({'message': 'Forbidden'}), 403
+    return 'Forbidden', 403
 
 #日程アンケート
 @app.route("/questionaire")
