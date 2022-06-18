@@ -75,7 +75,7 @@ class Flax:
             "contents": [
             {
                 "type": "text",
-                "text": "”CIRC BOT” を友だち追加して、\n参加日程を登録しましょう！",
+                "text": "”県央RC - BOT” を友だち追加して、\n参加日程を登録しましょう！",
                 "wrap": True,
                 "align": "center"
                 },
