@@ -25,11 +25,15 @@ Friends = friend()
 Schedule  =Schedular()
 Notify = notify()
 app = Flask(__name__)
+#ルートアクセス時
+@app.route('/')
+def root_pages():
+    return "I’m a teapot",418
 
-#部分テスト用
+#部分テスト用(禁止・常時無効で。)
 @app.route('/test')
 def test():
-    line_bot_api.push_message(Group_ID, TextSendMessage(text="導入確認完了"))
+    #line_bot_api.push_message(Group_ID, TextSendMessage(text="導入確認完了"))!!!Don't Available
     return'OK',200
 
 #月移行動作
@@ -86,17 +90,20 @@ def checker():
             message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
     return 'OK',200
-#ブロードキャスト
+
+#ブロードキャスト!非推奨・基本は使用禁止
 @app.route("/broadcastpost",methods=['POST'])
 def broad():
     data = request.data
     data = json.loads(data)
+    #トークンは本当はenvironへ
     if data["pass"]!="%L5q3C)(dP-3(h%uwn,L":
         abort(400)
     print(data["message"])
     messages = TextSendMessage(text=data["message"])
-    line_bot_api.broadcast(messages=messages)
-    return 'OK',200
+    #line_bot_api.broadcast(messages=messages)!!!Don't Available
+    #return 'OK',200
+    return return jsonify({'message': 'Forbidden'}), 403
 
 #日程アンケート
 @app.route("/questionaire")
