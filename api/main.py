@@ -15,7 +15,7 @@ from notification import notify
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC6\n2022/06/15'
+versions='RC6.5\n2022/06/15'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -49,18 +49,42 @@ def month():
 #日々の確認
 @app.route("/checkdate",methods=['GET'])
 def checker():
+    #1週間以内にライドが計画されているかの確認
     for i in range(1,8,1):
-        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)
-        string = current_dt.strftime('%Y/%m/%d')
-        no = Schedule.count_part(string)
+        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)#現日付+1~8日
+        string = current_dt.strftime('%Y/%m/%d')#現日付+1~8日の文字列
+        no = Schedule.count_part(string)#参加可能メンバーの人数が
+        #3人以上だったら
         if int(no)>2:
             print("OK1")
+            #さらに通知してなかったら
             if not(string in Notify.data):
                 print("OK2")
+                #通知履歴の追加
                 Notify.Add(string)
+                #メッセージの生成
                 message=''+string+'に'+str(no)+'人が参加可能です'
+                #送信！
                 line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
+                #通知履歴！
                 Notify.save()
+    #しばらくライドが行われなかったとき
+    if (Notify.data!=[]):
+        #現日付
+        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+        #最後の通知の日付を
+        Last_noty=Notify.data[-1]
+        #datetimeオブジェクトに変形して
+        buf = datetime.datetime.strptime(Last_noty,'%Y/%m/%d')
+        #タイムゾーンつけて
+        buf = buf.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+        #時間差を得て
+        dt=current_dt-buf
+        print("前回の通知からの日数:",dt.days)
+        #前回の計画から30日計画されていいなかったら
+        if (dt.days==30):
+            message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
+            line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
     return 'OK',200
 #ブロードキャスト
 @app.route("/broadcastpost",methods=['POST'])

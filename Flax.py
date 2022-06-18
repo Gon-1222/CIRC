@@ -1,4 +1,5 @@
 import os
+#flaxは大麻やろ
 class Flax:
     def DIC(self,IDS):
         url = os.environ["MY_URL"]
@@ -74,7 +75,7 @@ class Flax:
             "contents": [
             {
                 "type": "text",
-                "text": "”CIRC BOT” を友だち追加して、\n日程を登録しましょう！",
+                "text": "”CIRC BOT” を友だち追加して、\n参加日程を登録しましょう！",
                 "wrap": True,
                 "align": "center"
                 },
