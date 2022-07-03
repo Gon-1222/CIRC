@@ -10,6 +10,7 @@ from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
 from notification import notify
+from history import History
 
 #環境変数
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -66,6 +67,7 @@ def checker():
                 print("OK2")
                 #通知履歴の追加
                 Notify.Add(string)
+                History(string)
                 #メッセージの生成
                 message=''+string+'に'+str(no)+'人が参加可能です'
                 #送信！
