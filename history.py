@@ -7,7 +7,7 @@ class History:
         data=[]
         def __init__(self,New_data):
             JSON_FILE = "service_key.json"
-            ID = "1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU"
+            ID = os.environ["GOOGLE_ID"]
             gauth = GoogleAuth()
             scope = ["https://www.googleapis.com/auth/drive"]
             gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
