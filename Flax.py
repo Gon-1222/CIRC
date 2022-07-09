@@ -98,7 +98,7 @@ class Flax:
         return Payload
 
     def DIC3(self):
-            payload={
+            Payload={
             "type": "bubble",
             "body": {
             "type": "box",
