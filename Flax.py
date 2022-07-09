@@ -96,3 +96,24 @@ class Flax:
                 }
                 }
         return Payload
+
+    def DIC3(self):
+            payload={
+            "type": "bubble",
+            "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+            {
+            "type": "button",
+            "action": {
+            "type": "uri",
+            "label": "新メンバー様向けアンケート",
+            "uri": "https://docs.google.com/forms/d/e/1FAIpQLSf-Tt0yMxS5Ai_Xv_MRa8CRNIuQFKH6gxJJNgiDoaCcENmZ4Q/viewform?usp=sf_link"
+            },
+            "style": "primary"
+            }
+            ]
+            }
+            }
+            return Payload

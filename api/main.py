@@ -186,10 +186,12 @@ def handle_follow(event):
     Friends.save()
     JSON_DIC=Flax.DIC(event.source.user_id)
     #Flaxメッセージに変えて
-    container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
+    container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
+    container_obj2 = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=Flax.DIC3())
     #プッシュメッセージを送信(リプライのほうがよくね)
-    line_bot_api.push_message(event.source.user_id, messages=container_obj)
+    line_bot_api.reply_message(event.reply_token, [container_obj,container_obj2])
     return
+#新たに参加した方
 @handle.add(MemberJoinedEvent)
 def handle_joined(event):
     message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
