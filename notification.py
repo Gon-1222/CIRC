@@ -15,10 +15,11 @@ class notify:
         scope = ["https://www.googleapis.com/auth/drive"]
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
         drive = GoogleDrive(gauth)
-        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
-        #ScheduleのID：18r7To69SFEYRbOXwuHVoMYTJS4i-2o2U
-        #notifyのID:1v9HVTO-w9Cwkoebd-phODpHKIs521lK5
-        file = drive.CreateFile({"id": "1v9HVTO-w9Cwkoebd-phODpHKIs521lK5", "parents": [{"id": ID}]})
+            #historyのID： 1zsEmY3P-Ro_JzJWHi2xk5CFdzdixSKpA
+            #notifyのID：1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-
+            #friendsのID：1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4
+            #sheduleのID：1ppdSzlPtyQWKh3_dTGbvyNlNdUYd5XZ8
+        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": ID}]})
         #file.SetContentString("test")
         #file.Upload()
         buf=file.GetContentString()
@@ -34,9 +35,7 @@ class notify:
         scope = ["https://www.googleapis.com/auth/drive"]
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
         drive = GoogleDrive(gauth)
-        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
-        #ScheduleのID：18r7To69SFEYRbOXwuHVoMYTJS4i-2o2U
-        file = drive.CreateFile({"id": "1v9HVTO-w9Cwkoebd-phODpHKIs521lK5", "parents": [{"id": ID}]})
+        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": ID}]})
         file.SetContentString(save)
         file.Upload()
     #過去の日付を削除する

@@ -15,9 +15,11 @@ class friend:
         scope = ["https://www.googleapis.com/auth/drive"]
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
         drive = GoogleDrive(gauth)
-        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
-        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
-        file = drive.CreateFile({"id": "1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6", "parents": [{"id": ID}]})
+            #historyのID： 1zsEmY3P-Ro_JzJWHi2xk5CFdzdixSKpA
+            #notifyのID：1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-
+            #friendsのID：1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4
+            #sheduleのID：1ppdSzlPtyQWKh3_dTGbvyNlNdUYd5XZ8
+        file = drive.CreateFile({"id": "1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4", "parents": [{"id": ID}]})
         #file.SetContentString("test")
         #file.Upload()
         data=file.GetContentString()
@@ -34,9 +36,7 @@ class friend:
         scope = ["https://www.googleapis.com/auth/drive"]
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
         drive = GoogleDrive(gauth)
-        #friendのID：1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6
-        #ScheduleのID：1mZQ9kqr_jn_dnDRe6nn3-diblntU1tlU
-        file = drive.CreateFile({"id": "1xsnfiWqE8ZVyEiUjvVsUvZPgcVu0stz6", "parents": [{"id": ID}]})
+        file = drive.CreateFile({"id": "1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4", "parents": [{"id": ID}]})
         file.SetContentString(save)
         file.Upload()
     #追加
