@@ -11,6 +11,7 @@ from scheduler import Schedular
 from Flax import Flax
 from notification import notify
 from history import History
+from flask_httpauth import HTTPBasicAuth
 
 #環境変数
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -26,13 +27,23 @@ Friends = friend()
 Schedule  =Schedular()
 Notify = notify()
 app = Flask(__name__)
+auth = HTTPBasicAuth()
+users = {
+    "Karaage": "Oishii"
+}
+@auth.get_password
+def get_pw(username):
+    if username in users:
+        return users.get(username)
+    return None
 #ルートアクセス時
 @app.route('/')
 def root_pages():
     return "I’m a teapot",418
 
 #部分テスト用(禁止・常時無効で。)
-@app.route('/test')
+@app.route('/management')
+@auth.login_required
 def test():
     #line_bot_api.push_message(Group_ID, TextSendMessage(text="導入確認完了"))!!!Don't Available
     return'OK',200
