@@ -1,6 +1,7 @@
 <head>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&display=swap');
     body,
@@ -9,7 +10,6 @@
       height: 100%;
       background-color: #fff;
       font-family: 'M PLUS Rounded 1c', sans-serif;;
-
     }
     /* body{
       display:flex;
@@ -80,6 +80,43 @@
     }
     a{font-size:4vw;
     }
+    .News{
+      position:fixed;
+      top: 0;
+      ledt: 0;
+      width:100%;
+      height:7vw;
+      margin:0;
+      background:#fff;
+      border-bottom: 1px solid #ccc
+    }
+    .news-banner__content {
+  display: inline-block;
+  color: #000;
+  line-height: 5vw;
+  font-size:5vw;
+  margin-top:10px;
+  padding-left: 100%;
+  white-space: nowrap;
+  animation: animate-banner 20s linear infinite;
+}
+.news-banner__content>p{
+  margin:0;
+}
+/* バナー内の要素をすべて選択 */
+.news-banner__content > * {
+  display: inline-block;
+}
+
+/* 横にスクロールさせるアニメーション */
+@keyframes animate-banner {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
   </style>
 </head>
 
@@ -105,5 +142,13 @@
       {% endfor %}
 </div>
 <a href="/management">管理者向けページ</a>
+<!--NEWS-->
+<div class="News">
+  <div class="news-banner__content">
+  <p>【NEWS】○マスクの着用等感染予防の徹底をお願いします。</p>
+  <p>○メンテナンスのため8/6・8/7にBOTが利用できなくなる可能性があります。</p>
+</div>
+</div>
+
 <br style="height:500px">
 </body>
