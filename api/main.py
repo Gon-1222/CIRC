@@ -107,7 +107,7 @@ def checker():
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
     #メール転送ルーチン
         if request.args.get('data') is not None:
-            print(type(unquote(request.args.get('data'))))
+            print(unquote(request.args.get('data')))
             query = json.loads(unquote(request.args.get('data')))
             text="[メール通知]"
             for i in query:
