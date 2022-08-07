@@ -26,7 +26,7 @@ class Mail:
         # 認可フロー完了時に自動で作成。
         if os.path.exists('/tmp/token.json'):
             creds = Credentials.from_authorized_user_file(
-                'creds/token.json', self.SCOPES)
+                '/tmp/token.json', self.SCOPES)
         # トークンが存在しない場合
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
