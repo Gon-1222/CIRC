@@ -94,7 +94,7 @@ class Mail:
     def read_mail(self,query="is:unread", count=10):
         #最終取得のIDの取得
         JSON_FILE = "service_key.json"
-        ID = "1WCp28GQS0AsudyyruvfhxrxJZewvss4l"
+        ID = os.environ["GOOGLE_ID"]
 
         gauth = GoogleAuth()
         scope = ["https://www.googleapis.com/auth/drive"]
@@ -120,7 +120,7 @@ class Mail:
             if messages[0]["id"]!=Last_ID:
                 save= json.dumps(messages[0]["id"])
                 JSON_FILE = "service_key.json"
-                ID = "1WCp28GQS0AsudyyruvfhxrxJZewvss4l"
+                ID = os.environ["GOOGLE_ID"]
                 gauth = GoogleAuth()
                 scope = ["https://www.googleapis.com/auth/drive"]
                 gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
