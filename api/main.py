@@ -109,6 +109,7 @@ def checker():
         if request.args.get('data') is not None:
             print(unquote(request.args.get('data')))
             query = json.loads(unquote(request.args.get('data')))
+            query.pop()
             text="[メール通知]"
             for i in query:
                 text+="\n"
