@@ -105,14 +105,6 @@ def checker():
             message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
     #メール転送ルーチン
-    """
-        mail=Mail()
-        send_data=mail.read_mail()
-        if send_data!=None:
-            text="[メール通知]\n"
-            for j in send_data:
-                text+=j
-                """
         if request.args.get('data') is not None:
             query = json.loads(request.args.get('data'))
             text="[メール通知]"
