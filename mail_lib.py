@@ -24,9 +24,9 @@ class Mail:
         # token.json
         # access/refresh tokenを保存
         # 認可フロー完了時に自動で作成。
-        if os.path.exists('/tmp/token.json'):
+        if os.path.exists('creds/token.json'):
             creds = Credentials.from_authorized_user_file(
-                '/tmp/token.json', self.SCOPES)
+                'creds/token.json', self.SCOPES)
         # トークンが存在しない場合
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -36,7 +36,7 @@ class Mail:
                     'creds/credentials.json', self.SCOPES)
                 creds = flow.run_local_server(port=0)
             # トークンを保存
-            with open('/tmp/token.json', 'w') as token:
+            with open('creds/token.json', 'w') as token:
                 token.write(creds.to_json())
         return creds
 
