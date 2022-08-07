@@ -12,12 +12,14 @@ from Flax import Flax
 from notification import notify
 from history import History
 from flask_httpauth import HTTPBasicAuth
+from mail_lib import Mail
+from manager import Manager
 
 #環境変数
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC9\n2022/08/05'
+versions='RC10\n2022/08/07'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -102,6 +104,16 @@ def checker():
         if (dt.days==30):
             message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
+    #メール転送ルーチン
+        mail=Mail()
+        send_data=mail.read_mail()
+        if send_data!=None:
+            text="[メール通知]\n"
+            for j in send_data:
+                text+=j
+            manage=Manager()
+            for i in manage.read():
+                line_bot_api.push_message(i, TextSendMessage(text=text))
     return 'OK',200
 
 #ブロードキャスト!非推奨・基本は使用禁止
