@@ -22,7 +22,6 @@ class History:
             buf=file.GetContentString()
             self.data=json.loads(buf)
             self.data.insert(0,New_data)
-            self.data.pop(3)
             save= json.dumps(self.data)
             gauth = GoogleAuth()
             scope = ["https://www.googleapis.com/auth/drive"]
