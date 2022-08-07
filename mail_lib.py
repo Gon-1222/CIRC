@@ -11,6 +11,7 @@ import json
 from apiclient import errors
 import base64
 import csv
+import os
 
 # OAuth2.0 Gmail　API用スコープ
 # 変更する場合は、token.jsonファイルを削除する
