@@ -33,7 +33,7 @@ class Mail:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'creds/credentials.json', SCOPES)
+                    'creds/credentials.json', self.SCOPES)
                 creds = flow.run_local_server(port=0)
             # トークンを保存
             with open('/tmp/token.json', 'w') as token:
