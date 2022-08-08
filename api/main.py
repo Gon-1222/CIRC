@@ -66,7 +66,7 @@ def month():
     return 'OK',200
 
 #日々の確認
-@app.route("/checkdate",methods=['GET'])
+@app.route("/checkdate",methods=['POST'])
 def checker():
     #1週間以内にライドが計画されているかの確認
     for i in range(1,8,1):
@@ -106,17 +106,17 @@ def checker():
             message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
     #メール転送ルーチン
-        if request.args.get('data') is not None:
-            print(unquote(request.args.get('data')))
-            query = json.loads(unquote(request.args.get('data')))
-            query.pop()
+        if request.data.decode():
+            query = json.loads(request.data.decode())
+            send_list=[]
             text="[メール通知]"
+            send_list.append(TextSendMessage(text=text))
             for i in query:
-                text+="\n"
-                text+=i
+                text=("<"+i["title"]+">\n"+i["body"])
+                send_list.append(TextSendMessage(text=text))
             manage=Manager()
             for i in manage.read():
-                line_bot_api.push_message(i, TextSendMessage(text=text))
+                line_bot_api.push_message(i, send_list)
         else:
             abort(400)
     return 'OK',200
