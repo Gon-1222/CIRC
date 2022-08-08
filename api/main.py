@@ -108,17 +108,18 @@ def checker():
     #メール転送ルーチン
         if request.data.decode():
             query = json.loads(request.data.decode())
-            send_list=[]
-            text="[メール通知]"
-            send_list.append(TextSendMessage(text=text))
-            for i in query:
-                text=("<"+i["title"]+">\n"+i["body"])
+            if query!=[]:
+                send_list=[]
+                text="[メール通知]"
                 send_list.append(TextSendMessage(text=text))
-            manage=Manager()
-            for i in manage.read():
-                line_bot_api.push_message(i, send_list)
-        else:
-            abort(400)
+                for i in query:
+                    text=("<"+i["title"]+">\n"+i["body"])
+                    send_list.append(TextSendMessage(text=text))
+                manage=Manager()
+                for i in manage.read():
+                    line_bot_api.push_message(i, send_list)
+                else:
+                    abort(400)
     return 'OK',200
 
 #ブロードキャスト!非推奨・基本は使用禁止
