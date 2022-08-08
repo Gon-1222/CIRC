@@ -118,8 +118,8 @@ def checker():
                 manage=Manager()
                 for i in manage.read():
                     line_bot_api.push_message(i, send_list)
-                else:
-                    abort(400)
+            else:
+                abort(400)
     return 'OK',200
 
 #ブロードキャスト!非推奨・基本は使用禁止
