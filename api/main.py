@@ -1,26 +1,28 @@
+#Flask
 from flask import Flask, request, abort,render_template
+from flask_httpauth import HTTPBasicAuth
+#LINEAPI関連
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage, TextSendMessage,FlexSendMessage,MemberJoinedEvent
-from urllib.parse import unquote
+#その他のライブラリ
 import os
 import json
 import datetime
 import requests
+#自作ライブラリ
 from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
 from notification import notify
 from history import History
-from flask_httpauth import HTTPBasicAuth
-from mail_lib import Mail
 from manager import Manager
 
-#環境変数
+#環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC10\n2022/08/07'
+versions='RC11\n2022/08/10'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -31,6 +33,7 @@ Schedule  =Schedular()
 Notify = notify()
 app = Flask(__name__)
 auth = HTTPBasicAuth()
+#仮のパスワード
 users = {
     "Karaage": "Oishii"
 }
@@ -43,13 +46,26 @@ def get_pw(username):
 @app.route('/')
 def root_pages():
     return "ここにはなにもないよ",404
-
-#部分テスト用(禁止・常時無効で。)
+#部分テスト用(禁止・基本使用禁止)
 @app.route('/management')
 @auth.login_required
 def test():
     #line_bot_api.push_message(Group_ID, TextSendMessage(text="導入確認完了"))!!!Don't Available
     return'OK',200
+
+#ブロードキャスト!非推奨・基本は使用禁止
+@app.route("/broadcastpost",methods=['POST'])
+def broad():
+    data = request.data
+    data = json.loads(data)
+    #トークンは本当はenvironへ
+    if data["pass"]!="%L5q3C)(dP-3(h%uwn,L":
+        abort(403)
+    print(data["message"])
+    messages = TextSendMessage(text=data["message"])
+    #line_bot_api.broadcast(messages=messages)!!!Don't Available
+    #return 'OK',200
+    return 'Forbidden', 403
 
 #月移行動作
 @app.route("/nextmonth",methods=['GET'])
@@ -68,34 +84,33 @@ def month():
 #日々の確認
 @app.route("/checkdate",methods=['POST'])
 def checker():
+    #----------------------------------------
     #1週間以内にライドが計画されているかの確認
+    #----------------------------------------
     for i in range(1,8,1):
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)#現日付+1~8日
         string = current_dt.strftime('%Y/%m/%d')#現日付+1~8日の文字列
         no = Schedule.count_part(string)#参加可能メンバーの人数が
-        #3人以上だったら
-        if int(no)>2:
-            print("OK1")
-            #さらに通知してなかったら
-            if not(string in Notify.data):
-                print("OK2")
-                #通知履歴の追加
+        #3人以上で且つ通知をしていなかったら
+        if int(no)>2 and not(string in Notify.data):
+                #通知履歴の追加と保存
                 Notify.Add(string)
+                Notify.save()
+                #HP用ホームページの追加
                 History(string)
                 #メッセージの生成
                 message=''+string+'に'+str(no)+'人が参加可能です'
                 #送信！
                 line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
-                #通知履歴！
-                Notify.save()
+                print("通知完了")
+    #----------------------------------------
     #しばらくライドが行われなかったとき
+    #----------------------------------------
     if (Notify.data!=[]):
         #現日付
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
-        #最後の通知の日付を
-        Last_noty=Notify.data[-1]
-        #datetimeオブジェクトに変形して
-        buf = datetime.datetime.strptime(Last_noty,'%Y/%m/%d')
+        #最後の通知日をdatetimeオブジェクトに変形して
+        buf = datetime.datetime.strptime(Notify.data[-1],'%Y/%m/%d')
         #タイムゾーンつけて
         buf = buf.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
         #時間差を得て
@@ -105,36 +120,31 @@ def checker():
         if (dt.days==30):
             message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
-    #メール転送ルーチン
-        if request.data.decode():
-            query = json.loads(request.data.decode())
-            if query!=[]:
-                send_list=[]
-                text="[メール通知]"
+            print("しばらくライドが行われなかった。")
+    #----------------------------------------
+    #メール転送
+    #----------------------------------------
+    #POSTの中身があるときだけ
+    if request.data.decode():
+        query = json.loads(request.data.decode())
+        #通知すべきメールがあるとき
+        if query!=[]:
+            #メッセージリストの作成
+            send_list=[]
+            text="[メール通知]"
+            send_list.append(TextSendMessage(text=text))
+            for i in query:
+                text=("<"+i["title"]+">\n"+i["body"])
                 send_list.append(TextSendMessage(text=text))
-                for i in query:
-                    text=("<"+i["title"]+">\n"+i["body"])
-                    send_list.append(TextSendMessage(text=text))
-                manage=Manager()
-                for i in manage.read():
-                    line_bot_api.push_message(i, send_list)
-        else:
-            abort(403)
+            #メッセージをマネージャーに送信
+            manage=Manager()
+            for i in manage.read():
+                line_bot_api.push_message(i, send_list)
+    else:
+        #POSTの中身がないとき
+        abort(403)
     return 'OK',200
 
-#ブロードキャスト!非推奨・基本は使用禁止
-@app.route("/broadcastpost",methods=['POST'])
-def broad():
-    data = request.data
-    data = json.loads(data)
-    #トークンは本当はenvironへ
-    if data["pass"]!="%L5q3C)(dP-3(h%uwn,L":
-        abort(403)
-    print(data["message"])
-    messages = TextSendMessage(text=data["message"])
-    #line_bot_api.broadcast(messages=messages)!!!Don't Available
-    #return 'OK',200
-    return 'Forbidden', 403
 
 #日程アンケート
 @app.route("/questionaire")

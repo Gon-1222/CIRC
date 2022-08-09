@@ -28,6 +28,7 @@ class friend:
         self.member=json.loads(data)
     #書き込み
     def save(self):
+        self.member=list(set(self.member))
         save= json.dumps(self.member)
         JSON_FILE = "service_key.json"
         ID = os.environ["GOOGLE_ID"]
