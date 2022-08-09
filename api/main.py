@@ -42,7 +42,7 @@ def get_pw(username):
 #ルートアクセス時
 @app.route('/')
 def root_pages():
-    return "I’m a teapot",418
+    return "ここにはなにもないよ",404
 
 #部分テスト用(禁止・常時無効で。)
 @app.route('/management')
@@ -118,8 +118,8 @@ def checker():
                 manage=Manager()
                 for i in manage.read():
                     line_bot_api.push_message(i, send_list)
-            else:
-                abort(400)
+        else:
+            abort(403)
     return 'OK',200
 
 #ブロードキャスト!非推奨・基本は使用禁止
