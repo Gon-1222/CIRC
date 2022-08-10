@@ -6,20 +6,19 @@ import json
 import os
 class notify:
     data=[]
+    ID = os.environ["GOOGLE_ID"]
+    scope = ["https://www.googleapis.com/auth/drive"]
     #ロード（コンストラクタ）
     def __init__(self):
         JSON_FILE = "service_key.json"
-        ID = os.environ["GOOGLE_ID"]
-
         gauth = GoogleAuth()
-        scope = ["https://www.googleapis.com/auth/drive"]
-        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, self.scope)
         drive = GoogleDrive(gauth)
             #historyのID： 1zsEmY3P-Ro_JzJWHi2xk5CFdzdixSKpA
             #notifyのID：1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-
             #friendsのID：1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4
             #sheduleのID：1ppdSzlPtyQWKh3_dTGbvyNlNdUYd5XZ8
-        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": ID}]})
+        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": self.ID}]})
         #file.SetContentString("test")
         #file.Upload()
         buf=file.GetContentString()
@@ -29,13 +28,10 @@ class notify:
         self.Clean_Up()
         save= json.dumps(self.data)
         JSON_FILE = "service_key.json"
-        ID = os.environ["GOOGLE_ID"]
-
         gauth = GoogleAuth()
-        scope = ["https://www.googleapis.com/auth/drive"]
-        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, scope)
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, self.scope)
         drive = GoogleDrive(gauth)
-        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": ID}]})
+        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": self.ID}]})
         file.SetContentString(save)
         file.Upload()
     #過去の日付を削除する
