@@ -69,7 +69,7 @@ def managers():
 def posts_data():
     #エラー（タイプが無かったとき）
     print(request.form)
-    if request.form.get('data_type', None):
+    if not(request.form.get('data_type', None)):
         return 'Forbidden', 403
     #Historyに追加
     if request.form.get('data_type',None)=="Add_history":
