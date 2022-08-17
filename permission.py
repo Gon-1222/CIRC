@@ -117,7 +117,7 @@ class permit:
     def Check(self,user,password):
         if not(self.loaded&1):
             self.load(1)
-        return bcrypt.checkpw(password,self.data.get(user,None))
+        return bcrypt.checkpw(password,self.data.get(user,None).encode())
     #管理者リスト
     def User_lists(self):
         if not(self.loaded&3):
