@@ -76,6 +76,8 @@ class permit:
             #現在マネージャーの書き込み
         if self.loaded&2:
             #リクエストの書き込み
+            JSON_FILE = "service_key.json"
+            ID = os.environ["GOOGLE_ID"]
             save= json.dumps(self.req)
             gauth = GoogleAuth()
             scope = ["https://www.googleapis.com/auth/drive"]
