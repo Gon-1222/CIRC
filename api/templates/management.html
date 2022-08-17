@@ -277,10 +277,11 @@
       <td width="50%">{{key|e}}</td>
       <td style="overflow:scroll;">{{value|e}}</td>
       <td>
-    {% endfor %}
+
         <form action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}<">許可</button></form>
       </td>
     </tr>
+    {% endfor %}
   </table>
   <h1>使用システムメモ</h1>
   <ul>
