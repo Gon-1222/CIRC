@@ -84,7 +84,7 @@ class permit:
             file.Upload()
         return
     #管理者追加リクエスト
-    def Apply(self,user,passeord):
+    def Apply(self,user,password):
         if not(self.loaded&2):
             self.load(2)
         password_hash=bcrypt.hashpw(password,bcrypt.gensalt(rounds=14,prefix=b'2b')).decode()
