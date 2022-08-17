@@ -19,6 +19,7 @@ from notification import notify
 from history import History
 from manager import Manager
 from permission import permit
+from news import news
 #環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
@@ -73,7 +74,7 @@ def managers():
     print(Members_data)
     print(Mana_data)
     Now_manage,Now_req=permit().User_lists()
-    return render_template('management.html',Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
+    return render_template('management.html',news=News(),Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
 #マネージメントのインターフェイス
 @app.route('/management',methods=['post'])
 @auth.login_required
@@ -95,6 +96,9 @@ def posts_data():
             History().Del(string)
         else:
             return "正規表現不一致",400
+    elif request.form.get('data_type',None)=="News":
+        if request.form.get('naiyo',None):
+            News().Change(request.form['naiyo'])
     #ブロードキャスト
     elif request.form.get('data_type',None)=="broad_cast":
         if request.form.get('message',None)!="":
@@ -233,7 +237,7 @@ def part():
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
     forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
-    return render_template('participants.html',data=Schedule.All_lists(),forecast_data = forecast_data),200
+    return render_template('participants.html',data=Schedule.All_lists(),forecast_data = forecast_data,news_str=News()),200
 
 #APIに応答
 @app.route("/callback", methods=['POST'])
