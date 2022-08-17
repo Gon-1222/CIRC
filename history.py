@@ -46,7 +46,8 @@ class History:
             #file.Upload()
             buf=file.GetContentString()
             self.data=json.loads(buf)
-            self.data.remove(Del_data)
+            if Del_data in self.data:
+                self.data.remove(Del_data)
             save= json.dumps(self.data)
             gauth = GoogleAuth()
             scope = ["https://www.googleapis.com/auth/drive"]
