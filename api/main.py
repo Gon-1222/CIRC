@@ -55,12 +55,10 @@ def managers():
     Mana_data=[]
     for i in Friends_data:
         profile = line_bot_api.get_profile(i)
-
         Members_data.append([profile.display_name,i])
     for j in mana:
-        profile = line_bot_api.get_profile(i)
-
-        Mana_data.append([profile.display_name,i])
+        profile = line_bot_api.get_profile(j)
+        Mana_data.append([profile.display_name,j])
     print(Members_data)
     print(Mana_data)
     Now_manage,Now_req=permit().User_lists()
