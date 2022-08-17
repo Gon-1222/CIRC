@@ -58,7 +58,7 @@ def managers():
                 profile = line_bot_api.get_profile(i)
                 Mana_data=[]
                 Mana_data.append([profile,i])
-    Now_manage,Now_req=permit().User_lists
+    Now_manage,Now_req=permit().User_lists()
     return render_template('management.html',Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
 #マネージメントのインターフェイス
 @app.route('/management',methods=['post'])
