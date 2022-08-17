@@ -100,6 +100,7 @@ class permit:
     def Allow(self,user):
         if not(self.loaded&3):
             self.load(3)
+        print(user)
         if user in self.req:
             self.data.update({user:self.req[user]})
             self.req.pop(user)
