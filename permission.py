@@ -90,7 +90,7 @@ class permit:
         password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=14,prefix=b'2b')).decode()
         add_data={user:password_hash}
         self.req.update(add_data)
-        self.save(2)
+        self.save()
         return "Success"
     #許可リクエスト
     def Allow(self,user):
@@ -99,7 +99,7 @@ class permit:
         if user in self.req:
             self.data.update({user:self.req[user]})
             self.req.pop(user)
-            self.save(3)
+            self.save()
             return "Success"
         else:
             return "Not Found the user"
@@ -109,7 +109,7 @@ class permit:
             self.load(1)
         if user in self.data:
             self.data.pop(user)
-            self.save(1)
+            self.save()
             return "Success"
         else:
             return "Not Found the user"
