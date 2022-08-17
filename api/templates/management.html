@@ -1,13 +1,296 @@
-<!doctype html>
-<html lang="JP">
-<head>
-  <title>管理者用ページ</title>
-  <style>
+<!DOCTYPE html>
+<html lang="ja">
 
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="UTF-8">
+  <title>管理者サイト-県央RC-BOT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
+  <style>
+    body,
+    html {
+      width: 100%;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    p {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin: 60px auto 40px;
+    }
+
+    input[type="submit"],
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea,
+    button {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: none;
+      border: none;
+    }
+
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      background: #f8f8f8;
+      display: block;
+      font-size: 16px;
+      padding: 12px 15px;
+      width: calc(100% - 54px);
+      transition: 0.8s;
+      border-radius: 0;
+    }
+
+    input[type="text"],
+    input[type="date"]:focus,
+    textarea:focus {
+      background: #e9f5fb;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea[name="content"] {
+      display: inline-block;
+      width: 100%;
+      height: 200px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #ccc;
+    }
+
+    ::-webkit-input-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+
+    ::-moz-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+
+    :-ms-input-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+
+    .form-table {
+      width: calc(100%);
+    }
+
+    .form-table th,
+    .form-table td {
+      border-top: 1px solid #d7d7d7;
+      border-bottom: 1px solid #d7d7d7;
+      padding: 20px;
+
+    }
+
+    .form-table th {
+      background: #ffecea;
+      padding-left: 50px;
+      position: relative;
+      text-align: left;
+      width: 300px;
+    }
+
+    input[type=submit] {
+      display: block;
+      margin: 20px auto;
+    }
+
+    button[type=submit] {
+      display: block;
+      margin: 0 auto;
+    }
+
+    form {
+      margin: 0;
+      margin-bottom: 60px;
+    }
+
+    td>form {
+      margin: 5px auto;
+    }
+
+    @media screen and (max-width:800px) {
+
+      .form-table th,
+      .form-table td {
+        display: block;
+        width: calc(100% - 54px);
+        border-bottom: none;
+      }
+    }
   </style>
+  <script type="text/javascript">
+    //<!--
+
+    function check() {
+
+      if (window.confirm('送信してよろしいですか？')) { // 確認ダイアログを表示
+
+        return true; // 「OK」時は送信を実行
+
+      } else { // 「キャンセル」時の処理
+
+        window.alert('キャンセルされました'); // 警告ダイアログを表示
+        return false; // 送信を中止
+
+      }
+
+    }
+
+    // -->
+  </script>
 </head>
 
 <body>
-<p>いろいろ</p>
+  <h1>○BOT管理者用ぺージ</h1>
+
+  <h1>参加可能日程の登録</h1>
+  <form method="get" action="/month" onSubmit="return check()"><button type="submit">「日程を登録してください」を送信。</button></form>
+
+  <h1>ライド履歴の修正</h1>
+  <p>HPのデータ修正用です。<br>通知がない状態でライドを行った場合などに使用します。</p>
+  <form action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="Add_history">
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <th>追加する日付</th>
+          <td><input type="date" name="Add_date" size="60" value="" placeholder="">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" value="ライド履歴を追加">
+  </form>
+  <form action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="Del_history">
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <th>削除する日付</th>
+          <td><input type="date" name="name" size="60" value="" placeholder="">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" value="ライド履歴を削除">
+  </form>
+  <h1>News欄の修正</h1>
+  <p>「参加可能メンバー」の最上部の内容の修正用です。</p>
+  <form action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="News">
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <th>News欄の表示内容</th>
+          <td><input type="text" name="name" size="60" value="" placeholder="">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" value="ニュース欄の更新">
+  </form>
+  <!--ブロードキャスト-->
+  <h1>ブロードキャスト</h1>
+  <p>BOTから全員に向けてお知らせをするときに利用します。<br>200文字以内</p>
+  <form action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="broad_cast">
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <th>送信内容</th>
+          <td><input type="text" name="message" size="200" value="" placeholder="">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" value="ブロードキャストを送信">
+  </form>
+
+  <h1>メンバー一覧</h1>
+  <p>LINEに友だち追加している人の一覧です。</p>
+  <table border="1" class="members" style="table-layout:fixed;width:100%;">
+    <tr>
+      <th width="33%">ユーザー名</th>
+      <th width="33%">userID</th>
+      <th width="33%">メール転送</th>
+    </tr>
+    {% for i in Mana_data %}
+    <tr>
+      <td width="50%">{{i[0]}}</td>
+      <td style="overflow:scroll;">{{i[1]}}</td>
+      <td style="text-align:center;">○</td>
+    </tr>
+    {% endfor %}
+    {% for i in Members_data %}
+    <tr>
+      <td width="50%">{{i[0]}}</td>
+      <td style="overflow:scroll;">{{i[1]}}</td>
+      <td style="text-align:center;"></td>
+    </tr>
+    {% endfor %}
+
+  </table>
+
+  <h1>管理者一覧</h1>
+  <p>パスワードはbcrypt(強度:14)で保存しています。<br>ペッパーなし</p>
+  <table border="1" class="members" style="table-layout:fixed;width:100%;">
+    <tr>
+      <th width="33%">ユーザー名</th>
+      <th width="33%">パスワードハッシュ</th>
+      <th width="33%">削除</th>
+    </tr>
+    {% for key,value in Now_manage.items() %}
+    <tr>
+      <td width="50%">{{key|e}}</td>
+      <td style="overflow:scroll;">{{value|e}}</td>
+      <td>
+        <form action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h1>管理者リクエスト(<span style="color:#f00">注意</span>)</h1>
+  <p>※本人確認を確実に行い、必要な人のみ許可すること<br><span style="color:#f00">このページヘのログインが可能になります。</span></p>
+  <table border="1" class="members" style="table-layout:fixed;width:100%;">
+    <tr>
+      <th width="33%">ユーザー名</th>
+      <th width="33%">パスワードハッシュ</th>
+      <th width="33%">許可</th>
+    </tr>
+    {% for key,value in Now_req.items() %}
+    <tr>
+      <td width="50%">{{key|e}}</td>
+      <td style="overflow:scroll;">{{value|e}}</td>
+      <td>
+        <form action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}<">許可</button></form>
+      </td>
+    </tr>
+  </table>
+  <h1>使用システムメモ</h1>
+  <ul>
+    <li>PaaS:Vercel</li>
+    <li>DB:Google Drive</li>
+    <li>Mail:Gmail</li>
+    <li>Timer:Google Apps Script</li>
+    <li>VCS：GitHub</li>
+  </ul>
+  <p>{% Version %}<br>(c) 2021-2022 宮坂肇 All rights reserved. </p>
+
 </body>
+
 </html>

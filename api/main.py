@@ -10,6 +10,7 @@ import os
 import json
 import datetime
 import requests
+import re
 #自作ライブラリ
 from Friends import friend
 from scheduler import Schedular
@@ -17,12 +18,12 @@ from Flax import Flax
 from notification import notify
 from history import History
 from manager import Manager
-
+from permission import permit
 #環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC11\n2022/08/10'
+versions='RC11 2022/08/10'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -33,26 +34,66 @@ Schedule  =Schedular()
 Notify = notify()
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-#仮のパスワード
-users = {
-    "Karaage": "Oishii"
-}
-@auth.get_password
-def get_pw(username):
-    if username in users:
-        return users.get(username)
-    return None
+
+#パスワード判定
+@auth.verify_password
+def verify_password(username, password):
+    permission=permit(1)
+    return permission.check(username, password)
 #ルートアクセス時
 @app.route('/')
 def root_pages():
     return "ここにはなにもないよ",404
-#部分テスト用(禁止・基本使用禁止)
-@app.route('/management')
+#マネージメントページ
+@app.route('/management',methods=['post'])
 @auth.login_required
-def test():
-    #line_bot_api.push_message(Group_ID, TextSendMessage(text="導入確認完了"))!!!Don't Available
-    return'OK',200
+def managers():
+    mana=Manager().read()
+    Friends_data=list(set(Friends.member)-set(mana))
+    for i in Friends_data:
+        profile = line_bot_api.get_profile(i)
+        Members_data=[]
+        Members_data.append([profile,i])
+    for j in mana:
+                profile = line_bot_api.get_profile(i)
+                Mana_data=[]
+                Mana_data.append([profile,i])
+    Now_manage,Now_req=permit().User_lists
+    return render_template('management.html',Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
+#マネージメントのインターフェイス
+@app.route('/management',methods=['post'])
+@auth.login_required
+def posts_data():
+    #エラー（タイプが無かったとき）
+    if request.form.get('data_type', None):
+        return 'Forbidden', 403
+    #Historyに追加
+    if request.form.get('data_type',None)=="Add_history":
+        string=request.form.get('Add_date',None).replace("-","/")
+        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
+            History().Add(string)
+        else:
+            return "正規表現不一致",400
+    #Historyから削除
+    if request.form.get('data_type',None)=="Del_history":
+        string=request.form.get('Add_date',None).replace("-","/")
+        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
+            History().Del(string)
+        else:
+            return "正規表現不一致",400
+    #ブロードキャスト
+    if request.form.get('data_type',None)=="broad_cast":
+        if request.form.get('message',None)!="":
+            messages = TextSendMessage(text=request.form.get('message',None))
+            line_bot_api.broadcast(messages=messages)
+    if request.form.get('data_type',None)=="del_mana":
+        if request.form.get('delete',None)!="":
+            permit().Del(request.form.get('delete',None))
+    if request.form.get('data_type',None)=="permit_mana":
+        if request.form.get('permit',None)!="":
+            permit().Allow(request.form.get('permit',None))
 
+    return "OK",200
 #ブロードキャスト!非推奨・基本は使用禁止
 @app.route("/broadcastpost",methods=['POST'])
 def broad():
@@ -97,7 +138,7 @@ def checker():
                 Notify.Add(string)
                 Notify.save()
                 #HP用ホームページの追加
-                History(string)
+                History().Add(string)
                 #メッセージの生成
                 message=''+string+'に'+str(no)+'人が参加可能です'
                 #送信！
