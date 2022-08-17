@@ -101,7 +101,9 @@ class permit:
         if not(self.loaded&3):
             self.load(3)
         print(user)
+        print(self.req)
         if user in self.req:
+            print(self.req)
             self.data.update({user:self.req[user]})
             self.req.pop(user)
             self.save()
