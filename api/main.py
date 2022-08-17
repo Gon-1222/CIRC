@@ -96,8 +96,7 @@ def posts_data():
     if request.form.get('data_type',None)=="permit_mana":
         if request.form.get('permit',None)!="":
             permit().Allow(request.form.get('permit',None))
-
-    return "OK",200
+    return managers()
 #ブロードキャスト!非推奨・基本は使用禁止
 @app.route("/broadcastpost",methods=['POST'])
 def broad():
