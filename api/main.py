@@ -50,6 +50,7 @@ def root_pages():
 def managers():
     mana=Manager().read()
     Friends_data=list(set(Friends.member)-set(mana))
+    print(Friends_data)
     for i in Friends_data:
         profile = line_bot_api.get_profile(i)
         Members_data=[]
