@@ -1,5 +1,9 @@
 #pydrive関係とファイルIOもかく
 import hashlib
+import os
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from oauth2client.service_account import ServiceAccountCredentials
 class permit:
     data={}
     req={}
