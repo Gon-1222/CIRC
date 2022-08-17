@@ -68,6 +68,7 @@ def managers():
 @auth.login_required
 def posts_data():
     #エラー（タイプが無かったとき）
+    print(request.form)
     if request.form.get('data_type', None):
         return 'Forbidden', 403
     #Historyに追加
