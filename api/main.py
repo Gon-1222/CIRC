@@ -23,7 +23,7 @@ from permission import permit
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC11 2022/08/10'
+versions='RC12　2022/08/1７'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
