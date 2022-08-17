@@ -45,7 +45,7 @@ def verify_password(username, password):
 def root_pages():
     return "ここにはなにもないよ",404
 #マネージメントページ
-@app.route('/management',methods=['post'])
+@app.route('/management',methods=['get'])
 @auth.login_required
 def managers():
     mana=Manager().read()
