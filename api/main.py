@@ -19,7 +19,7 @@ from notification import notify
 from history import History
 from manager import Manager
 from permission import permit
-from news import news
+from news import News
 #環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
