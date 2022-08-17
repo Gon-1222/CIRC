@@ -163,7 +163,7 @@
 
   <h1>ライド履歴の修正</h1>
   <p>HPのデータ修正用です。<br>通知がない状態でライドを行った場合などに使用します。</p>
-  <form action="" onSubmit="return check()">
+  <form method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="Add_history">
     <table class="form-table">
       <tbody>
@@ -176,7 +176,7 @@
     </table>
     <input type="submit" value="ライド履歴を追加">
   </form>
-  <form action="" onSubmit="return check()">
+  <form method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="Del_history">
     <table class="form-table">
       <tbody>
@@ -191,7 +191,7 @@
   </form>
   <h1>News欄の修正</h1>
   <p>「参加可能メンバー」の最上部の内容の修正用です。</p>
-  <form action="" onSubmit="return check()">
+  <form method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="News">
     <table class="form-table">
       <tbody>
@@ -207,7 +207,7 @@
   <!--ブロードキャスト-->
   <h1>ブロードキャスト</h1>
   <p>BOTから全員に向けてお知らせをするときに利用します。<br>200文字以内</p>
-  <form action="" onSubmit="return check()">
+  <form method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="broad_cast">
     <table class="form-table">
       <tbody>
@@ -259,7 +259,7 @@
       <td width="50%">{{key|e}}</td>
       <td style="overflow:scroll;">{{value|e}}</td>
       <td>
-        <form action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
+        <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
       </td>
     </tr>
     {% endfor %}
@@ -278,7 +278,7 @@
       <td style="overflow:scroll;">{{value|e}}</td>
       <td>
 
-        <form action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}<">許可</button></form>
+        <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}<">許可</button></form>
       </td>
     </tr>
     {% endfor %}
