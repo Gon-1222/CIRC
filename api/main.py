@@ -68,25 +68,24 @@ def managers():
 @auth.login_required
 def posts_data():
     #エラー（タイプが無かったとき）
-    print(request.form)
     if not(request.form.get('data_type', None)):
         return 'Forbidden', 403
     #Historyに追加
-    if request.form.get('data_type',None)=="Add_history":
+    elif request.form.get('data_type',None)=="Add_history":
         string=request.form.get('Add_date',None).replace("-","/")
         if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
             History().Add(string)
         else:
             return "正規表現不一致",400
     #Historyから削除
-    if request.form.get('data_type',None)=="Del_history":
+    elif request.form.get('data_type',None)=="Del_history":
         string=request.form.get('Del_date',None).replace("-","/")
         if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
             History().Del(string)
         else:
             return "正規表現不一致",400
     #ブロードキャスト
-    if request.form.get('data_type',None)=="broad_cast":
+    elif request.form.get('data_type',None)=="broad_cast":
         if request.form.get('message',None)!="":
             messages = TextSendMessage(text=request.form.get('message',None))
             line_bot_api.broadcast(messages=messages)
