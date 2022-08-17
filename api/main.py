@@ -90,13 +90,15 @@ def posts_data():
         if request.form.get('message',None)!="":
             messages = TextSendMessage(text=request.form.get('message',None))
             line_bot_api.broadcast(messages=messages)
-    if request.form.get('data_type',None)=="del_mana":
+    elif request.form.get('data_type',None)=="del_mana":
         if request.form.get('delete',None)!="":
             permit().Del(request.form.get('delete',None))
-    if request.form.get('data_type',None)=="permit_mana":
+    elif request.form.get('data_type',None)=="permit_mana":
         if request.form.get('permit',None)!="":
             permit().Allow(request.form.get('permit',None))
-    return managers()
+    else:
+        return managers()
+    return "ブラウザバックしてください",200
 #ブロードキャスト!非推奨・基本は使用禁止
 @app.route("/broadcastpost",methods=['POST'])
 def broad():
