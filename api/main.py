@@ -74,7 +74,7 @@ def managers():
     print(Members_data)
     print(Mana_data)
     Now_manage,Now_req=permit().User_lists()
-    return render_template('management.html',news=News(),Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
+    return render_template('management.html',news=News().printer(),Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
 #マネージメントのインターフェイス
 @app.route('/management',methods=['post'])
 @auth.login_required
@@ -237,7 +237,7 @@ def part():
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
     forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
-    return render_template('participants.html',data=Schedule.All_lists(),forecast_data = forecast_data,news_str=News()),200
+    return render_template('participants.html',data=Schedule.All_lists(),forecast_data = forecast_data,news_str=News().printer()),200
 
 #APIに応答
 @app.route("/callback", methods=['POST'])
