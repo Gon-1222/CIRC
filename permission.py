@@ -124,4 +124,4 @@ class permit:
     def User_lists(self):
         if not(self.loaded&3):
             self.load(3)
-        return self.data,self.req
+        return [self.data,self.req]
