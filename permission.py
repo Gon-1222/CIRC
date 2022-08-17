@@ -15,7 +15,7 @@ class permit:
     def load(self,mode):
         if mode==0:
             return
-        if mode&1 and not(loaded&1):
+        if mode&1 and not(self.loaded&1):
             #現在マネージャーの読み込み
             JSON_FILE = "service_key.json"
             ID = os.environ["GOOGLE_ID"]
@@ -33,7 +33,7 @@ class permit:
             buf=file.GetContentString()
             self.data=json.loads(buf)
             self.loaded+=1
-        if mode&2 and not(loaded&2):
+        if mode&2 and not(self.loaded&2):
             #リクエストの読み込み
             JSON_FILE = "service_key.json"
             ID = os.environ["GOOGLE_ID"]
@@ -79,7 +79,7 @@ class permit:
         return
     #管理者追加リクエスト
     def Apply(self,user,passeord):
-        if not(loaded&2):
+        if not(self.loaded&2):
             self.load(2)
         password_hash=bcrypt.hashpw(password,bcrypt.gensalt(rounds=14,prefix=b'2b')).decode()
         add_data={user:password_hash}
@@ -88,7 +88,7 @@ class permit:
         return "Success"
     #許可リクエスト
     def Allow(self,user):
-        if not(loaded&3):
+        if not(self.loaded&3):
             self.load(3)
         if user in self.req:
             self.data.update({user:self.req[user]})
@@ -99,7 +99,7 @@ class permit:
             return "Not Found the user"
     #削除
     def Del(self,user):
-        if not(loaded&1):
+        if not(self.loaded&1):
             self.load(1)
         if user in self.data:
             self.data.pop(user)
@@ -109,11 +109,11 @@ class permit:
             return "Not Found the user"
     #管理者ログインチェック
     def Check(self,user,password):
-        if not(loaded&1):
+        if not(self.loaded&1):
             self.load(1)
         return bcrypt.checkpw(password,self.data[user])
     #管理者リスト
     def User_lists(self):
-        if not(loaded&3):
+        if not(self.loaded&3):
             self.load(3)
         return self.data,self.req
