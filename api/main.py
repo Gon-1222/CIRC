@@ -50,7 +50,7 @@ def root_pages():
 def managers():
     mana=Manager().read()
     Friends_data=list(set(Friends.member)-set(mana))
-    print(Friends_data)
+    print(mana)
     Members_data=[]
     Mana_data=[]
     for i in Friends_data:
