@@ -44,11 +44,11 @@ def verify_password(username, password):
 @app.route('/')
 def root_pages():
     return "ここにはなにもないよ",404
-@app.route('signup',method=["get"])
+@app.route('signup',methods=["get"])
 def signget():
     #Staticを実装するのが面倒だったと供述しており
     return render_template('signup.html')
-@app.route('signup',method=["post"])
+@app.route('signup',methods=["post"])
 def signget():
     if request.form.get('user', None) and request.form.get('pass', None):
          permit().Apply(request.form['user'],request.form['pass'] )
