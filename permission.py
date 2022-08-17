@@ -1,6 +1,7 @@
 #pydrive関係とファイルIOもかく
 import hashlib
 import os
+import json
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
