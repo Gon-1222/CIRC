@@ -39,7 +39,7 @@ auth = HTTPBasicAuth()
 @auth.verify_password
 def verify_password(username, password):
     permission=permit(1)
-    return permission.check(username, password)
+    return permission.Check(username, password)
 #ルートアクセス時
 @app.route('/')
 def root_pages():
