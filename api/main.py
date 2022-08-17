@@ -237,7 +237,8 @@ def part():
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
     forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
-    return render_template('participants.html',data=Schedule.All_lists(),forecast_data = forecast_data,news_str=News().get_data()),200
+    news_obj=News()
+    return render_template('participants.html',data=Schedule.All_lists(),forecast_data = forecast_data,news_str=news_obj.get_data()),200
 
 #APIに応答
 @app.route("/callback", methods=['POST'])
