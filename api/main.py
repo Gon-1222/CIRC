@@ -49,7 +49,7 @@ def signget():
     #Staticを実装するのが面倒だったと供述しており
     return render_template('signup.html')
 @app.route('/signup',methods=["post"])
-def signget():
+def signpost():
     if request.form.get('user', None) and request.form.get('pass', None):
          permit().Apply(request.form['user'],request.form['pass'] )
     #Staticを実装するのが面倒だったと供述しており
