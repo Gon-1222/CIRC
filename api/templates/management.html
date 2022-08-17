@@ -277,6 +277,7 @@
       <td width="50%">{{key|e}}</td>
       <td style="overflow:scroll;">{{value|e}}</td>
       <td>
+    {% endfor %}
         <form action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}<">許可</button></form>
       </td>
     </tr>
@@ -289,7 +290,7 @@
     <li>Timer:Google Apps Script</li>
     <li>VCS：GitHub</li>
   </ul>
-  <p>{% Version %}<br>(c) 2021-2022 宮坂肇 All rights reserved. </p>
+  <p>{{ Version }}<br>(c) 2021-2022 宮坂肇 All rights reserved. </p>
 
 </body>
 
