@@ -115,6 +115,8 @@ class permit:
             return "Not Found the user"
     #管理者ログインチェック
     def Check(self,user,password):
+        if user=="" or password=="":
+            return False
         if not(self.loaded&1):
             self.load(1)
         return bcrypt.checkpw(password.encode(),self.data.get(user,"").encode())
