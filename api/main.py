@@ -58,9 +58,11 @@ def managers():
 
         Members_data.append([profile.display_name,i])
     for j in mana:
-                profile = line_bot_api.get_profile(i)
+        profile = line_bot_api.get_profile(i)
 
-                Mana_data.append([profile.display_name,i])
+        Mana_data.append([profile.display_name,i])
+    print(Members_data)
+    print(Mana_data)
     Now_manage,Now_req=permit().User_lists()
     return render_template('management.html',Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
 #マネージメントのインターフェイス
