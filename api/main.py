@@ -80,7 +80,7 @@ def posts_data():
             return "正規表現不一致",400
     #Historyから削除
     if request.form.get('data_type',None)=="Del_history":
-        string=request.form.get('Add_date',None).replace("-","/")
+        string=request.form.get('Del_date',None).replace("-","/")
         if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
             History().Del(string)
         else:
