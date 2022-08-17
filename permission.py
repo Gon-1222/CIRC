@@ -91,7 +91,7 @@ class permit:
     def Apply(self,user,password):
         if not(self.loaded&2):
             self.load(2)
-        password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=14,prefix=b'2b')).decode()
+        password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=12,prefix=b'2b')).decode()
         add_data={user:password_hash}
         self.req.update(add_data)
         self.save()
@@ -126,7 +126,9 @@ class permit:
             return False
         if not(self.loaded&1):
             self.load(1)
-        return bcrypt.checkpw(password.encode(),self.data.get(user,"").encode())
+        if self.data.get(user):
+            :return bcrypt.checkpw(password.encode(),self.data[user].encode())
+        return False
     #管理者リスト
     def User_lists(self):
         if not(self.loaded&3):
