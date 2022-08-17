@@ -63,6 +63,8 @@ class permit:
         if self.loaded==0:
             return
         if self.loaded&1:
+            JSON_FILE = "service_key.json"
+            ID = os.environ["GOOGLE_ID"]
             save= json.dumps(self.data)
             gauth = GoogleAuth()
             scope = ["https://www.googleapis.com/auth/drive"]
