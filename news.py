@@ -5,7 +5,7 @@ import json
 import os
 
 class News:
-    data=""
+    data=[]
     def __init__(self):
         self.load()
         return
