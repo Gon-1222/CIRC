@@ -3,3 +3,4 @@ line-bot-sdk==2.1.0
 pydrive
 flask_httpauth
 google_auth_oauthlib
+bcrypt
