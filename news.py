@@ -39,8 +39,8 @@ class News:
         file.Upload()
         return
     def Change(self,naiyou):
-        self.data=naiyou
+        self.data[0]=naiyou
         self.save()
         return
     def get_data(self):
-        return self.data
+        return self.data[0]
