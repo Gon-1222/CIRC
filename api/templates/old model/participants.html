@@ -1,0 +1,155 @@
+<head>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&display=swap');
+    body,
+    html {
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      font-family: 'M PLUS Rounded 1c', sans-serif;;
+    }
+    /* body{
+      display:flex;
+      align-items:center;
+      flex-direction:column;
+    } */
+
+
+    .title {
+
+      text-align: center;
+      padding: 40 0 0 0px;
+      font-size: 10vw;
+      color:#555;
+
+    }
+
+    .dates {
+      position: relative;
+       padding: 20 5 2 50px;
+      font-size: 5vw;
+      color:#555;
+      border-bottom:1px;
+      text-decoration:underline; text-decoration-color:#555;
+    }
+
+    .names {
+      //margin-left: 20px;
+      padding: 20 5 50 30px;
+      font-size: 6vw;
+
+    }
+
+    /*.items {
+      width:95%;
+      margin-top: 20px;
+      border-radius:20px;
+      background-color:#fff;
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+
+    }*/
+
+    .items{
+      position:relative;
+      width:100%;
+      margin-bottom: 50px;
+      border-radius:50px;
+      //box-shadow:0px 0px 400px 0px rgba(10,10,10,0.17), 20px 30px 15px -7px rgba(10,10,10,0.12);
+      border: 10px solid #ccc;
+      background-color:#fff;
+
+
+    }
+    .hako{
+      align-items:center;
+      width:90%;
+      border-radius:50px;
+      margin:0 auto;
+      /* margin-bottom:1000px; */
+
+    }
+    ion-icon{
+      transform:translateY(18%)
+    }
+    .tenki{
+      height: 7vw;
+      vertical-align:bottom
+    }
+    a{font-size:4vw;
+    }
+    .News{
+      position:fixed;
+      top: 0;
+      ledt: 0;
+      width:100%;
+      height:7vw;
+      margin:0;
+      background:#fff;
+      border-bottom: 1px solid #ccc
+    }
+    .news-banner__content {
+  display: inline-block;
+  color: #000;
+  line-height: 5vw;
+  font-size:5vw;
+  margin-top:10px;
+  padding-left: 100%;
+  white-space: nowrap;
+  animation: animate-banner 20s linear infinite;
+}
+.news-banner__content>p{
+  margin:0;
+}
+/* バナー内の要素をすべて選択 */
+.news-banner__content > * {
+  display: inline-block;
+}
+
+/* 横にスクロールさせるアニメーション */
+@keyframes animate-banner {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+  </style>
+</head>
+
+<body>
+  <p class='title'><ion-icon name="bicycle-outline"></ion-icon>参加可能メンバー</p>
+<div class="hako">
+    {% for key, value in data.items() %}{% set A_list_loop = loop %}
+    <div class='items'style="x-index:{{loop.index}}">
+      <nobr><div class='dates'style="display:inline-block">{{ key }}</div>
+          {% for y in forecast_data %}{% if loop.index==A_list_loop.index %}
+            <img class="tenki" src={{y}}  ></ion-icon>
+          {% endif %}
+          {% endfor %}
+        </nobr>
+      <div class='names'>
+        <span>　</span>
+
+        {%for val2 in value%}
+        <span>{{ val2 }}、</span>
+        {% endfor %}
+      </div>
+      </div>
+      {% endfor %}
+</div>
+<a href="/management">管理者向けページ</a><br><a href="/signup">管理者登録ページ</a>
+
+<!--NEWS-->
+<div class="News">
+  <div class="news-banner__content">
+    {{ news_str|safe }}
+</div>
+</div>
+
+<br style="height:500px">
+</body>
