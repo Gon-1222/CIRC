@@ -91,7 +91,7 @@ class permit:
     def Apply(self,user,password):
         if not(self.loaded&2):
             self.load(2)
-        password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=12,prefix=b'2b')).decode()
+        password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=10,prefix=b'2b')).decode()
         add_data={user:password_hash}
         self.req.update(add_data)
         self.save()
