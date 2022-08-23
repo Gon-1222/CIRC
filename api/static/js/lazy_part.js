@@ -2,10 +2,10 @@ $.get('/party')
 .done(function( data ) {
 
     //$('main').html( data );
-    $('.loading').html( '<i class="fa-solid fa-face-confused"></i><div class="japanese">取得できませんでした。</div><div>再読込してください。</div>' );
+    $('.loading').html( '<i class="fa-solid fa-face-frown"></i><div class="japanese">取得できませんでした。</div><div>再読込してください。</div>' );
 
 }).fail( function() {
-  $('.loading').html( '<i class="fa-solid fa-face-confused"></i><div class="japanese">取得できませんでした。</div><div>再読込してください。</div>' );
+  $('.loading').html( '<i class="fa-solid fa-face-frown"></i><div class="japanese">取得できませんでした。</div><div>再読込してください。</div>' );
 } )
 
 $.get('/news')
@@ -15,5 +15,5 @@ $.get('/news')
 
 }).fail( function() {
     console.log(data);
-  $('.news-banner__content').html( "<p><i class=\"fa-solid fa-face-confused\"></i>取得できませんでした。</p>" );
+  $('.news-banner__content').html( '<p><i class="fa-solid fa-face-frown"></i>取得できませんでした。</p>');
 } )
