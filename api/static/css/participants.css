@@ -6,7 +6,7 @@ body {
 }
 
 a{
-  color:#555;
+  color:#555
   margin:0.5em;
 }
 h1 {
@@ -48,7 +48,7 @@ main {
 
 .boxes {
   box-sizing: border-box;
-  border: solid 0.2em #111;
+  border: solid 0.2em #ddd;
   margin: 20px auto;
   border-radius: 1em;
   background-color: #fff;
@@ -67,7 +67,7 @@ nobr {
 }
 
 .dates {
-  border-bottom: solid 1px #555;
+  border-bottom: solid 1px #111;
 }
 
 .tenki {
@@ -86,7 +86,7 @@ nobr {
 }
 
 .manager {
-  padding-left: 1em;
+  padding:2em;
 }
 
 .News {
