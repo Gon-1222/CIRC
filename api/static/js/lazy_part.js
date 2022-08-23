@@ -4,7 +4,7 @@ $.get('/party')
     $('main').html( data );
 
 }).fail( function() {
-  $('main').html( "<p><i class=\"fa-solid fa-face-confused\"></i>取得できませんでした。</p>" );
+  $('main').html( '<div class="reload_mark"><p><i class="fa-solid fa-face-confused"></i>取得できませんでした。</p><p>再読込してください。</p></div>' );
 } )
 
 $.get('/news')
