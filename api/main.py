@@ -234,7 +234,11 @@ def end():
 #参加者一覧
 @app.route('/participants')
 def participants():
-    return render_template('participants.html',news_str=News().get_data()),200
+    return app.send_static_file('html/participants.html'),200
+#ニュース欄
+@app.route('/News')
+def News_func():
+    return News().get_data()
 #参加者一覧の内容
 @app.route('/party')
 def part():
