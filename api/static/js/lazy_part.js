@@ -1,7 +1,7 @@
 $.get('/party')
 .done(function( data ) {
 
-    $('main').html( data );
+    //$('main').html( data );
     $('.loading').html( '<i class="fa-solid fa-face-confused"></i><div class="japanese">取得できませんでした。</div><div>再読込してください。</div>' );
 
 }).fail( function() {
