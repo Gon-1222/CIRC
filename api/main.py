@@ -233,7 +233,7 @@ def post():
 #日程送信完了
 @app.route('/end')
 def end():
-    return render_template('end.html'),200
+    return app.send_static_file('end.html'),200
 #参加者一覧
 @app.route('/participants')
 def participants():
