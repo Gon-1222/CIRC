@@ -37,7 +37,7 @@ main{
 .boxes{
   box-sizing: border-box;
   border:solid 0.2em #ddd;
-  margin: 20 auto;
+  margin: 20px auto;
   border-radius:1em;
   background-color:#fff;
   min-height:3em;
