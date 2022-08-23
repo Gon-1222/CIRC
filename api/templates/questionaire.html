@@ -10,11 +10,34 @@
 		-webkit-appearance: none;
 	}
 	.container{
-		text-align: center;
+		text-align:center;
+	}
+	.names{
+		font-size:1.5em;
+		width:80%;
+		margin: 5em auto;
+	}
+	.names input{
+		box-sizing: border-box;
+		border:0;
+		border-bottom:solid 1px #555;
+		width:calc(100% - 2.5em);
+		padding-left:1em;
 	}
 	.verif{
-		margin:20px auto;
+		margin:5em auto;
+		font-size: 2em;
+		width: 50%;
+		height:2.5em;
+		outline: 0px;
+		border: 0px;
+		border-radius: 9999px;
+		background-color: #f7ae35;
+		color: #ffffff;
+
+		box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 	}
+
 	@media screen and (min-width:600px) {
 		.container{
 			width:600px;
@@ -27,7 +50,7 @@
 <body>
 	<div class="container">
 		<div class="names">
-			<span>名前</span> <input type="text" id="name" name="name" placeholder="ここに入力"></input>
+			<span>名前<input type="text" id="name" name="name" placeholder="ここに入力"></input></span>
 		</div>
 		<div type="text" id="js-datepicker" class="cal">
 			<input type="hidden" class="cal2" id="datepickerValue" name="">
