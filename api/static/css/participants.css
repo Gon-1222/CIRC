@@ -100,11 +100,12 @@ nobr {
   line-height: 1.5em;
   font-size: 1.4em;
   //margin-top:10px;
-  padding-left: 100%;
+  padding-left: 0%;
   white-space: nowrap;
 
 }
 .news-banner__content {
+  padding-left: 100%;
   animation: animate-banner 20s linear infinite;
 }
 
