@@ -127,13 +127,13 @@ def broad():
 #月移行動作
 @app.route("/nextmonth",methods=['GET'])
 def month():
-    Flax=Flax()
+    Flaxes=Flax()
     Friends = friend()
     friend=Friends.LIST()
     #友達それぞれに対して
     for username in friend:
         #JSONのDICを作成して
-        JSON_DIC=Flax.DIC(username)
+        JSON_DIC=Flaxes.DIC(username)
         #Flaxメッセージに変えて
         container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
         #プッシュメッセージを送信
@@ -284,7 +284,6 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
 
     if event.message.text=='明日の天気':
-        Flaxes=Flax()
         res=requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
         data=res.json()
         message="【明日の天気】\n天気:"+data["forecasts"][1]["telop"]+"\n最低気温:"+data["forecasts"][1]["temperature"]["min"]["celsius"]+"℃\n最高気温:"+data["forecasts"][1]["temperature"]["max"]["celsius"]+"℃\n\n降水確率\n"+" 0~6時:"+data["forecasts"][1]['chanceOfRain']["T00_06"]+"\n 6~12時:"+data["forecasts"][1]['chanceOfRain']["T06_12"]+"\n 12~18時:"+data["forecasts"][1]['chanceOfRain']["T12_18"]+"\n 18~24時:"+data["forecasts"][1]['chanceOfRain']["T18_24"]
@@ -294,23 +293,23 @@ def handle_message(event):
 #フォローEvent
 @handle.add(FollowEvent)
 def handle_follow(event):
-    Flax = Flax()
+    Flaxes = Flax()
     Friends = friend()
     Friends.add(event.source.user_id)
     Friends.save()
-    JSON_DIC=Flax.DIC(event.source.user_id)
+    JSON_DIC=Flaxes.DIC(event.source.user_id)
     #Flaxメッセージに変えて
     container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
-    container_obj2 = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=Flax.DIC3())
+    container_obj2 = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=Flaxes.DIC3())
     #プッシュメッセージを送信(リプライのほうがよくね)
     line_bot_api.reply_message(event.reply_token, [container_obj,container_obj2])
     return
 #新たに参加した方
 @handle.add(MemberJoinedEvent)
 def handle_joined(event):
-    Flax=Flax()
+    Flaxes=Flax()
     message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
-    JSON_DIC=Flax.DIC2()
+    JSON_DIC=Flaxes.DIC2()
     #Flaxメッセージに変えて
     container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
     #プッシュメッセージを送信
