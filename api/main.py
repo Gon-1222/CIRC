@@ -234,7 +234,7 @@ def end():
 #参加者一覧
 @app.route('/participants')
 def participants():
-    return app.send_static_file('html/participants.html'),200
+    return app.send_static_file('participants.html'),200
 #ニュース欄
 @app.route('/News')
 def News_func():
