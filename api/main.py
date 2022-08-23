@@ -24,7 +24,7 @@ from news import News
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC12　2022/08/1７'
+versions='RC12　2022/08/17'
 
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -146,7 +146,7 @@ def checker():
     #----------------------------------------
     #1週間以内にライドが計画されているかの確認
     #----------------------------------------
-    Schedule  =Schedular()
+    Schedule  = Schedular()
     Notify = notify()
     for i in range(1,8,1):
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)#現日付+1~8日
@@ -245,7 +245,7 @@ def News_func():
 #参加者一覧の内容
 @app.route('/party')
 def part():
-    Schedule  =Schedular()
+    Schedule  = Schedular()
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
     forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
@@ -293,7 +293,7 @@ def handle_message(event):
 #フォローEvent
 @handle.add(FollowEvent)
 def handle_follow(event):
-    Flax=Flax()
+    Flax = Flax()
     Friends = friend()
     Friends.add(event.source.user_id)
     Friends.save()
