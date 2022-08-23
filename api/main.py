@@ -29,10 +29,6 @@ versions='RC12　2022/08/1７'
 #オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
-Flax=Flax()
-Friends = friend()
-Schedule  =Schedular()
-Notify = notify()
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
@@ -60,6 +56,7 @@ def signpost():
 @app.route('/management',methods=['get'])
 @auth.login_required
 def managers():
+    Friends = friend()
     mana=Manager().read()
     Friends_data=list(set(Friends.member)-set(mana))
     print(mana)
@@ -130,6 +127,8 @@ def broad():
 #月移行動作
 @app.route("/nextmonth",methods=['GET'])
 def month():
+    Flax=Flax()
+    Friends = friend()
     friend=Friends.LIST()
     #友達それぞれに対して
     for username in friend:
@@ -147,6 +146,8 @@ def checker():
     #----------------------------------------
     #1週間以内にライドが計画されているかの確認
     #----------------------------------------
+    Schedule  =Schedular()
+    Notify = notify()
     for i in range(1,8,1):
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)#現日付+1~8日
         string = current_dt.strftime('%Y/%m/%d')#現日付+1~8日の文字列
@@ -209,6 +210,7 @@ def checker():
 #日程アンケート
 @app.route("/questionaire")
 def question():
+    Schedule  =Schedular()
     #UIDのクエリ引数を取る
     req = request.args
     req_user_id = req.get("UID")
@@ -220,6 +222,7 @@ def question():
 #アンケート受付
 @app.route("/postdata",methods=['POST'])
 def post():
+    Schedule  =Schedular()
     data = request.data
     data = json.loads(data)
     data['data'].insert(0,data['name'])
@@ -242,6 +245,7 @@ def News_func():
 #参加者一覧の内容
 @app.route('/party')
 def part():
+    Schedule  =Schedular()
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
     forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
@@ -265,6 +269,7 @@ def callback():
 #メッセージが送られたら
 @handle.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    Friends = friend()
     if event.message.text=='version':
         line_bot_api.reply_message(
             event.reply_token,
@@ -288,6 +293,8 @@ def handle_message(event):
 #フォローEvent
 @handle.add(FollowEvent)
 def handle_follow(event):
+    Flax=Flax()
+    Friends = friend()
     Friends.add(event.source.user_id)
     Friends.save()
     JSON_DIC=Flax.DIC(event.source.user_id)
@@ -300,6 +307,7 @@ def handle_follow(event):
 #新たに参加した方
 @handle.add(MemberJoinedEvent)
 def handle_joined(event):
+    Flax=Flax()
     message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
     JSON_DIC=Flax.DIC2()
     #Flaxメッセージに変えて
@@ -311,6 +319,7 @@ def handle_joined(event):
 #フォロー解除Event
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
+    Friends = friend()
     Friends.remove(event.source.user_id)
     return
 print("main.py is Loaded...")
