@@ -109,7 +109,10 @@ nobr {
   animation: animate-banner 20s linear infinite;
 }
 
-.news-banner__content>p .news-banner__content2>p{
+.news-banner__content>p {
+  margin: 0;
+}
+.news-banner__content2>p {
   margin: 0;
 }
 
