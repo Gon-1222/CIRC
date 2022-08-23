@@ -10,9 +10,9 @@ $.get('/party')
 $.get('/news')
 .done(function( data ) {
   console.log(data);
-    $('news-banner__content').html( data );
+    $('.news-banner__content').html( data );
 
 }).fail( function() {
     console.log(data);
-  $('news-banner__content').html( "<p><i class=\"fa-solid fa-face-confused\"></i>取得できませんでした。</p>" );
+  $('.news-banner__content').html( "<p><i class=\"fa-solid fa-face-confused\"></i>取得できませんでした。</p>" );
 } )
