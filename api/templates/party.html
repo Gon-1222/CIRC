@@ -1,0 +1,21 @@
+    <section>
+    {% for key, value in data.items() %}{% set A_list_loop = loop %}
+    <div class="boxes">
+      <div class="title2">
+      <nobr><div class='dates'style="display:inline-block">{{ key }}</div>
+        {% if A_list_loop.index<=3 %}
+        <img class="tenki" src={{forecast_data[A_list_loop.index-1]}}  >
+        {% endif%}
+      </nobr>
+      </div>
+      <div class="names">
+        {% if value==[] %}
+        <span class="name">　</span>
+        {% endif %}
+        {%for val2 in value%}
+        <span class="name">{{ val2 }}、</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+    </section>

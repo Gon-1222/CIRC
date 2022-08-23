@@ -1,146 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
 <head>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet">
   <meta name="robots" content="noindex">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&display=swap');
-    body{
-      font-family: 'M PLUS Rounded 1c', sans-serif;
-      background-color:#fff;
-      color:#555;
-    }
-    h1{
-      margin-top:2em;
-      text-align:center;
-      font-weight:normal;
-      font-size:2em;
-    }
-    main{
-      width:100%;
-      margin-top:20px;
-    }
-    .boxes{
-      box-sizing: border-box;
-      border:solid 0.2em #ddd;
-      margin: 20 auto;
-      border-radius:1em;
-      background-color:#fff;
-      min-height:3em;
-      width:90%;
-    }
-    .title2{
-      padding-top:0.7em;
-      padding-left:1.5em;
-    }
-    nobr{
-        margin-top:10em;
-        font-size:1.5em;
-    }
-    .dates{
-      border-bottom:solid 1px #555;
-    }
-    .tenki{
-      vertical-align:top;
-      height:1em;
-    }
-    .names{
-      line-height:1.5em;
-      padding-top:0.75em;
-      padding-bottom:0.75em;
-      padding-left:1em;
-      font-size:1.5em;
-      display:flex;
-      flex-wrap: wrap;
-    }
-    .manager{
-      padding-left:1em;
-    }
-
-    .News{
-      position:fixed;
-      top: 0;
-      ledt: 0;
-      width:100%;
-      height:2em;
-      margin:0;
-      background:#fff;
-      border-bottom: 1px solid #ccc
-    }
-    .news-banner__content {
-  display: inline-block;
-  color: #000;
-  line-height: 1.5em;
-  font-size:1.4em;
-  //margin-top:10px;
-  padding-left: 100%;
-  white-space: nowrap;
-  animation: animate-banner 20s linear infinite;
-}
-.news-banner__content>p{
-  margin:0;
-}
-/* バナー内の要素をすべて選択 */
-.news-banner__content > * {
-  display: inline-block;
-}
-
-/* 横にスクロールさせるアニメーション */
-@keyframes animate-banner {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-@media screen and (min-width:600px) {
-  main{
-    margin:0 auto;
-    width:600px;
-  }
-}
-  </style>
+  <title>参加可能メンバー - 県央RC</title>
+  <!--スタイルシート-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet">
+  <link rel=stylesheet type=text/css  href="{{ url_for('static', filename='css/participants.css') }}">
+  <!--JavaScripts-->
+  <script type=text/javascript src="{{ url_for('static', filename='js/lazy_part.js') }}"></script>
+  <!--アイコン関連-->
+  <script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.2.1/font-awesome-animation.css" type="text/css" media="all" />
 </head>
 
 <body>
-  <h1 class='title'><i class="fa-solid fa-person-biking"></i>参加可能メンバー</h1>
+  <h1 class='title'><i class="fa-solid fa-bicycle"></i>参加可能メンバー</h1>
   <main>
-    <section>
-    {% for key, value in data.items() %}{% set A_list_loop = loop %}
-    <div class="boxes">
-      <div class="title2">
-      <nobr><div class='dates'style="display:inline-block">{{ key }}</div>
-        {% if A_list_loop.index<=3 %}
-        <img class="tenki" src={{forecast_data[A_list_loop.index-1]}}  >
-        {% endif%}
-      </nobr>
+    <div class="loading">
+        <i class="fa-solid fa-person-biking faa-passing animated"></i>
+        <div class="japanese">読み込み中...</div>
+        <div class="English">Now loading...</div>
       </div>
-      <div class="names">
-        {% if value==[] %}
-        <span class="name">　</span>
-        {% endif %}
-        {%for val2 in value%}
-        <span class="name">{{ val2 }}、</span>
-        {% endfor %}
+  </main>
+  <!--管理者関連-->
+  <section>
+    <p class="manager"><a href="/management">管理者向けページ</a></p>
+    <p class="manager"><a href="/signup">管理者登録ページ</a></p>
+  </section>
+<!--NEWS-->
+  <section>
+    <div class="News">
+      <div class="news-banner__content">
+        {{ news_str|safe }}
       </div>
     </div>
-    {% endfor %}
-    </section>
-    <section>
-      <p class="manager"><a href="/management">管理者向けページ</a></p>
-      <p class="manager"><a href="/signup">管理者登録ページ</a></p>
-    </section>
-
-  </main>
-<!--NEWS-->
-<section>
-  <div class="News">
-    <div class="news-banner__content">
-      {{ news_str|safe }}
-  </div>
-  </div>
-</section>
+  </section>
 </body>
