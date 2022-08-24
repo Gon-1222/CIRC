@@ -235,6 +235,7 @@
 
   <h1>メンバー一覧</h1>
   <p>LINEに友だち追加している人の一覧です。</p>
+  <div class=".member-lazy">
   <table border="1" class="members" style="table-layout:fixed;width:100%;">
     <tr>
       <th width="33%">ユーザー名</th>
@@ -257,7 +258,7 @@
     {% endfor %}
 
   </table>
-
+  </div>
   <h1>管理者一覧</h1>
   <p>パスワードはbcrypt(強度:10)で保存しています。<br>ペッパーなし</p>
   <table border="1" class="members" style="table-layout:fixed;width:100%;">
