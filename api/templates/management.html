@@ -155,10 +155,19 @@
     },
     dataType: 'text/html',
     }).done(function(data) {
-      console.log(data);
+      Console.log(data);
         $('.member-lazy').html(data);
      }).fail(function(err) {
       $('.member-lazy').html("<p>取得失敗</p>")})
+
+      $.get('/news')
+        .done(function(data) {
+          $('.news_input').val(data);
+
+        }).fail(function() {
+          $('.news_input').val('取得失敗');
+
+        })
 
     function check() {
 
@@ -221,7 +230,7 @@
       <tbody>
         <tr>
           <th>News欄の表示内容</th>
-          <td><input type="text" name="naiyo" size="200" value="{{news}}" placeholder="">
+          <td><input type="text" name="naiyo" size="200" class="news_input"value="" placeholder="">
           </td>
         </tr>
       </tbody>
