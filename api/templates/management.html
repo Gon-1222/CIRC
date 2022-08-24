@@ -150,7 +150,7 @@
     url: '/test',
     type: 'PUT',
     headers: {
-      'Auth_Key':'{{% token_data %}}'
+      'Auth_Key':'{{ token_data }}'
     },
     dataType: 'json',
     }).done(function(data) {
