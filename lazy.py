@@ -38,7 +38,7 @@ class Lazy:
         file.SetContentString(save)
         file.Upload()
         return
-    def New(self,naiyou):
+    def New(self):
         self.data = [''.join(random.choices(string.ascii_letters + string.digits, k=20))]
         self.save()
         return self.data[0]
