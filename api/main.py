@@ -68,11 +68,11 @@ def managers():
     end_time = time.perf_counter()
     print("引き算:",end_time - start_time)#---------------
     start_time = time.perf_counter()#---------------
-    Members_data=[]
+    Members_data=[[line_bot_api.get_profile(i).display_name,i] for i in Friends_data]
     Mana_data=[]
-    for i in Friends_data:
-        profile = line_bot_api.get_profile(i)
-        Members_data.append([profile.display_name,i])
+    #for i in Friends_data:
+    #    profile = line_bot_api.get_profile(i)
+    #    Members_data.append([profile.display_name,i])
     for j in mana:
         profile = line_bot_api.get_profile(j)
         Mana_data.append([profile.display_name,j])
