@@ -39,7 +39,7 @@ class Lazy:
         file.Upload()
         return
     def New(self,naiyou):
-         self.data = [''.join(random.choices(string.ascii_letters + string.digits, k=20))]
+        self.data = [''.join(random.choices(string.ascii_letters + string.digits, k=20))]
         self.save()
         return self.data[0]
     def get_data(self):
