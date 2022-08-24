@@ -1,1 +1,22 @@
-[]
+  <table border="1" class="members" style="table-layout:fixed;width:100%;">
+    <tr>
+      <th width="33%">ユーザー名</th>
+      <th width="33%">userID</th>
+      <th width="33%">メール転送</th>
+    </tr>
+    {% for i in Mana_data %}
+    <tr>
+      <td width="50%">{{i[0]}}</td>
+      <td style="overflow:scroll;">{{i[1]}}</td>
+      <td style="text-align:center;">○</td>
+    </tr>
+    {% endfor %}
+    {% for i in Members_data %}
+    <tr>
+      <td width="50%">{{i[0]}}</td>
+      <td style="overflow:scroll;">{{i[1]}}</td>
+      <td style="text-align:center;"></td>
+    </tr>
+    {% endfor %}
+
+  </table>
