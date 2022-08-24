@@ -153,7 +153,7 @@
     headers: {
       'Auth_Key':'{{ token_data }}'
     },
-    dataType: 'text/html',
+    dataType: 'json',
     }).done(function(data) {
         $('.member-lazy').html(data);
      }).fail(function(err) {
