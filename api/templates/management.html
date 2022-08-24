@@ -148,21 +148,21 @@
   </style>
   <script type="text/javascript">
   $.ajax({
-  url: '/lazy',
-  type: 'GET',
-  headers: {
-  'Auth_Key':'{{ token_data }}'
-  },
-  dataType: 'json',
-  success :function(data) {
-  console.log("aaa");
-  console.log(data);
-  $('.member-lazy').html(data);
-  },
-  error:function(err) {
-  console.log("iii");
-  $('.member-lazy').html("<p>取得失敗</p>");}
-  }))
+    url: '/lazy',
+    type: 'GET',
+    headers: {
+        'Auth_Key':'{{ token_data }}'
+    },
+    dataType: 'json',
+    success :function(data) {
+      console.log("aaa");
+      console.log(data);
+      $('.member-lazy').html(data);
+    },
+    error:function(err) {
+      console.log("iii");
+      $('.member-lazy').html("<p>取得失敗</p>");}
+    })
 
       $.get('/news')
         .done(function(data) {
