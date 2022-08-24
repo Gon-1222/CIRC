@@ -153,12 +153,10 @@
     headers: {
       'Auth_Key':'{{ token_data }}'
     },
-    })
-    .done(function(data) {
+    }).done(function(data) {
       console.log(data);
         $('.member-lazy').html(data);
-     })
-    .fail(function(err) {
+     }).fail(function(err) {
       $('.member-lazy').html("<p>取得失敗</p>")})
 
     function check() {
