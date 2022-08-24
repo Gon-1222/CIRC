@@ -43,16 +43,23 @@ def verify_password(username, password):
 @app.route('/')
 def root_pages():
     return "ここにはなにもないよ",404
-@app.route('/signup',methods=["get"])
-def signget():
-    #Staticを実装するのが面倒だったと供述しており
-    return render_template('signup.html')
-@app.route('/signup',methods=["post"])
-def signpost():
-    if request.form.get('user', None) and request.form.get('pass', None):
-         permit().Apply(request.form['user'],request.form['pass'] )
-    #Staticを実装するのが面倒だったと供述しており
-    return "すでに管理者の人から許可されるのをお待ち下さい",200
+
+#############################################
+################LazyLoad関連#################
+############################################
+#ニュース欄
+@app.route('/news')
+def News_func():
+    return News().get_data()
+#参加者一覧の内容
+@app.route('/party')
+def part():
+    Schedule  = Schedular()
+    res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
+    json_data = res.json()
+    forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
+    return render_template('party.html',data=Schedule.All_lists(),forecast_data = forecast_data),200
+#メンバー一覧（要Auth）
 @app.route('/lazy',methods=['get'])
 def lazy_load():
     if request.headers.get("Auth_Key") != Lazy().get_data():
@@ -64,65 +71,10 @@ def lazy_load():
         Members_data=[[line_bot_api.get_profile(i).display_name,i] for i in Friends_data]
         Mana_data=[[line_bot_api.get_profile(i).display_name,i] for i in mana]
         return render_template('lazy_loads.html',Mana_data=Mana_data,Members_data=Members_data)
-#マネージメントページ
-@app.route('/management',methods=['get'])
-@auth.login_required
-def managers():
-    Now_manage,Now_req=permit().User_lists()
-    #News().get_data()
-    return render_template('management.html',news="",Now_manage=Now_manage,Now_req=Now_req,Version=versions,token_data=Lazy().New())
-#マネージメントのインターフェイス
-@app.route('/management',methods=['post'])
-@auth.login_required
-def posts_data():
-    #エラー（タイプが無かったとき）
-    if not(request.form.get('data_type', None)):
-        return 'Forbidden', 403
-    #Historyに追加
-    elif request.form.get('data_type',None)=="Add_history":
-        string=request.form.get('Add_date',None).replace("-","/")
-        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
-            History().Add(string)
-        else:
-            return "正規表現不一致",400
-    #Historyから削除
-    elif request.form.get('data_type',None)=="Del_history":
-        string=request.form.get('Del_date',None).replace("-","/")
-        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
-            History().Del(string)
-        else:
-            return "正規表現不一致",400
-    elif request.form.get('data_type',None)=="News":
-        if request.form.get('naiyo',None):
-            News().Change(request.form['naiyo'])
-    #ブロードキャスト
-    elif request.form.get('data_type',None)=="broad_cast":
-        if request.form.get('message',None)!="":
-            messages = TextSendMessage(text=request.form.get('message',None))
-            line_bot_api.broadcast(messages=messages)
-    elif request.form.get('data_type',None)=="del_mana":
-        if request.form.get('delete',None)!="":
-            permit().Del(request.form.get('delete',None))
-    elif request.form.get('data_type',None)=="permit_mana":
-        if request.form.get('permit',None)!="":
-            permit().Allow(request.form.get('permit',None))
-    else:
-        return managers()
-    return "送信完了しましたブラウザバックしてください",200
-#ブロードキャスト!非推奨・基本は使用禁止
-@app.route("/broadcastpost",methods=['POST'])
-def broad():
-    data = request.data
-    data = json.loads(data)
-    #トークンは本当はenvironへ
-    if data["pass"]!="%L5q3C)(dP-3(h%uwn,L":
-        abort(403)
-    print(data["message"])
-    messages = TextSendMessage(text=data["message"])
-    #line_bot_api.broadcast(messages=messages)!!!Don't Available
-    #return 'OK',200
-    return 'Forbidden', 403
 
+#############################################
+###############GASのスケジュール##############
+############################################
 #月移行動作
 @app.route("/nextmonth",methods=['GET'])
 def month():
@@ -138,7 +90,6 @@ def month():
         #プッシュメッセージを送信
         line_bot_api.push_message(username, messages=container_obj)
     return 'OK',200
-
 #日々の確認
 @app.route("/checkdate",methods=['POST'])
 def checker():
@@ -205,7 +156,69 @@ def checker():
         abort(403)
     return 'OK',200
 
+#############################################
+#################管理画面関連#################
+############################################
+#管理者の追加
+@app.route('/signup',methods=["get"])
+def signget():
+    #Staticを実装するのが面倒だったと供述しており
+    return render_template('signup.html')
+@app.route('/signup',methods=["post"])
+def signpost():
+    if request.form.get('user', None) and request.form.get('pass', None):
+         permit().Apply(request.form['user'],request.form['pass'] )
+    #Staticを実装するのが面倒だったと供述しており
+    return "すでに管理者の人から許可されるのをお待ち下さい",200
+#マネージメントページ
+@app.route('/management',methods=['get'])
+@auth.login_required
+def managers():
+    Now_manage,Now_req=permit().User_lists()
+    #News().get_data()
+    return render_template('management.html',Now_manage=Now_manage,Now_req=Now_req,Version=versions,token_data=Lazy().New())
+#マネージメントのPOST
+@app.route('/management',methods=['post'])
+@auth.login_required
+def posts_data():
+    #エラー（タイプが無かったとき）
+    if not(request.form.get('data_type', None)):
+        return 'Forbidden', 403
+    #Historyに追加
+    elif request.form.get('data_type',None)=="Add_history":
+        string=request.form.get('Add_date',None).replace("-","/")
+        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
+            History().Add(string)
+        else:
+            return "正規表現不一致",400
+    #Historyから削除
+    elif request.form.get('data_type',None)=="Del_history":
+        string=request.form.get('Del_date',None).replace("-","/")
+        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
+            History().Del(string)
+        else:
+            return "正規表現不一致",400
+    elif request.form.get('data_type',None)=="News":
+        if request.form.get('naiyo',None):
+            News().Change(request.form['naiyo'])
+    #ブロードキャスト
+    elif request.form.get('data_type',None)=="broad_cast":
+        if request.form.get('message',None)!="":
+            messages = TextSendMessage(text=request.form.get('message',None))
+            line_bot_api.broadcast(messages=messages)
+    elif request.form.get('data_type',None)=="del_mana":
+        if request.form.get('delete',None)!="":
+            permit().Del(request.form.get('delete',None))
+    elif request.form.get('data_type',None)=="permit_mana":
+        if request.form.get('permit',None)!="":
+            permit().Allow(request.form.get('permit',None))
+    else:
+        return managers()
+    return "送信完了しましたブラウザバックしてください",200
 
+#############################################
+##################メインページ################
+############################################
 #日程アンケート
 @app.route("/questionaire")
 def question():
@@ -217,7 +230,6 @@ def question():
         abort(401)
     ret_data = Schedule.Schedule_list(req_user_id)
     return render_template('questionaire.html', userdata = ret_data)
-
 #アンケート受付
 @app.route("/postdata",methods=['POST'])
 def post():
@@ -228,7 +240,6 @@ def post():
     Schedule.add(data['UID'],data['data'])
     Schedule.save()
     return "Accepted",202
-
 #日程送信完了
 @app.route('/end')
 def end():
@@ -237,18 +248,11 @@ def end():
 @app.route('/participants')
 def participants():
     return app.send_static_file('participants.html'),200
-#ニュース欄
-@app.route('/news')
-def News_func():
-    return News().get_data()
-#参加者一覧の内容
-@app.route('/party')
-def part():
-    Schedule  = Schedular()
-    res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
-    json_data = res.json()
-    forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
-    return render_template('party.html',data=Schedule.All_lists(),forecast_data = forecast_data),200
+
+
+#############################################
+##################LINEAPI関連################
+############################################
 #APIに応答
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -314,7 +318,6 @@ def handle_joined(event):
     #プッシュメッセージを送信
     line_bot_api.reply_message(event.reply_token,[container_obj,TextSendMessage(text=message2)])
     return
-
 #フォロー解除Event
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
