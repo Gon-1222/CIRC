@@ -11,6 +11,7 @@ import json
 import datetime
 import requests
 import re
+import time
 #自作ライブラリ
 from Friends import friend
 from scheduler import Schedular
@@ -56,10 +57,17 @@ def signpost():
 @app.route('/management',methods=['get'])
 @auth.login_required
 def managers():
+    start_time = time.perf_counter()#---------------
     Friends = friend()
     mana=Manager().read()
+    end_time = time.perf_counter()#---------------
+    print("読み込み:",end_time - start_time)#---------------
+    start_time = time.perf_counter()#---------------
     Friends_data=list(set(Friends.member)-set(mana))
     print(mana)
+    end_time = time.perf_counter()
+    print("引き算:",end_time - start_time)#---------------
+    start_time = time.perf_counter()#---------------
     Members_data=[]
     Mana_data=[]
     for i in Friends_data:
@@ -68,6 +76,8 @@ def managers():
     for j in mana:
         profile = line_bot_api.get_profile(j)
         Mana_data.append([profile.display_name,j])
+    end_time = time.perf_counter()
+    print("引き算:",end_time - start_time)#---------------
     print(Members_data)
     print(Mana_data)
     Now_manage,Now_req=permit().User_lists()
