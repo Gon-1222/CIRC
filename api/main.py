@@ -69,8 +69,8 @@ def lazy_load():
 @auth.login_required
 def managers():
     Now_manage,Now_req=permit().User_lists()
-
-    return render_template('management.html',news=News().get_data(),Now_manage=Now_manage,Now_req=Now_req,Version=versions,token_data=Lazy().New())
+    #News().get_data()
+    return render_template('management.html',news="",Now_manage=Now_manage,Now_req=Now_req,Version=versions,token_data=Lazy().New())
 #マネージメントのインターフェイス
 @app.route('/management',methods=['post'])
 @auth.login_required
