@@ -154,8 +154,10 @@
       'Auth_Key':'{{ token_data }}'
     },
     dataType: 'json',
-    }).done(function(data) {
-        $('.member-lazy').html(data)
+    })
+    .done(function(data) {
+      alert(data);
+        $('.member-lazy').html(data);
      })
     .fail(function(err) {
       $('.member-lazy').html("<p>取得失敗</p>")})
