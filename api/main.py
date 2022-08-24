@@ -21,6 +21,7 @@ from history import History
 from manager import Manager
 from permission import permit
 from news import News
+from lazy import Lazy
 #環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
@@ -52,34 +53,24 @@ def signpost():
          permit().Apply(request.form['user'],request.form['pass'] )
     #Staticを実装するのが面倒だったと供述しており
     return "すでに管理者の人から許可されるのをお待ち下さい",200
-
+@app.route('/lazy',methods=['get'])
+def lazy_load():
+    if request.headers.get("Auth_Key") != Lazy().get_data():
+        abort(403)
+    else:
+        Friends = friend()
+        mana=Manager().read()
+        Friends_data=list(set(Friends.member)-set(mana))
+        Members_data=[[line_bot_api.get_profile(i).display_name,i] for i in Friends_data]
+        Mana_data=[[line_bot_api.get_profile(i).display_name,i] for i in mana]
+        return render_template('lazy_loads.html',Mana_data=Mana_data,Members_data=Members_data)
 #マネージメントページ
 @app.route('/management',methods=['get'])
 @auth.login_required
 def managers():
-    start_time = time.perf_counter()#---------------
-    Friends = friend()
-    mana=Manager().read()
-    end_time = time.perf_counter()#---------------
-    print("読み込み:",end_time - start_time)#---------------
-    start_time = time.perf_counter()#---------------
-    Friends_data=list(set(Friends.member)-set(mana))
-    print(mana)
-    end_time = time.perf_counter()
-    print("引き算:",end_time - start_time)#---------------
-    start_time = time.perf_counter()#---------------
-    Members_data=[[line_bot_api.get_profile(i).display_name,i] for i in Friends_data]
-    Mana_data=[[line_bot_api.get_profile(i).display_name,i] for i in mana]
-    #for i in Friends_data:
-    #    profile = line_bot_api.get_profile(i)
-    #    Members_data.append([profile.display_name,i])
-    #for j in mana:
-    #    profile = line_bot_api.get_profile(j)
-    #    Mana_data.append([profile.display_name,j])
-    end_time = time.perf_counter()
-    print("ループ:",end_time - start_time)#---------------
     Now_manage,Now_req=permit().User_lists()
-    return render_template('management.html',news=News().get_data(),Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
+
+    return render_template('management.html',news=News().get_data(),Now_manage=Now_manage,Now_req=Now_req,Version=versions,token_data=Lazy().New())
 #マネージメントのインターフェイス
 @app.route('/management',methods=['post'])
 @auth.login_required

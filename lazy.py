@@ -4,7 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import json
 import os
 import random, string
-class News:
+class Lazy:
     data=[]
     def __init__(self):
         self.load()
