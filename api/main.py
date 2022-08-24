@@ -69,17 +69,15 @@ def managers():
     print("引き算:",end_time - start_time)#---------------
     start_time = time.perf_counter()#---------------
     Members_data=[[line_bot_api.get_profile(i).display_name,i] for i in Friends_data]
-    Mana_data=[]
+    Mana_data=[[line_bot_api.get_profile(i).display_name,i] for i in mana]
     #for i in Friends_data:
     #    profile = line_bot_api.get_profile(i)
     #    Members_data.append([profile.display_name,i])
-    for j in mana:
-        profile = line_bot_api.get_profile(j)
-        Mana_data.append([profile.display_name,j])
+    #for j in mana:
+    #    profile = line_bot_api.get_profile(j)
+    #    Mana_data.append([profile.display_name,j])
     end_time = time.perf_counter()
-    print("引き算:",end_time - start_time)#---------------
-    print(Members_data)
-    print(Mana_data)
+    print("ループ:",end_time - start_time)#---------------
     Now_manage,Now_req=permit().User_lists()
     return render_template('management.html',news=News().get_data(),Mana_data=Mana_data,Members_data=Members_data,Now_manage=Now_manage,Now_req=Now_req,Version=versions)
 #マネージメントのインターフェイス
