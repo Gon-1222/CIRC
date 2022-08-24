@@ -155,7 +155,6 @@
     },
     dataType: 'text/html',
     }).done(function(data) {
-      Console.log(data);
         $('.member-lazy').html(data);
      }).fail(function(err) {
       $('.member-lazy').html("<p>取得失敗</p>")})
