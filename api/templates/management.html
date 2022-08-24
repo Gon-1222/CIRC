@@ -155,6 +155,8 @@
     },
     dataType: 'json',
     }).done(function(data) {
+        console.log(check);
+        console.log(data);
         $('.member-lazy').html(data);
      }).fail(function(err) {
       $('.member-lazy').html("<p>取得失敗</p>")})
