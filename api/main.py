@@ -117,8 +117,7 @@ def checker():
         # 現日付+1~8日
         current_dt = datetime.datetime.now(
                             datetime.timezone(datetime.timedelta(hours=9))
-                        )
-                        + datetime.timedelta(days=i)
+                        ) + datetime.timedelta(days=i)
         string = current_dt.strftime('%Y/%m/%d')  # 上を文字列へ
         no = Schedule.count_part(string)  # 参加可能メンバーの人数が
         # 3人以上で且つ通知をしていなかったら
