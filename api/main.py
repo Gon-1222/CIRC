@@ -51,7 +51,7 @@ def root_pages():
 
 # ルートアクセス時
 @app.route('/robots.txt')
-def root_pages():
+def robots_pages():
     return app.send_static_file('robots.txt'), 200
 
 
