@@ -49,6 +49,11 @@ def verify_password(username, password):
 def root_pages():
     return "ここにはなにもないよ", 404
 
+# ルートアクセス時
+@app.route('/robots.txt')
+def root_pages():
+    return app.send_static_file('robots.txt'), 200
+
 
 #############################################
 ################LazyLoad関連#################
