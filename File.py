@@ -1,3 +1,9 @@
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from oauth2client.service_account import ServiceAccountCredentials
+import json
+import os
+
 class Gfile():
     ID = os.environ["GOOGLE_ID"]
     scope = ["https://www.googleapis.com/auth/drive"]
