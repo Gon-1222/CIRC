@@ -3,7 +3,6 @@ import os
 import random
 import string
 from File import Gfile
-import time
 class Lazy(Gfile):
     data=[]
     def __init__(self):
@@ -19,12 +18,8 @@ class Lazy(Gfile):
     def New(self):
         self.data = [''.join(random.choices(string.ascii_letters + string.digits, k=20))]
         self.save()
-        print(self.data)
-        print(time.perf_counter())
         return self.data[0]
     def get_data(self):
-        print("data:",self.data[0])
-        print(time.perf_counter())
         ret = self.data[0]
         self.data=["notallowed"]
         self.save()
