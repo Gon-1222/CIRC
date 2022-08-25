@@ -16,7 +16,7 @@ class Gfile():
         data=file.GetContentString()
         return json.loads(data)
     def save_file(self,path,contents):
-        if not(isinstance(contents, list) and isinstance(contents, dict)) :
+        if not(isinstance(contents, list) or isinstance(contents, dict)) :
             return False
         contents=json.dumps(contents)
         gauth = GoogleAuth()
