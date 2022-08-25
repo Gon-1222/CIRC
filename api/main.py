@@ -73,7 +73,7 @@ def part():
 # メンバー一覧（要Auth）
 @app.route('/lazy', methods=['get'])
 def lazy_load():
-    if request.headers.get("Auth_Key") != Lazy().get_data():
+    if not(Lazy().check_data(request.headers.get("Auth_Key"))):
         abort(403)
     else:
         Friends = friend()

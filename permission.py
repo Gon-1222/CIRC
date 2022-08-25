@@ -5,8 +5,8 @@ import bcrypt
 from File import Gfile
 
 class permit(Gfile):
-    data={}
-    req={}
+    __data={}
+    __req={}
     loaded=0
     #mode=0:not allowed
     #mode=1:現在マネージャーのみ
@@ -20,11 +20,11 @@ class permit(Gfile):
         if mode==0:
             return
         if mode&1 and not(self.loaded&1):
-            self.data=self.load_file("1LuFlOw0Axk4r7lyexB6lj1gBzTXm9WOn")
+            self.__data=self.load_file("1LuFlOw0Axk4r7lyexB6lj1gBzTXm9WOn")
             self.loaded+=1
         if mode&2 and not(self.loaded&2):
             #リクエストの読み込み
-            self.req=self.load_file("1XV0OsI7uJDFfsyLnKVVQP69kn2XOFEFI")
+            self.__req=self.load_file("1XV0OsI7uJDFfsyLnKVVQP69kn2XOFEFI")
             self.loaded+=2
         return
     #保存
@@ -32,11 +32,11 @@ class permit(Gfile):
         if self.loaded==0:
             return
         if self.loaded&1:
-            self.save_file("1LuFlOw0Axk4r7lyexB6lj1gBzTXm9WOn",self.data)
+            self.save_file("1LuFlOw0Axk4r7lyexB6lj1gBzTXm9WOn",self.__data)
             #現在マネージャーの書き込み
         if self.loaded&2:
             #リクエストの書き込み
-            self.save_file("1XV0OsI7uJDFfsyLnKVVQP69kn2XOFEFI",self.req)
+            self.save_file("1XV0OsI7uJDFfsyLnKVVQP69kn2XOFEFI",self.__req)
         return
     #管理者追加リクエスト
     def Apply(self,user,password):
@@ -44,7 +44,7 @@ class permit(Gfile):
             self.load(2)
         password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=10,prefix=b'2b')).decode()
         add_data={user:password_hash}
-        self.req.update(add_data)
+        self.__req.update(add_data)
         self.save()
         return "Success"
     #許可リクエスト
@@ -52,11 +52,11 @@ class permit(Gfile):
         if not(self.loaded&3):
             self.load(3)
         print(user)
-        print(self.req)
-        if user in self.req:
-            print(self.req)
-            self.data.update({user:self.req[user]})
-            self.req.pop(user)
+        print(self.__req)
+        if user in self.__req:
+            print(self.__req)
+            self.__data.update({user:self.__req[user]})
+            self.__req.pop(user)
             self.save()
             return "Success"
         else:
@@ -65,8 +65,8 @@ class permit(Gfile):
     def Del(self,user):
         if not(self.loaded&1):
             self.load(1)
-        if user in self.data:
-            self.data.pop(user)
+        if user in self.__data:
+            self.__data.pop(user)
             self.save()
             return "Success"
         else:
@@ -77,11 +77,11 @@ class permit(Gfile):
             return False
         if not(self.loaded&1):
             self.load(1)
-        if self.data.get(user):
-            return bcrypt.checkpw(password.encode(),self.data[user].encode())
+        if self.__data.get(user):
+            return bcrypt.checkpw(password.encode(),self.__data[user].encode())
         return False
     #管理者リスト
     def User_lists(self):
         if not(self.loaded&3):
             self.load(3)
-        return [self.data,self.req]
+        return [self.__data,self.__req]

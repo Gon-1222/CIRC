@@ -5,14 +5,14 @@ import json
 import os
 
 class Gfile():
-    ID = os.environ["GOOGLE_ID"]
-    scope = ["https://www.googleapis.com/auth/drive"]
-    JSON_FILE = "service_key.json"
+    __ID = os.environ["GOOGLE_ID"]
+    __scope = ["https://www.googleapis.com/auth/drive"]
+    __JSON_FILE = "service_key.json"
     def load_file(self,path):
         gauth = GoogleAuth()
-        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.JSON_FILE, self.scope)
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.__JSON_FILE, self.__scope)
         drive = GoogleDrive(gauth)
-        file = drive.CreateFile({"id": path, "parents": [{"id": self.ID}]})
+        file = drive.CreateFile({"id": path, "parents": [{"id": self.__ID}]})
         data=file.GetContentString()
         return json.loads(data)
     def save_file(self,path,contents):
@@ -20,9 +20,9 @@ class Gfile():
             return False
         contents=json.dumps(contents)
         gauth = GoogleAuth()
-        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.JSON_FILE, self.scope)
+        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.__JSON_FILE, self.__scope)
         drive = GoogleDrive(gauth)
-        file = drive.CreateFile({"id": path, "parents": [{"id": self.ID}]})
+        file = drive.CreateFile({"id": path, "parents": [{"id": self.__ID}]})
         file.SetContentString(contents)
         file.Upload()
         return True
