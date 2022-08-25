@@ -18,11 +18,11 @@ class Lazy(Gfile):
         return
     def New(self):
         self.data = [''.join(random.choices(string.ascii_letters + string.digits, k=20))]
-        self.save()
-        print(self.data[0])
+        print(self.save())
+        print(self.data)
         return self.data[0]
     def get_data(self):
-        print(self.data[0])
+        print("data:",self.data[0])
         ret = self.data[0]
         self.data=["notallowed"]
         self.save()
