@@ -1,18 +1,18 @@
-#Flask
-from flask import Flask, request, abort,render_template
+# Flask
+from flask import Flask, request, abort, render_template
 from flask_httpauth import HTTPBasicAuth
-#LINEAPI関連
+# LINEAPI関連
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, FollowEvent,UnfollowEvent, TextMessage, TextSendMessage,FlexSendMessage,MemberJoinedEvent
-#その他のライブラリ
+from linebot.models import MessageEvent, FollowEvent, UnfollowEvent, TextMessage, TextSendMessage, FlexSendMessage, MemberJoinedEvent
+# その他のライブラリ
 import os
 import json
 import datetime
 import requests
 import re
 import time
-#自作ライブラリ
+# 自作ライブラリ
 from Friends import friend
 from scheduler import Schedular
 from Flax import Flax
@@ -22,238 +22,275 @@ from manager import Manager
 from permission import permit
 from news import News
 from lazy import Lazy
-#環境変数取得
+
+
+# 環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
-Group_ID=os.environ["LINE_MAIN_GROUP_ID"]
-versions='RC13　2022/08/23'
+Group_ID = os.environ["LINE_MAIN_GROUP_ID"]
+versions = 'RC13　2022/08/25 refacted'
 
-#オブジェクトの生成
+
+# オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
-#パスワード判定
+
+# パスワード判定
 @auth.verify_password
 def verify_password(username, password):
-    permission=permit(1)
+    permission = permit(1)
     return permission.Check(username, password)
-#ルートアクセス時
+
+# ルートアクセス時
 @app.route('/')
 def root_pages():
-    return "ここにはなにもないよ",404
+    return "ここにはなにもないよ", 404
+
 
 #############################################
 ################LazyLoad関連#################
 ############################################
-#ニュース欄
+# ニュース欄
 @app.route('/news')
 def News_func():
     return News().get_data()
-#参加者一覧の内容
+
+# 参加者一覧の内容
 @app.route('/party')
 def part():
-    Schedule  = Schedular()
+    Schedule = Schedular()
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
-    forecast_data = [json_data["forecasts"][i]["image"]["url"] for i in range(0,3,1)]
-    return render_template('party.html',data=Schedule.All_lists(),forecast_data = forecast_data),200
-#メンバー一覧（要Auth）
-@app.route('/lazy',methods=['get'])
+    forecast_data = [json_data["forecasts"][i]["image"]["url"]
+                     for i in range(0, 3, 1)]
+    return render_template('party.html',
+                           data=Schedule.All_lists(),
+                           forecast_data=forecast_data), 200
+
+# メンバー一覧（要Auth）
+@app.route('/lazy', methods=['get'])
 def lazy_load():
     if request.headers.get("Auth_Key") != Lazy().get_data():
         abort(403)
     else:
         Friends = friend()
-        mana=Manager().read()
-        Friends_data=list(set(Friends.member)-set(mana))
-        Members_data=[[line_bot_api.get_profile(i).display_name,i] for i in Friends_data]
-        Mana_data=[[line_bot_api.get_profile(i).display_name,i] for i in mana]
-        return render_template('lazy_loads.html',Mana_data=Mana_data,Members_data=Members_data)
+        mana = Manager().read()
+        Friends_data = list(set(Friends.member) - set(mana))
+        Members_data = [[line_bot_api.get_profile(i).display_name, i]
+                            for i in Friends_data]
+        Mana_data = [[line_bot_api.get_profile(i).display_name, i]
+                            for i in mana]
+        return render_template('lazy_loads.html',
+                               Mana_data=Mana_data,
+                               Members_data=Members_data), 200
+
 
 #############################################
 ###############GASのスケジュール##############
 ############################################
-#月移行動作
-@app.route("/nextmonth",methods=['GET'])
+# 月移行動作
+@app.route("/nextmonth", methods=['GET'])
 def month():
-    Flaxes=Flax()
-    Friends = friend()
-    friend=Friends.LIST()
-    #友達それぞれに対して
+    friend = friend().LIST()
+    # 友達それぞれに対してプッシュメッセージを送信
     for username in friend:
-        #JSONのDICを作成して
-        JSON_DIC=Flaxes.DIC(username)
-        #Flaxメッセージに変えて
-        container_obj = FlexSendMessage(alt_text='今月の日程を入力してください',contents=JSON_DIC)
-        #プッシュメッセージを送信
-        line_bot_api.push_message(username, messages=container_obj)
-    return 'OK',200
-#日々の確認
-@app.route("/checkdate",methods=['POST'])
+        line_bot_api.push_message(username,
+                                  messages=FlexSendMessage(
+                                            alt_text='今月の日程を入力してください',
+                                            contents=Flax().DIC(username)
+                                        )
+                                    )
+    return 'OK', 200
+
+# 日々の確認
+@app.route("/checkdate", methods=['POST'])
 def checker():
-    #----------------------------------------
-    #1週間以内にライドが計画されているかの確認
-    #----------------------------------------
-    Schedule  = Schedular()
+    # ----------------------------------------
+    # 1週間以内に3人以上参加できる日があるかの確認
+    # ----------------------------------------
+    Schedule = Schedular()
     Notify = notify()
-    for i in range(1,8,1):
-        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))+datetime.timedelta(days=i)#現日付+1~8日
-        string = current_dt.strftime('%Y/%m/%d')#現日付+1~8日の文字列
-        no = Schedule.count_part(string)#参加可能メンバーの人数が
-        #3人以上で且つ通知をしていなかったら
-        if int(no)>2 and not(string in Notify.data):
-                #通知履歴の追加と保存
-                Notify.Add(string)
-                Notify.save()
-                #HP用ホームページの追加
-                History().Add(string)
-                #メッセージの生成
-                message=''+string+'に'+str(no)+'人が参加可能です'
-                #送信！
-                line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
-                print("通知完了")
-    #----------------------------------------
-    #しばらくライドが行われなかったとき
-    #----------------------------------------
-    if (Notify.data!=[]):
-        #現日付
-        current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
-        #最後の通知日をdatetimeオブジェクトに変形して
-        buf = datetime.datetime.strptime(Notify.data[-1],'%Y/%m/%d')
-        #タイムゾーンつけて
-        buf = buf.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
-        #時間差を得て
-        dt=current_dt-buf
-        print("前回の通知からの日数:",dt.days)
-        #前回の計画から30日計画されていいなかったら
-        if (dt.days==30):
-            message="3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
+    for i in range(1, 8, 1):
+        # 現日付+1~8日
+        current_dt = datetime.datetime.now(
+                            datetime.timezone(datetime.timedelta(hours=9))
+                        )
+                        + datetime.timedelta(days=i)
+        string = current_dt.strftime('%Y/%m/%d')  # 上を文字列へ
+        no = Schedule.count_part(string)  # 参加可能メンバーの人数が
+        # 3人以上で且つ通知をしていなかったら
+        if (int(no) > 2) and (string not in Notify.data):
+            # 通知履歴の追加と保存
+            Notify.Add(string)
+            Notify.save()
+            # HP用ホームページの追加
+            History().Add(string)
+            # メッセージの生成
+            message = '' + string + 'に' + str(no) + '人が参加可能です'
+            # 送信！
+            line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
+            print("通知完了")
+    # ----------------------------------------
+    # しばらく通知が行われなかったとき
+    # ----------------------------------------
+    if not(Notify.data):
+        # 現日付
+        current_dt = datetime.datetime.now(
+                            datetime.timezone(datetime.timedelta(hours=9))
+                        )
+        # 最後の通知日をdatetimeオブジェクトに変形して
+        buf = datetime.datetime.strptime(Notify.data[-1], '%Y/%m/%d')
+        # タイムゾーンつけて
+        buf = buf.replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=9))
+                )
+        # 時間差を得て
+        dt = current_dt - buf
+        print("前回の通知からの日数:", dt.days)
+        # 前回の計画から30日計画されていいなかったら
+        if (dt.days == 30):
+            message = "3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
             print("しばらくライドが行われなかった。")
-    #----------------------------------------
-    #メール転送
-    #----------------------------------------
-    #POSTの中身があるときだけ
+    # ----------------------------------------
+    # メール転送
+    # ----------------------------------------
+    # POSTの中身があるときだけ
     if request.data.decode():
         query = json.loads(request.data.decode())
-        #通知すべきメールがあるとき
-        if query!=[]:
-            #メッセージリストの作成
-            send_list=[]
-            text="[メール通知]"
-            send_list.append(TextSendMessage(text=text))
+        # 通知すべきメールがあるとき
+        if query != []:
+            # メッセージリストの作成
+            send_list = [TextSendMessage(text="[メール通知]")]
             for i in query:
-                text=("<"+i["title"]+">\n"+i["body"])
+                text = ("<" + i["title"] + ">\n" + i["body"])
                 send_list.append(TextSendMessage(text=text))
-            #メッセージをマネージャーに送信
-            manage=Manager()
+            # メッセージをマネージャーに送信
+            manage = Manager()
             for i in manage.read():
                 line_bot_api.push_message(i, send_list)
     else:
-        #POSTの中身がないとき
+        # POSTの中身がないとき
         abort(403)
-    return 'OK',200
+    return 'OK', 200
+
 
 #############################################
 #################管理画面関連#################
 ############################################
-#管理者の追加
-@app.route('/signup',methods=["get"])
+# 管理者の追加
+@app.route('/signup', methods=["get"])
 def signget():
-    #Staticを実装するのが面倒だったと供述しており
+    # Staticを実装するのが面倒だったと供述しており
     return render_template('signup.html')
-@app.route('/signup',methods=["post"])
+
+#管理者の追加のPOST
+@app.route('/signup', methods=["post"])
 def signpost():
     if request.form.get('user', None) and request.form.get('pass', None):
-         permit().Apply(request.form['user'],request.form['pass'] )
-    #Staticを実装するのが面倒だったと供述しており
-    return "すでに管理者の人から許可されるのをお待ち下さい",200
-#マネージメントページ
-@app.route('/management',methods=['get'])
+        permit().Apply(request.form['user'], request.form['pass'])
+    # Staticを実装するのが面倒だったと供述しており
+    return "すでに管理者の人から許可されるのをお待ち下さい", 200
+
+#管理者ページ
+@app.route('/management', methods=['get'])
 @auth.login_required
 def managers():
-    Now_manage,Now_req=permit().User_lists()
-    #News().get_data()
-    return render_template('management.html',Now_manage=Now_manage,Now_req=Now_req,Version=versions,token_data=Lazy().New())
-#マネージメントのPOST
-@app.route('/management',methods=['post'])
+    Now_manage, Now_req = permit().User_lists()
+    # News().get_data()
+    return render_template('management.html',
+                                Now_manage=Now_manage,
+                                Now_req=Now_req,
+                                Version=versions,
+                                token_data=Lazy().New())
+
+#管理者ページのPOST
+@app.route('/management', methods=['post'])
 @auth.login_required
 def posts_data():
-    #エラー（タイプが無かったとき）
+    # エラー（タイプが無かったとき）
     if not(request.form.get('data_type', None)):
         return 'Forbidden', 403
-    #Historyに追加
-    elif request.form.get('data_type',None)=="Add_history":
-        string=request.form.get('Add_date',None).replace("-","/")
-        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
+    # Historyに追加
+    elif request.form.get('data_type', None) == "Add_history":
+        string = request.form.get('Add_date', None).replace("-", "/")
+        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$", string):
             History().Add(string)
         else:
-            return "正規表現不一致",400
-    #Historyから削除
-    elif request.form.get('data_type',None)=="Del_history":
-        string=request.form.get('Del_date',None).replace("-","/")
-        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$",string):
+            return "正規表現不一致", 400
+    # Historyから削除
+    elif request.form.get('data_type', None) == "Del_history":
+        string = request.form.get('Del_date', None).replace("-", "/")
+        if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$", string):
             History().Del(string)
         else:
-            return "正規表現不一致",400
-    elif request.form.get('data_type',None)=="News":
-        if request.form.get('naiyo',None):
+            return "正規表現不一致", 400
+    #ニュース欄の書き換え
+    elif request.form.get('data_type', None) == "News":
+        if request.form.get('naiyo', None):
             News().Change(request.form['naiyo'])
-    #ブロードキャスト
-    elif request.form.get('data_type',None)=="broad_cast":
-        if request.form.get('message',None)!="":
-            messages = TextSendMessage(text=request.form.get('message',None))
+    # ブロードキャスト
+    elif request.form.get('data_type', None) == "broad_cast":
+        if request.form.get('message', None) != "":
+            messages = TextSendMessage(text=request.form.get('message', None))
             line_bot_api.broadcast(messages=messages)
-    elif request.form.get('data_type',None)=="del_mana":
-        if request.form.get('delete',None)!="":
-            permit().Del(request.form.get('delete',None))
-    elif request.form.get('data_type',None)=="permit_mana":
-        if request.form.get('permit',None)!="":
-            permit().Allow(request.form.get('permit',None))
+    #管理者の削除
+    elif request.form.get('data_type', None) == "del_mana":
+        if request.form.get('delete', None) != "":
+            permit().Del(request.form.get('delete', None))
+    #管理者の許可
+    elif request.form.get('data_type', None) == "permit_mana":
+        if request.form.get('permit', None) != "":
+            permit().Allow(request.form.get('permit', None))
+    #どれでもなかった
     else:
         return managers()
-    return "送信完了しましたブラウザバックしてください",200
+    return "送信完了しましたブラウザバックしてください", 200
+
 
 #############################################
 ##################メインページ################
 ############################################
-#日程アンケート
+# 日程アンケート
 @app.route("/questionaire")
 def question():
-    Schedule  =Schedular()
-    #UIDのクエリ引数を取る
+    # UIDのクエリ引数を取る
     req = request.args
     req_user_id = req.get("UID")
-    if req_user_id==None:
+    if req_user_id == None:
         abort(401)
-    ret_data = Schedule.Schedule_list(req_user_id)
-    return render_template('questionaire.html', userdata = ret_data)
-#アンケート受付
-@app.route("/postdata",methods=['POST'])
+    return render_template('questionaire.html',
+                                userdata=Schedular().Schedule_list(req_user_id)
+                                )
+
+# アンケート受付
+@app.route("/postdata", methods=['POST'])
 def post():
-    Schedule  =Schedular()
-    data = request.data
-    data = json.loads(data)
-    data['data'].insert(0,data['name'])
-    Schedule.add(data['UID'],data['data'])
+    Schedule = Schedular()
+    data = json.loads(request.data)
+    data['data'].insert(0, data['name'])
+    Schedule.add(data['UID'], data['data'])
     Schedule.save()
-    return "Accepted",202
-#日程送信完了
+    return "Accepted", 202
+
+# 日程送信完了
 @app.route('/end')
 def end():
-    return app.send_static_file('end.html'),200
-#参加者一覧
+    return app.send_static_file('end.html'), 200
+
+# 参加者一覧
 @app.route('/participants')
 def participants():
-    return app.send_static_file('participants.html'),200
+    return app.send_static_file('participants.html'), 200
 
 
 #############################################
 ##################LINEAPI関連################
 ############################################
-#APIに応答
+# APIに応答
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -261,7 +298,7 @@ def callback():
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-    #Webhook bodyをハンドル
+    # Webhook bodyをハンドル
     try:
         handle.handle(body, signature)
     except InvalidSignatureError:
@@ -269,62 +306,81 @@ def callback():
         abort(400)
     return 'OK'
 
-#メッセージが送られたら
+# メッセージが送られたら
 @handle.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     Friends = friend()
-    if event.message.text=='version':
+    if event.message.text == 'version':
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=versions))
-    if event.message.text=='Members':
-        message="メンバー一覧:"
+    if event.message.text == 'Members':
+        message = "メンバー一覧:"
         for i in Friends.member:
             print(i)
             profile = line_bot_api.get_profile(i)
-            message+='\n'
-            message+=profile.display_name
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
+            message += '\n'
+            message += profile.display_name
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=message))
 
-    if event.message.text=='明日の天気':
-        res=requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
-        data=res.json()
-        message="【明日の天気】\n天気:"+data["forecasts"][1]["telop"]+"\n最低気温:"+data["forecasts"][1]["temperature"]["min"]["celsius"]+"℃\n最高気温:"+data["forecasts"][1]["temperature"]["max"]["celsius"]+"℃\n\n降水確率\n"+" 0~6時:"+data["forecasts"][1]['chanceOfRain']["T00_06"]+"\n 6~12時:"+data["forecasts"][1]['chanceOfRain']["T06_12"]+"\n 12~18時:"+data["forecasts"][1]['chanceOfRain']["T12_18"]+"\n 18~24時:"+data["forecasts"][1]['chanceOfRain']["T18_24"]
+    if event.message.text == '明日の天気':
+        res = requests.get(
+            "https://weather.tsukumijima.net/api/forecast/city/080010")
+        data = res.json()
+        message = "【明日の天気】\n天気:" + data["forecasts"][1]["telop"] + "\n最低気温:" + data["forecasts"][1]["temperature"]["min"]["celsius"] + "℃\n最高気温:" + data["forecasts"][1]["temperature"]["max"]["celsius"] + "℃\n\n降水確率\n" + " 0~6時:" + \
+            data["forecasts"][1]['chanceOfRain']["T00_06"] + "\n 6~12時:" + data["forecasts"][1]['chanceOfRain']["T06_12"] + \
+            "\n 12~18時:" + data["forecasts"][1]['chanceOfRain']["T12_18"] + \
+            "\n 18~24時:" + data["forecasts"][1]['chanceOfRain']["T18_24"]
 
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=message))
     return
-#フォローEvent
+
+# フォローEvent
 @handle.add(FollowEvent)
 def handle_follow(event):
     Flaxes = Flax()
     Friends = friend()
     Friends.add(event.source.user_id)
     Friends.save()
-    JSON_DIC=Flaxes.DIC(event.source.user_id)
-    #Flaxメッセージに変えて
-    container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
-    container_obj2 = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=Flaxes.DIC3())
-    #プッシュメッセージを送信(リプライのほうがよくね)
-    line_bot_api.reply_message(event.reply_token, [container_obj,container_obj2])
+    # Flaxメッセージに変えて
+    container_obj = FlexSendMessage(
+                            alt_text='ご参加ありがとうございます。',
+                            contents=Flaxes.DIC(event.source.user_id)
+                        )
+    container_obj2 = FlexSendMessage(
+                            alt_text='ご参加ありがとうございます。',
+                            contents=Flaxes.DIC3()
+                        )
+    # プッシュメッセージを送信(リプライのほうがよくね)
+    line_bot_api.reply_message(event.reply_token,
+                                [container_obj, container_obj2])
     return
-#新たに参加した方
+
+# 新たに参加した方
 @handle.add(MemberJoinedEvent)
 def handle_joined(event):
-    Flaxes=Flax()
-    message2="サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
-    JSON_DIC=Flaxes.DIC2()
-    #Flaxメッセージに変えて
-    container_obj = FlexSendMessage(alt_text='ご参加ありがとうございます。',contents=JSON_DIC)
-    #プッシュメッセージを送信
-    line_bot_api.reply_message(event.reply_token,[container_obj,TextSendMessage(text=message2)])
+    Flaxes = Flax()
+    message2 = "サークルの共有事項等は、ノートに記載しておりますので、ご確認ください。"
+    JSON_DIC = Flaxes.DIC2()
+    # Flaxメッセージに変えて
+    container_obj = FlexSendMessage(
+        alt_text='ご参加ありがとうございます。', contents=JSON_DIC)
+    # プッシュメッセージを送信
+    line_bot_api.reply_message(event.reply_token,
+                                [container_obj,
+                                TextSendMessage(text=message2)])
     return
-#フォロー解除Event
+
+# フォロー解除Event
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
-    Friends = friend()
-    Friends.remove(event.source.user_id)
+    friend().remove(event.source.user_id)
     return
+
+
 print("main.py is Loaded...")
 
-#if __name__ == "__main__":
-#app.run(host='0.0.0.0',debug=False)
+# if __name__ == "__main__":
+# app.run(host='0.0.0.0',debug=False)
