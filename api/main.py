@@ -28,7 +28,7 @@ from lazy import Lazy
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID = os.environ["LINE_MAIN_GROUP_ID"]
-versions = 'RC13　2022/08/25 refacted'
+versions = 'RC13　2022/08/25 refactored'
 
 
 # オブジェクトの生成
