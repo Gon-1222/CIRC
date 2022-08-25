@@ -14,11 +14,11 @@ class Lazy(Gfile):
 
         return
     def save(self):
-        self.save_file("1o7-X7AkZPF_PZucQjm08o28St3vEa0UB",self.data)
+        print(self.save_file("1o7-X7AkZPF_PZucQjm08o28St3vEa0UB",self.data))
         return
     def New(self):
         self.data = [''.join(random.choices(string.ascii_letters + string.digits, k=20))]
-        print(self.save())
+        self.save()
         print(self.data)
         print(time.perf_counter())
         return self.data[0]
