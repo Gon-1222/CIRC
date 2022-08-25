@@ -1,6 +1,7 @@
 from File import Gfile
 import json
 import os
+
 class friend(Gfile):
     member=[]
     #読み込み

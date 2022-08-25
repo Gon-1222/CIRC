@@ -1,39 +1,18 @@
-import datetime
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-from oauth2client.service_account import ServiceAccountCredentials
 import json
 import os
-class notify:
+from File import Gfile
+
+class notify(Gfile):
     data=[]
-    ID = os.environ["GOOGLE_ID"]
-    scope = ["https://www.googleapis.com/auth/drive"]
     #ロード（コンストラクタ）
     def __init__(self):
-        JSON_FILE = "service_key.json"
-        gauth = GoogleAuth()
-        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, self.scope)
-        drive = GoogleDrive(gauth)
-            #historyのID： 1zsEmY3P-Ro_JzJWHi2xk5CFdzdixSKpA
-            #notifyのID：1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-
-            #friendsのID：1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4
-            #sheduleのID：1ppdSzlPtyQWKh3_dTGbvyNlNdUYd5XZ8
-        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": self.ID}]})
-        #file.SetContentString("test")
-        #file.Upload()
-        buf=file.GetContentString()
-        self.data=json.loads(buf)
+        self.data=self.load_file("1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-")
+        return
     #セーブ
     def save(self):
         self.Clean_Up()
-        save= json.dumps(self.data)
-        JSON_FILE = "service_key.json"
-        gauth = GoogleAuth()
-        gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_FILE, self.scope)
-        drive = GoogleDrive(gauth)
-        file = drive.CreateFile({"id": "1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-", "parents": [{"id": self.ID}]})
-        file.SetContentString(save)
-        file.Upload()
+        self.save_file("1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-",self.data)
+        return
     #過去の日付を削除する
     def Clean_Up(self):
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
