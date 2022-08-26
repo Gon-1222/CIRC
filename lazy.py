@@ -10,11 +10,11 @@ class Lazy(Gfile):
         self.load()
         return
     def load(self):
-        self.__data=self.load_file(__FILE_ID)
+        self.__data=self.load_file(self.__FILE_ID)
 
         return
     def save(self):
-        print(self.save_file(__FILE_ID,self.__data))
+        print(self.save_file(self.__FILE_ID,self.__data))
         return
     def New(self):
         self.__data=[''.join(random.choices(string.ascii_letters + string.digits, k=20))]
