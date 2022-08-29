@@ -1,3 +1,8 @@
+＃------------------------------------------
+＃県央RC-BOT Ver 1.0
+#Published 08/29/2022
+＃Presented by Gon-1222
+＃------------------------------------------
 # Flask
 from flask import Flask, request, abort, render_template
 from flask_httpauth import HTTPBasicAuth
