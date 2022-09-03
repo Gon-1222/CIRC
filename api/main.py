@@ -146,7 +146,7 @@ def checker():
     # ----------------------------------------
     # しばらく通知が行われなかったとき
     # ----------------------------------------
-    if not(Notify.data):
+    if True:
         # 現日付
         current_dt = datetime.datetime.now(
                             datetime.timezone(datetime.timedelta(hours=9))
