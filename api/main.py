@@ -104,9 +104,9 @@ def lazy_load():
 # 月移行動作
 @app.route("/nextmonth", methods=['GET'])
 def month():
-    friend = friend().LIST()
+    friends = friend().LIST()
     # 友達それぞれに対してプッシュメッセージを送信
-    for username in friend:
+    for username in friends:
         line_bot_api.push_message(username,
                                   messages=FlexSendMessage(
                                             alt_text='今月の日程を入力してください',
