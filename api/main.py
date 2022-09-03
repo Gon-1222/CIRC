@@ -33,7 +33,7 @@ from lazy import Lazy
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID = os.environ["LINE_MAIN_GROUP_ID"]
-versions = 'Ver 1.0　2022/08/29 \n This is the first production version. '
+versions = 'Ver 1.0-a　2022/09/03 \n a:Activity reduction prevention alerts have been changed. '
 
 
 # オブジェクトの生成
@@ -123,6 +123,7 @@ def checker():
     # ----------------------------------------
     Schedule = Schedular()
     Notify = notify()
+    Historys = History()
     for i in range(1, 8, 1):
         # 現日付+1~8日
         current_dt = datetime.datetime.now(
@@ -136,7 +137,7 @@ def checker():
             Notify.Add(string)
             Notify.save()
             # HP用ホームページの追加
-            History().Add(string)
+            Historys.Add(string)
             # メッセージの生成
             message = '' + string + 'に' + str(no) + '人が参加可能です'
             # 送信！
@@ -151,7 +152,7 @@ def checker():
                             datetime.timezone(datetime.timedelta(hours=9))
                         )
         # 最後の通知日をdatetimeオブジェクトに変形して
-        buf = datetime.datetime.strptime(Notify.data[-1], '%Y/%m/%d')
+        buf = datetime.datetime.strptime(Historys.get_last(), '%Y/%m/%d')
         # タイムゾーンつけて
         buf = buf.replace(
                     tzinfo=datetime.timezone(datetime.timedelta(hours=9))
@@ -159,9 +160,9 @@ def checker():
         # 時間差を得て
         dt = current_dt - buf
         print("前回の通知からの日数:", dt.days)
-        # 前回の計画から30日計画されていいなかったら
-        if (dt.days == 30):
-            message = "3人以上参加可能な日が30日間ありませんでした。\nそろそろライドを計画しませんか？"
+        # 前回の計画から4週間以上たった一週間ごと
+        if ((dt.days % 7 == 0) and dt.days>27):
+            message = "ライドが"+str(int(dt.days/7))+"週間行われていません。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
             print("しばらくライドが行われなかった。")
     # ----------------------------------------
