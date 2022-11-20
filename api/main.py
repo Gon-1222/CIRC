@@ -73,13 +73,7 @@ def happy():
     Friends = friend()
     mana = Manager().read()
     Friends_data = list(set(Friends.member) - set(mana))
-    message="""[連絡]
-このメッセージは潮崎さんを除いたメンバーへ送信しています。
-BOTの管理をしている宮坂（社長）です。
-リーダーの潮崎さんにお子さんが生まれたということで、チームの一部有志で出産祝いを送りたいと考えております。
-もし、一緒に出産祝いを送りたいという方がいらっしゃいましたら、グループ内「はじめ」までご連絡ください。
-よろしくお願いいたします。
-※テスト直前のため、返信が遅くなるかもしれませんがご了承下さい。"""
+    message="""新たにLINEグループを作成して、送る内容・金額等も集まったメンバーで話し合いながら決める予定です。"""
     for i in Friends_data:
         line_bot_api.push_message(i,
                                   messages=TextSendMessage(text=message)
