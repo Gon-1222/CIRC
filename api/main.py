@@ -73,7 +73,7 @@ def happy():
     Friends = friend()
     mana = Manager().read()
     Friends_data = list(set(Friends.member) - set(mana))
-    message="""新たにLINEグループを作成して、送る内容・金額等も集まったメンバーで話し合いながら決める予定です。"""
+    message="""他に贈りたい方がいらっしゃいましたら、明日(11/24)までにご連絡下さい。"""
     for i in Friends_data:
         line_bot_api.push_message(i,
                                   messages=TextSendMessage(text=message)
