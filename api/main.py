@@ -67,18 +67,6 @@ def robots_pages():
 @app.route('/news')
 def News_func():
     return News().get_data()
-#塩崎さん
-@app.route('/happy')
-def happy():
-    Friends = friend()
-    mana = Manager().read()
-    Friends_data = list(set(Friends.member) - set(mana))
-    message="""他に贈りたい方がいらっしゃいましたら、明日(11/24)までにご連絡下さい。"""
-    for i in Friends_data:
-        line_bot_api.push_message(i,
-                                  messages=TextSendMessage(text=message)
-                                    )
-    return "",200
 # 参加者一覧の内容
 @app.route('/party')
 def part():
