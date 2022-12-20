@@ -146,31 +146,31 @@ nobr {
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #181a1b;
-    color: #877d6e;
+    background-color: #202124;
+    color: #e8eaed;
   }
   a{
-    color:#877d6e;
+    color:#e8eaed;
   }
   h1{
-    color:#877d6e;
+    color:#e8eaed;
   }
   .boxes{
-    color:#877d6e;
-    border:solid 0.2em #3a3e41;
-    background-color:#181a1b;
+    color:#e8eaed;
+    border:solid 0.2em #303134;
+    background-color:#202124;
   }
   .dates{
-    color:#877d6e;
-    border-bottom:solid 1px #877d6e;
+    color:#e8eaed;
+    border-bottom:solid 1px #e8eaed;
 
   }
   .News{
-    background:#181a1b;
-    border-bottom: 1px solid #3e4446;
+    background:#202124;
+    border-bottom: 1px solid #303134;
   }
   .news-banner__content2{
-    color:#877d6e;
+    color:#e8eaed;
   }
 
 }
