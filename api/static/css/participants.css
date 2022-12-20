@@ -144,7 +144,33 @@ nobr {
     width: 600px;
   }
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #181a1b;
+    color: #877d6e;
+  }
+  a{
+    color:#877d6e;
+  }
+  h1{
+    color:#877d6e;
+  }
+  .boxes{
+    color:#3a3e41;
+    background-color:#181a1b;
+  }
+  .dates{
+    color:#877d6e;
+  }
+  .News{
+    background:#181a1b;
+    border-bottom: 1px solid #3e4446;
+  }
+  .news-banner__content2{
+    color:#877d6e;
+  }
 
+}
 
 
 .snow {
