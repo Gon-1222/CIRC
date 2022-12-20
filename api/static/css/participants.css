@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&display=swap');
 body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
-  background-color: #fff;
+  background-color: #000;
   color: #555;
 }
 
@@ -149,7 +149,7 @@ nobr {
 
 .snow {
   /*雪の色*/
-  color: snow;
+  color: fff0f0;
   /*雪の大きさ*/
   font-size: 10px;
   /*初期位置*/
