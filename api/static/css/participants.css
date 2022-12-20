@@ -157,10 +157,13 @@ nobr {
   }
   .boxes{
     color:#3a3e41;
+    border:solid 0.2em #3a3e41;
     background-color:#181a1b;
   }
   .dates{
     color:#877d6e;
+    border-bottom:solid 1px #877d6e;
+
   }
   .News{
     background:#181a1b;
