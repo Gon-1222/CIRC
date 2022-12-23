@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Noto+Sans+JP:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&display=swap');
 body {
-  //font-family: 'M PLUS Rounded 1c', sans-serif;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
   background-color: #fff;
   color: #555;
 }
