@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet">
+
   <style>
     body,
     html {
@@ -117,7 +118,7 @@
     }
 
     input[type=submit] {
-      display: block;
+      //display: block;
       margin: 20px auto;
     }
 
@@ -146,6 +147,65 @@
       }
     }
   </style>
+  <style>
+.new-GPT {
+  margin: 40px auto;
+  padding: 40px;
+  width: 50%;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.new-GPT label {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+.new-GPT input[type="date"],
+.new-GPT input[type="submit"],
+.new-GPT button[type="submit"],
+.new-GPT input[type="text"]
+ {
+   display:inline;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  margin-bottom: 20px;
+
+}
+
+.new-GPT input[type="submit"],
+.new-GPT button[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.new-GPT input[type="submit"]:hover {
+  background-color: #444;
+}
+
+@media (min-width: 768px) {
+  .new-GPT {
+    width: auto;
+    text-align: left;
+  }
+}
+</style>
+
   <script type="text/javascript">
   $.ajax({
     url: '/lazy',
@@ -193,13 +253,15 @@
 
 <body>
   <h1>○BOT管理者用ぺージ</h1>
-
+  <p>ページのデザインをChatGPTを利用してAIにやらせてみました。</p>
   <h1>日程登録を促す</h1>
-  <form method="get" action="/nextmonth" onSubmit="return check()"><button type="submit">「日程を登録してください」を送信。</button></form>
+  <form class="new-GPT"method="get" action="/nextmonth" onSubmit="return check()"><label>日程を登録してください</label><button type="submit">送信</button></form>
 
   <h1>ライド履歴の修正</h1>
   <p>HPのデータ修正用です。<br>通知がない状態でライドを行った場合などに使用します。</p>
-  <form method="post" action="" onSubmit="return check()">
+
+
+  <!--<form method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="Add_history">
     <table class="form-table">
       <tbody>
@@ -211,7 +273,14 @@
       </tbody>
     </table>
     <input type="submit" value="ライド履歴を追加">
+  </form>-->
+  <form class="new-GPT" method="post" action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="Add_history">
+    <label> 追加する日付</label>
+    <input type="date" name="Add_date" size="60" value="" placeholder="">
+    <input type="submit" value="ライド履歴を追加">
   </form>
+  <!--
   <form method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="Del_history">
     <table class="form-table">
@@ -225,35 +294,29 @@
     </table>
     <input type="submit" value="ライド履歴を削除">
   </form>
+-->
+<form class="new-GPT" method="post" action="" onSubmit="return check()">
+  <input type="hidden" name="data_type" value="Del_history">
+        <label>削除する日付</label>
+        <input type="date" name="Del_date" size="60" value="" placeholder="">
+        <input type="submit" value="ライド履歴を削除">
+</form>
+<!---->
   <h1>News欄の修正</h1>
   <p>「参加可能メンバー」の最上部の内容の修正用です。</p>
-  <form method="post" action="" onSubmit="return check()">
+  <form class="new-GPT"method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="News">
-    <table class="form-table">
-      <tbody>
-        <tr>
-          <th>News欄の表示内容</th>
-          <td><input type="text" name="naiyo" size="200" class="news_input"value="" placeholder="">
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <label>News欄の表示内容</label>
+          <input type="text" name="naiyo" size="200" class="news_input"value="" placeholder="">
     <input type="submit" value="ニュース欄の更新">
   </form>
   <!--ブロードキャスト-->
   <h1>ブロードキャスト</h1>
   <p>BOTから全員に向けてお知らせをするときに利用します。<br>200文字以内</p>
-  <form method="post" action="" onSubmit="return check()">
+  <form class="new-GPT"method="post" action="" onSubmit="return check()">
     <input type="hidden" name="data_type" value="broad_cast">
-    <table class="form-table">
-      <tbody>
-        <tr>
-          <th>送信内容</th>
+          <label>送信内容</label>
           <td><input type="text" name="message" size="200" value="" placeholder="">
-          </td>
-        </tr>
-      </tbody>
-    </table>
     <input type="submit" value="ブロードキャストを送信">
   </form>
 
@@ -299,14 +362,6 @@
     </tr>
     {% endfor %}
   </table>
-  <h1>使用システムメモ</h1>
-  <ul>
-    <li>PaaS:Vercel</li>
-    <li>DB:Google Drive</li>
-    <li>Mail:Gmail</li>
-    <li>Timer:Google Apps Script</li>
-    <li>VCS：GitHub</li>
-  </ul>
   <p>{{ Version }}<br>(c) 2021-2022 宮坂肇 All rights reserved. </p>
 
 </body>
