@@ -333,7 +333,7 @@
     </tr>
     {% for key,value in Now_manage.items() %}
     <tr>
-      <td width="50%">{{key|e}}</td>
+      <td width="50%" style="overflow:scroll;">{{key|e}}</td>
       <td style="overflow:scroll;">{{value|e}}</td>
       <td>
         <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
@@ -351,7 +351,7 @@
     </tr>
     {% for key,value in Now_req.items() %}
     <tr>
-      <td width="50%">{{key|e}}</td>
+      <td width="50%" style="overflow:scroll;">{{key|e}}</td>
       <td style="overflow:scroll;">{{value|e}}</td>
       <td>
 
