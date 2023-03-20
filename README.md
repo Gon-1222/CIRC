@@ -2,7 +2,7 @@
 This is the first version of CIRC's scheduling bot.
 We'll add the features to eliminate maintenance in the next version.
 
-# bugs
+# Issues
 It might have bugs and needs refactoring of its code.
 If you find some problems or bugs, please report them by making an issue.
 
