@@ -27,7 +27,7 @@ from manager import Manager
 from permission import permit
 from news import News
 from lazy import Lazy
-from All_data import All_data
+from All_data import All_Data
 
 # 環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -41,7 +41,7 @@ line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-#file_data = All_Data()
+file_data = All_Data()
 # パスワード判定
 @auth.verify_password
 def verify_password(username, password):

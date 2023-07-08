@@ -2,7 +2,7 @@ import json
 import os
 #from File import Gfile
 
-class Manager(Gfile):
+class Manager():
     __data=[]
     def __init__(self,info):
         self.__data=info

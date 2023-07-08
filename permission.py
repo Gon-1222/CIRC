@@ -12,7 +12,7 @@ class permit():
     #mode=1:現在マネージャーのみ
     #mode=2:リクエストのみ
     #mode=3:全て読込
-    def __init__(self,mode=0,info):
+    def __init__(self,mode=0,info=""):
         self.load(mode,info)
         return
     #読み込み
