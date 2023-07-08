@@ -24,7 +24,7 @@ class All_Data():
     def save_file(self):
         if self.loaded==0:
             return False
-        contents=json.dumps(data)
+        contents=json.dumps(self.data)
         gauth = GoogleAuth()
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.__JSON_FILE, self.__scope)
         drive = GoogleDrive(gauth)

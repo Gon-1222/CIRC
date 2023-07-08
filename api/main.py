@@ -392,5 +392,5 @@ def handle_unfollow(event):
 
 print("main.py is Loaded...")
 
-# if __name__ == "__main__":
-# app.run(host='0.0.0.0',debug=False)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',debug=False)
