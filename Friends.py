@@ -20,3 +20,7 @@ class friend():
     #リストを返す
     def LIST(self):
         return self.member
+
+    def RESET(self):
+        while(self.member!=[]):
+            self.member.pop(0)

@@ -51,6 +51,10 @@ def verify_password(username, password):
 # ルートアクセス時
 @app.route('/')
 def root_pages():
+    Friends = friend(file_data.data["Friends"])
+    Friends.RESET()
+    file_data.save_file()
+    print("aa")
     return "ここにはなにもないよ", 404
 
 # ルートアクセス時
@@ -82,13 +86,29 @@ def part():
 @app.route('/lazy', methods=['get'])
 def lazy_load():
     if not(Lazy(file_data.data["lazy"]).check_data(request.headers.get("Auth_Key"))):
+
+        file_data.save_file()
         abort(403)
     else:
+        file_data.save_file()
         Friends = friend(file_data.data["Friends"])
         mana = Manager(file_data.data["manager"]).read()
         Friends_data = list(set(Friends.member) - set(mana))
+        print("~~~~~~~~~")
+        print(Friends_data)
+        j=1
+        for i in Friends_data:
+            try:
+                print(j)
+                print(i)
+                print(line_bot_api.get_profile(i).display_name)
+                j=j+1
+            except:
+                print("!!!")
+                j=j+1
         Members_data = [[line_bot_api.get_profile(i).display_name, i]
-                            for i in Friends_data]
+                          for i in Friends_data]
+
         Mana_data = [[line_bot_api.get_profile(i).display_name, i]
                             for i in mana]
         return render_template('lazy_loads.html',
@@ -211,6 +231,9 @@ def signpost():
 def managers():
     Now_manage, Now_req = permit(3,file_data.data).User_lists()
     buff=Lazy(file_data.data["lazy"]).New()
+    print(id(file_data.data["lazy"]))
+    print(buff)
+
     file_data.save_file()
     # News().get_data()
     return render_template('management.html',

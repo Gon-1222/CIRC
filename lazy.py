@@ -9,7 +9,7 @@ class Lazy():
     __FILE_ID="1o7-X7AkZPF_PZucQjm08o28St3vEa0UB"
 
     def __init__(self,info):
-        self.__data=info
+        self.__data = info
         return
 
 
@@ -19,7 +19,10 @@ class Lazy():
     #    return
 
     def New(self,number=1):
-        self.__data=[''.join(random.choices(string.ascii_letters + string.digits, k=20)) for _ in range(number)]
+
+        self.__data.append(''.join(random.choices(string.ascii_letters + string.digits, k=20)))
+        print(id(self.__data))
+        print(self.__data)
         #self.save()
         return self.__data[-1]
 
