@@ -20,6 +20,7 @@ class All_Data():
         self.data = json.loads(datau)
         self.loaded=1
         return None
+
     def save_file(self):
         if self.loaded==0:
             return False
