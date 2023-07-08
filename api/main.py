@@ -210,12 +210,14 @@ def signpost():
 @auth.login_required
 def managers():
     Now_manage, Now_req = permit(3,file_data.data).User_lists()
+    buff=Lazy(file_data.data["lazy"]).New()
+    file_data.save_file()
     # News().get_data()
     return render_template('management.html',
                                 Now_manage=Now_manage,
                                 Now_req=Now_req,
                                 Version=versions,
-                                token_data=Lazy(file_data.data["lazy"]).New())
+                                token_data=buff)
 
 #管理者ページのPOST
 @app.route('/management', methods=['post'])

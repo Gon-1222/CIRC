@@ -27,16 +27,13 @@ class permit():
     #読み込み
     #管理者追加リクエスト
     def Apply(self,user,password):
-        if not(self.loaded&2):
-            self.load(2)
+
         password_hash=bcrypt.hashpw(password.encode(),bcrypt.gensalt(rounds=10,prefix=b'2b')).decode()
         add_data={user:password_hash}
         self.__req.update(add_data)
         return "Success"
     #許可リクエスト
     def Allow(self,user):
-        if not(self.loaded&3):
-            self.load(3)
         print(user)
         print(self.__req)
         if user in self.__req:
@@ -48,8 +45,6 @@ class permit():
             return "Not Found the user"
     #削除
     def Del(self,user):
-        if not(self.loaded&1):
-            self.load(1)
         if user in self.__data:
             self.__data.pop(user)
             return "Success"
@@ -59,13 +54,9 @@ class permit():
     def Check(self,user,password):
         if user=="" or password=="":
             return False
-        if not(self.loaded&1):
-            self.load(1)
         if self.__data.get(user):
             return bcrypt.checkpw(password.encode(),self.__data[user].encode())
         return False
     #管理者リスト
     def User_lists(self):
-        if not(self.loaded&3):
-            self.load(3)
         return [self.__data,self.__req]
