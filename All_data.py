@@ -16,8 +16,8 @@ class All_Data():
         gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.__JSON_FILE, self.__scope)
         drive = GoogleDrive(gauth)
         file = drive.CreateFile({"id": __path, "parents": [{"id": self.__ID}]})
-        data=file.GetContentString()
-        data = json.loads(data)
+        datau=file.GetContentString()
+        self.data = json.loads(datau)
         self.loaded=1
         return 0
     def save_file(self):
