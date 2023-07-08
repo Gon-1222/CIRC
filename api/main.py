@@ -27,7 +27,7 @@ from manager import Manager
 from permission import permit
 from news import News
 from lazy import Lazy
-
+from All_data import All_data
 
 # 環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
