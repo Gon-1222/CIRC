@@ -14,7 +14,6 @@ class News():
         #return
     def Change(self,naiyou):
         self.data[0]=naiyou
-        self.save()
         return
     def get_data(self):
         return self.data[0]
