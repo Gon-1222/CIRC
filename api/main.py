@@ -51,9 +51,9 @@ def verify_password(username, password):
 # ルートアクセス時
 @app.route('/')
 def root_pages():
-    Friends = friend(file_data.data["Friends"])
-    Friends.RESET()
-    file_data.save_file()
+    #Friends = friend(file_data.data["Friends"])
+    #Friends.RESET()
+    #file_data.save_file()
     print("aa")
     return "ここにはなにもないよ", 404
 
