@@ -16,7 +16,7 @@ class permit():
         if mode==0:
             return
         if mode&1 and not(self.loaded&1):
-            self.__data=info["manager"]
+            self.__data=info["permission"]
             self.loaded+=1
         if mode&2 and not(self.loaded&2):
             #リクエストの読み込み
