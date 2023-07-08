@@ -183,6 +183,7 @@ def checker():
     else:
         # POSTの中身がないとき
         abort(403)
+    file_data.save_file()
     return 'OK', 200
 
 
@@ -200,6 +201,7 @@ def signget():
 def signpost():
     if request.form.get('user', None) and request.form.get('pass', None):
         permit(file_data.data).Apply(request.form['user'], request.form['pass'])
+    file_data.save_file()
     # Staticを実装するのが面倒だったと供述しており
     return "すでに管理者の人から許可されるのをお待ち下さい", 200
 
@@ -256,6 +258,7 @@ def posts_data():
     #どれでもなかった
     else:
         return managers()
+    file_data.save_file()
     return "送信完了しましたブラウザバックしてください", 200
 
 
@@ -282,6 +285,7 @@ def post():
     data['data'].insert(0, data['name'])
     Schedule.add(data['UID'], data['data'])
     Schedule.save()
+    file_data.save_file()
     return "Accepted", 202
 
 # 日程送信完了
@@ -351,7 +355,7 @@ def handle_follow(event):
     Flaxes = Flax()
     Friends = friend(file_data.data["Friends"])
     Friends.add(event.source.user_id)
-    Friends.save()
+    file_data.save_file()
     # Flaxメッセージに変えて
     container_obj = FlexSendMessage(
                             alt_text='ご参加ありがとうございます。',
@@ -382,6 +386,7 @@ def handle_joined(event):
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
     friend(file_data.data["Friends"]).remove(event.source.user_id)
+    file_data.save_file()
     return
 
 

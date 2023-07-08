@@ -13,10 +13,6 @@ class permit():
     #mode=2:リクエストのみ
     #mode=3:全て読込
     def __init__(self,mode=0,info=""):
-        self.load(mode,info)
-        return
-    #読み込み
-    def load(self,mode):
         if mode==0:
             return
         if mode&1 and not(self.loaded&1):
@@ -27,17 +23,8 @@ class permit():
             self.__req=info["req_permit"]
             self.loaded+=2
         return
-    #保存
-    def save(self):
-        if self.loaded==0:
-            return
-        if self.loaded&1:
-            self.save_file("1LuFlOw0Axk4r7lyexB6lj1gBzTXm9WOn",self.__data)
-            #現在マネージャーの書き込み
-        if self.loaded&2:
-            #リクエストの書き込み
-            self.save_file("1XV0OsI7uJDFfsyLnKVVQP69kn2XOFEFI",self.__req)
-        return
+
+    #読み込み
     #管理者追加リクエスト
     def Apply(self,user,password):
         if not(self.loaded&2):
