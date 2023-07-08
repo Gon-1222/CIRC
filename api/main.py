@@ -41,7 +41,7 @@ line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-file_data = All_Data()
+#file_data = All_Data()
 # パスワード判定
 @auth.verify_password
 def verify_password(username, password):
