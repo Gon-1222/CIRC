@@ -200,7 +200,7 @@ def signget():
 @app.route('/signup', methods=["post"])
 def signpost():
     if request.form.get('user', None) and request.form.get('pass', None):
-        permit(file_data.data).Apply(request.form['user'], request.form['pass'])
+        permit(3,file_data.data).Apply(request.form['user'], request.form['pass'])
     file_data.save_file()
     # Staticを実装するのが面倒だったと供述しており
     return "すでに管理者の人から許可されるのをお待ち下さい", 200
@@ -209,7 +209,7 @@ def signpost():
 @app.route('/management', methods=['get'])
 @auth.login_required
 def managers():
-    Now_manage, Now_req = permit(file_data.data).User_lists()
+    Now_manage, Now_req = permit(3,file_data.data).User_lists()
     # News().get_data()
     return render_template('management.html',
                                 Now_manage=Now_manage,
@@ -250,11 +250,11 @@ def posts_data():
     #管理者の削除
     elif request.form.get('data_type', None) == "del_mana":
         if request.form.get('delete', None) != "":
-            permit(file_data.data).Del(request.form.get('delete', None))
+            permit(3,file_data.data).Del(request.form.get('delete', None))
     #管理者の許可
     elif request.form.get('data_type', None) == "permit_mana":
         if request.form.get('permit', None) != "":
-            permit(file_data.data).Allow(request.form.get('permit', None))
+            permit(3,file_data.data).Allow(request.form.get('permit', None))
     #どれでもなかった
     else:
         return managers()
