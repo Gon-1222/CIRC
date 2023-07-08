@@ -153,7 +153,6 @@ def checker():
         if (int(no) > 2) and (string not in Notify.data):
             # 通知履歴の追加と保存
             Notify.Add(string)
-            Notify.save()
             # HP用ホームページの追加
             Historys.Add(string)
             # メッセージの生成
