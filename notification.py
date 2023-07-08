@@ -1,18 +1,13 @@
 import json
 import os
 import datetime
-from File import Gfile
+#from File import Gfile
 
-class notify(Gfile):
+class notify():
     data=[]
     #ロード（コンストラクタ）
-    def __init__(self):
-        self.data=self.load_file("1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-")
-        return
-    #セーブ
-    def save(self):
-        self.Clean_Up()
-        self.save_file("1nS6ug9PSR5QNN8iWism-oRn-HZvyQPL-",self.data)
+    def __init__(self,info):
+        self.data=info
         return
     #過去の日付を削除する
     def Clean_Up(self):

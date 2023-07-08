@@ -3,18 +3,17 @@ import copy
 import datetime
 import json
 import os
-from File import Gfile
+#from File import Gfile
 
-class Schedular(Gfile):
+class Schedular():
     data=[]
 
-    def __init__(self):
-        self.data=self.load_file("1ppdSzlPtyQWKh3_dTGbvyNlNdUYd5XZ8")
+    def __init__(self,info):
+        self.data=info
         return
     #保存
     def save(self):
         self.organize()
-        self.save_file("1ppdSzlPtyQWKh3_dTGbvyNlNdUYd5XZ8",self.data)
         return
     #データの追加（変更）
     def add(self,userID,datum):

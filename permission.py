@@ -2,9 +2,9 @@ import hashlib
 import os
 import json
 import bcrypt
-from File import Gfile
+#from File import Gfile
 
-class permit(Gfile):
+class permit():
     __data={}
     __req={}
     loaded=0
@@ -12,19 +12,19 @@ class permit(Gfile):
     #mode=1:現在マネージャーのみ
     #mode=2:リクエストのみ
     #mode=3:全て読込
-    def __init__(self,mode=0):
-        self.load(mode)
+    def __init__(self,mode=0,info):
+        self.load(mode,info)
         return
     #読み込み
     def load(self,mode):
         if mode==0:
             return
         if mode&1 and not(self.loaded&1):
-            self.__data=self.load_file("1LuFlOw0Axk4r7lyexB6lj1gBzTXm9WOn")
+            self.__data=info["manager"]
             self.loaded+=1
         if mode&2 and not(self.loaded&2):
             #リクエストの読み込み
-            self.__req=self.load_file("1XV0OsI7uJDFfsyLnKVVQP69kn2XOFEFI")
+            self.__req=info["req_permit"]
             self.loaded+=2
         return
     #保存

@@ -41,11 +41,11 @@ line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-
+file_data = All_Data()
 # パスワード判定
 @auth.verify_password
 def verify_password(username, password):
-    permission = permit(1)
+    permission = permit(1,file_data.data)
     return permission.Check(username, password)
 
 # ルートアクセス時
@@ -65,11 +65,11 @@ def robots_pages():
 # ニュース欄
 @app.route('/news')
 def News_func():
-    return News().get_data()
+    return file_data.data["News"][0]#News().get_data()
 # 参加者一覧の内容
 @app.route('/party')
 def part():
-    Schedule = Schedular()
+    Schedule = Schedular(file_data.data["Schedule"])
     res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
     json_data = res.json()
     forecast_data = [json_data["forecasts"][i]["image"]["url"]
@@ -81,11 +81,11 @@ def part():
 # メンバー一覧（要Auth）
 @app.route('/lazy', methods=['get'])
 def lazy_load():
-    if not(Lazy().check_data(request.headers.get("Auth_Key"))):
+    if not(Lazy(file_data.data["lazy"]).check_data(request.headers.get("Auth_Key"))):
         abort(403)
     else:
-        Friends = friend()
-        mana = Manager().read()
+        Friends = friend(file_data.data["Friends"])
+        mana = Manager(file_data.data["manager"]).read()
         Friends_data = list(set(Friends.member) - set(mana))
         Members_data = [[line_bot_api.get_profile(i).display_name, i]
                             for i in Friends_data]
@@ -102,7 +102,7 @@ def lazy_load():
 # 月移行動作
 @app.route("/nextmonth", methods=['GET'])
 def month():
-    friends = friend().LIST()
+    friends = friend(file_data.data["Friends"]).LIST()
     # 友達それぞれに対してプッシュメッセージを送信
     for username in friends:
         line_bot_api.push_message(username,
@@ -119,9 +119,9 @@ def checker():
     # ----------------------------------------
     # 1週間以内に3人以上参加できる日があるかの確認
     # ----------------------------------------
-    Schedule = Schedular()
-    Notify = notify()
-    Historys = History()
+    Schedule = Schedular(file_data.data["Schedule"])
+    Notify = notify(file_data.data["notify"])
+    Historys = History(file_data.data["history"])
     for i in range(1, 8, 1):
         # 現日付+1~8日
         current_dt = datetime.datetime.now(
@@ -199,7 +199,7 @@ def signget():
 @app.route('/signup', methods=["post"])
 def signpost():
     if request.form.get('user', None) and request.form.get('pass', None):
-        permit().Apply(request.form['user'], request.form['pass'])
+        permit(file_data.data).Apply(request.form['user'], request.form['pass'])
     # Staticを実装するのが面倒だったと供述しており
     return "すでに管理者の人から許可されるのをお待ち下さい", 200
 
@@ -207,13 +207,13 @@ def signpost():
 @app.route('/management', methods=['get'])
 @auth.login_required
 def managers():
-    Now_manage, Now_req = permit().User_lists()
+    Now_manage, Now_req = permit(file_data.data).User_lists()
     # News().get_data()
     return render_template('management.html',
                                 Now_manage=Now_manage,
                                 Now_req=Now_req,
                                 Version=versions,
-                                token_data=Lazy().New())
+                                token_data=Lazy(file_data.data["lazy"]).New())
 
 #管理者ページのPOST
 @app.route('/management', methods=['post'])
@@ -226,20 +226,20 @@ def posts_data():
     elif request.form.get('data_type', None) == "Add_history":
         string = request.form.get('Add_date', None).replace("-", "/")
         if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$", string):
-            History().Add(string)
+            History(file_data.data["history"]).Add(string)
         else:
             return "正規表現不一致", 400
     # Historyから削除
     elif request.form.get('data_type', None) == "Del_history":
         string = request.form.get('Del_date', None).replace("-", "/")
         if re.fullmatch(r"^\d{4}/\d{2}/\d{1,2}$", string):
-            History().Del(string)
+            History(file_data.data["history"]).Del(string)
         else:
             return "正規表現不一致", 400
     #ニュース欄の書き換え
     elif request.form.get('data_type', None) == "News":
         if request.form.get('naiyo', None):
-            News().Change(request.form['naiyo'])
+            News(file_data.data["news"]).Change(request.form['naiyo'])
     # ブロードキャスト
     elif request.form.get('data_type', None) == "broad_cast":
         if request.form.get('message', None) != "":
@@ -248,11 +248,11 @@ def posts_data():
     #管理者の削除
     elif request.form.get('data_type', None) == "del_mana":
         if request.form.get('delete', None) != "":
-            permit().Del(request.form.get('delete', None))
+            permit(file_data.data).Del(request.form.get('delete', None))
     #管理者の許可
     elif request.form.get('data_type', None) == "permit_mana":
         if request.form.get('permit', None) != "":
-            permit().Allow(request.form.get('permit', None))
+            permit(file_data.data).Allow(request.form.get('permit', None))
     #どれでもなかった
     else:
         return managers()
@@ -271,13 +271,13 @@ def question():
     if req_user_id == None:
         abort(401)
     return render_template('questionaire.html',
-                                userdata=Schedular().Schedule_list(req_user_id)
+                                userdata=Schedular(file_data.data["Schedule"]).Schedule_list(req_user_id)
                                 )
 
 # アンケート受付
 @app.route("/postdata", methods=['POST'])
 def post():
-    Schedule = Schedular()
+    Schedule = Schedular(file_data.data["Schedule"])
     data = json.loads(request.data)
     data['data'].insert(0, data['name'])
     Schedule.add(data['UID'], data['data'])
@@ -317,7 +317,7 @@ def callback():
 # メッセージが送られたら
 @handle.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    Friends = friend()
+    Friends = friend(file_data.data["Friends"])
     if event.message.text == 'version':
         line_bot_api.reply_message(
             event.reply_token,
@@ -349,7 +349,7 @@ def handle_message(event):
 @handle.add(FollowEvent)
 def handle_follow(event):
     Flaxes = Flax()
-    Friends = friend()
+    Friends = friend(file_data.data["Friends"])
     Friends.add(event.source.user_id)
     Friends.save()
     # Flaxメッセージに変えて
@@ -381,7 +381,7 @@ def handle_joined(event):
 # フォロー解除Event
 @handle.add(UnfollowEvent)
 def handle_unfollow(event):
-    friend().remove(event.source.user_id)
+    friend(file_data.data["Friends"]).remove(event.source.user_id)
     return
 
 

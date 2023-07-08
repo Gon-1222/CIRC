@@ -1,16 +1,16 @@
-from File import Gfile
+#from File import Gfile
 import json
 import os
 
-class friend(Gfile):
+class friend():
     member=[]
     #読み込み
-    def __init__(self):
-        self.member=self.load_file("1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4")
+    def __init__(self,info):
+        self.member=info
     #書き込み
     def save(self):
         self.member=list(set(self.member))
-        self.save_file("1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4",self.member)
+        #self.save_file("1V6XPVgyb0wudutBfgeuYqUZYYh1ttcx4",self.member)
     #追加
     def add(self,IDS):
         self.member.append(IDS)
