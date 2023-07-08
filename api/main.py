@@ -177,7 +177,7 @@ def checker():
                 text = ("<" + i["title"] + ">\n" + i["body"])
                 send_list.append(TextSendMessage(text=text))
             # メッセージをマネージャーに送信
-            manage = Manager()
+            manage = Manager(file_data.data["manager"])
             for i in manage.read():
                 line_bot_api.push_message(i, send_list)
     else:
