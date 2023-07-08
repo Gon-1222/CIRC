@@ -65,7 +65,7 @@ def robots_pages():
 # ニュース欄
 @app.route('/news')
 def News_func():
-    return file_data.data["News"][0]#News().get_data()
+    return News(file_data.data["News"]).get_data()
 # 参加者一覧の内容
 @app.route('/party')
 def part():
