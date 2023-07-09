@@ -16,7 +16,8 @@ class friend():
         self.member.append(IDS)
     #削除
     def remove(self,IDS):
-        self.member.remove(IDS)
+        while (IDS in self.member):
+            self.member.remove(IDS)
     #リストを返す
     def LIST(self):
         return self.member
