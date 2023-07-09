@@ -58,7 +58,7 @@ class Schedular():
         current_dt=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
         for _ in range(0,30,1):
             #今の日付を文字列に
-            current_str=current_dt.strftime('%Y/%m/%d')
+            current_str=current_dt.strftime('%Y/%m/%d (%A)')
             #ディクショナリとして作成
             member_dics[current_str] = self.Member_list(current_str)
             #1日シフト
