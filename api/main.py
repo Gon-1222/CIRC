@@ -33,8 +33,7 @@ from All_data import All_Data
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID = os.environ["LINE_MAIN_GROUP_ID"]
-versions = 'Ver 1.0-a　2022/09/03 \n a:Activity reduction prevention alerts have been changed. '
-
+versions = 'Ver 1.1　2023/07/11 \n Management-UI has been Changed.'
 
 # オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
@@ -240,27 +239,12 @@ def managers():
 
     file_data.save_file()
     # News().get_data()
-    return render_template('management.html',
-                                Now_manage=Now_manage,
-                                Now_req=Now_req,
-                                Version=versions,
-                                token_data=buff)
-#管理者ページ2
-@app.route('/management2', methods=['get'])
-@auth.login_required
-def managers2():
-    Now_manage, Now_req = permit(3,file_data.data).User_lists()
-    buff=Lazy(file_data.data["lazy"]).New()
-    print(id(file_data.data["lazy"]))
-    print(buff)
-
-    file_data.save_file()
-    # News().get_data()
     return render_template('management2.html',
                                 Now_manage=Now_manage,
                                 Now_req=Now_req,
                                 Version=versions,
                                 token_data=buff)
+
 
 #管理者ページのPOST
 @app.route('/management', methods=['post'])
