@@ -245,6 +245,22 @@ def managers():
                                 Now_req=Now_req,
                                 Version=versions,
                                 token_data=buff)
+#管理者ページ2
+@app.route('/management2', methods=['get'])
+@auth.login_required
+def managers():
+    Now_manage, Now_req = permit(3,file_data.data).User_lists()
+    buff=Lazy(file_data.data["lazy"]).New()
+    print(id(file_data.data["lazy"]))
+    print(buff)
+
+    file_data.save_file()
+    # News().get_data()
+    return render_template('management2.html',
+                                Now_manage=Now_manage,
+                                Now_req=Now_req,
+                                Version=versions,
+                                token_data=buff)
 
 #管理者ページのPOST
 @app.route('/management', methods=['post'])
