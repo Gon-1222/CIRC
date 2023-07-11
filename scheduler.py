@@ -44,7 +44,7 @@ class Schedular():
         member=[]
         for i,item in enumerate(self.data):
             for j in range(3,int(item[2])+3,1):
-                if self.data[i][j]==date:
+                if self.data[i][j] in date:
                     member.append(self.data[i][1])
         return member
     #各日程の参加メンバーの人数
