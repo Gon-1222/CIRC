@@ -62,7 +62,7 @@ def root_pages():
 def robots_pages():
     return app.send_static_file('robots.txt'), 200
 # 更新履歴
-@app.route('/whatsnew.html')
+@app.route('/whatsnew')
 def whatsnew_pages():
     return app.send_static_file('Whatsnew.html'), 200
 
