@@ -78,13 +78,8 @@ def News_func():
 @app.route('/party')
 def part():
     Schedule = Schedular(file_data.data["Schedule"])
-    res = requests.get("https://weather.tsukumijima.net/api/forecast/city/080010")
-    json_data = res.json()
-    forecast_data = [json_data["forecasts"][i]["image"]["url"]
-                     for i in range(0, 3, 1)]
     return render_template('party.html',
-                           data=Schedule.All_lists(),
-                           forecast_data=forecast_data), 200
+                           data=Schedule.All_lists()), 200
 
 # メンバー一覧（要Auth）
 @app.route('/lazy', methods=['get'])
