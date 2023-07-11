@@ -248,7 +248,7 @@ def managers():
 #管理者ページ2
 @app.route('/management2', methods=['get'])
 @auth.login_required
-def managers():
+def managers2():
     Now_manage, Now_req = permit(3,file_data.data).User_lists()
     buff=Lazy(file_data.data["lazy"]).New()
     print(id(file_data.data["lazy"]))
