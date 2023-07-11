@@ -57,10 +57,15 @@ def root_pages():
     print("aa")
     return "ここにはなにもないよ", 404
 
-# ルートアクセス時
+# Robots.txt
 @app.route('/robots.txt')
 def robots_pages():
     return app.send_static_file('robots.txt'), 200
+# 更新履歴
+@app.route('/whatsnew.html')
+def whatsnew_pages():
+    return app.send_static_file('Whatsnew.html'), 200
+
 
 
 #############################################
