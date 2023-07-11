@@ -187,22 +187,23 @@
   </summary>
   <div class="contents">
 <p>※本人確認を確実に行い、必要な人のみ許可すること<br><span style="color:#f00">このページヘのログインが可能になります。</span></p>
-    <table border="1" class="members" style="table-layout:fixed;width:100%;">
-      <tr>
-        <th width="33%">ユーザー名</th>
-        <th width="33%">パスワードハッシュ</th>
-        <th width="33%">削除</th>
-      </tr>
-      {% for key,value in Now_manage.items() %}
-      <tr>
-        <td width="50%" style="overflow:scroll;">{{key|e}}</td>
-        <td style="overflow:scroll;">{{value|e}}</td>
-        <td>
-          <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+<table border="1" class="members" style="table-layout:fixed;width:100%;">
+    <tr>
+      <th width="33%">ユーザー名</th>
+      <th width="33%">パスワードハッシュ</th>
+      <th width="33%">許可</th>
+    </tr>
+    {% for key,value in Now_req.items() %}
+    <tr>
+      <td width="50%" style="overflow:scroll;">{{key|e}}</td>
+      <td style="overflow:scroll;">{{value|e}}</td>
+      <td>
+
+        <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}">許可</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 </details>
 <p>{{ Version }}<br>(c) 2021-2023 宮坂肇 All rights reserved. </p>
