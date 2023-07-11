@@ -1,0 +1,209 @@
+<head>
+  <meta name="robots" content="noindex">
+   <meta charset="UTF-8">
+   <title>管理者サイト-県央RC-BOT</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet">
+   <link href="static/css/main.css" rel="stylesheet" />
+   <script type="text/javascript">
+  $.ajax({
+    url: '/lazy',
+    type: 'GET',
+    headers: {
+        'Auth_Key':'{{ token_data }}'
+    },
+    success :function(data) {
+      console.log("aaa");
+      console.log(data);
+      $('.member-lazy').html(data);
+    },
+    error:function(err) {
+      console.log("iii");
+      $('.member-lazy').html("<p>取得失敗</p>");}
+    })
+
+      $.get('/news')
+        .done(function(data) {
+          $('.news_input').val(data);
+
+        }).fail(function() {
+          $('.news_input').val('取得失敗');
+
+        })
+
+    function check() {
+
+      if (window.confirm('送信してよろしいですか？')) { // 確認ダイアログを表示
+
+        return true; // 「OK」時は送信を実行
+
+      } else { // 「キャンセル」時の処理
+
+        window.alert('キャンセルされました'); // 警告ダイアログを表示
+        return false; // 送信を中止
+
+      }
+
+    }
+
+    // -->
+  </script>
+</head>
+<body>
+  <h1><i class="fa-solid fa-gears"></i>県央RC-BOT 設定</h1>
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;日程登録を呼びかける
+  </summary>
+  <div class="contents">
+    <p>月ごとの日程登録呼びかけは<br>月初め（１日）に自動で行われます。</p>
+  <form class="new-GPT"method="get" action="/nextmonth" onSubmit="return check()">
+    <button type="submit">手動で送信</button>
+  </form>
+</div>
+</details>
+<!--過疎化-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;過疎警報の間隔を変える
+  </summary>
+  <div class="contents">
+    <p>過疎警報の間隔を設定します。</p>
+  <form class="new-GPT"method="get" action="/" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="Add_history">
+    <span><input type="number" name="Add_date" size="60" value="" placeholder="">日</span><br>
+    <input type="submit" value="間隔を変更">
+  </form>
+</div>
+</details>
+<!--追加-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;HPの活動実績を追加する
+  </summary>
+  <div class="contents">
+  <p>3人以上参加予定で通知があった場合は<br>自動で追加されます。</p>
+    <form class="new-GPT" method="post" action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="Add_history">
+    <input type="date" name="Add_date" size="60" value="" placeholder="">
+    <input type="submit" value="ライド履歴を追加">
+  </form>
+  </div>
+</details>
+<!--削除-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;HPの活動実績を削除する
+  </summary>
+  <div class="contents">
+  <p>諸事情により、ライドを実施しなかった際に<br>利用してください。</p>
+  <form class="new-GPT" method="post" action="" onSubmit="return check()">
+    <input type="hidden" name="data_type" value="Del_history">
+          <input type="date" name="Del_date" size="60" value="" placeholder="">
+          <input type="submit" value="ライド履歴を削除">
+  </form>
+  </div>
+</details>
+
+<!--ニュース欄-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;ニュース欄を更新する
+  </summary>
+  <div class="contents">
+  <p>「参加可能メンバー」の最上部の<br>内容の更新用です。</p>
+  <form class="new-GPT"method="post" action="" onSubmit="return check()">
+     <input type="hidden" name="data_type" value="News">
+     <input type="text" name="naiyo" size="200" class="news_input"value="" placeholder="">
+     <input type="submit" value="ニュース欄を更新">
+   </form>  </div>
+</details>
+<!--ブロードキャスト-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;全員にメッセージを送信する
+  </summary>
+  <div class="contents">
+  <p>BOTから全員に向けて<br>お知らせをするときに利用します。<br>200文字以内</p>
+  <form class="new-GPT"method="post" action="" onSubmit="return check()">
+   <input type="hidden" name="data_type" value="broad_cast">
+  <input type="text" name="message" size="200" value="" placeholder="">
+   <input type="submit" value="全員へ送信">
+ </form>
+</div>
+</details>
+<!--メンバー一覧-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;メンバーの一覧
+  </summary>
+  <div class="contents">
+    <p>LINEに友だち追加している人の一覧です。</p>
+      <div class="member-lazy">
+        <p>読み込み中...<br>遅延読み込み</p>
+      </div>
+</div>
+</details>
+<!--管理者一覧-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;管理者の一覧
+  </summary>
+  <div class="contents">
+    <p>パスワードはbcrypt(強度:10)で保存しています。<br>ペッパーなし</p>
+    <table border="1" class="members" style="table-layout:fixed;width:100%;">
+      <tr>
+        <th width="33%">ユーザー名</th>
+        <th width="33%">パスワードハッシュ</th>
+        <th width="33%">削除</th>
+      </tr>
+      {% for key,value in Now_manage.items() %}
+      <tr>
+        <td width="50%" style="overflow:scroll;">{{key|e}}</td>
+        <td style="overflow:scroll;">{{value|e}}</td>
+        <td>
+          <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+</details>
+<!--管理者リクエスト-->
+<details>
+  <summary>
+    <i class="fas fa-chevron-right icon"></i>
+    &nbsp;管理者リクエストの一覧
+  </summary>
+  <div class="contents">
+<p>※本人確認を確実に行い、必要な人のみ許可すること<br><span style="color:#f00">このページヘのログインが可能になります。</span></p>
+    <table border="1" class="members" style="table-layout:fixed;width:100%;">
+      <tr>
+        <th width="33%">ユーザー名</th>
+        <th width="33%">パスワードハッシュ</th>
+        <th width="33%">削除</th>
+      </tr>
+      {% for key,value in Now_manage.items() %}
+      <tr>
+        <td width="50%" style="overflow:scroll;">{{key|e}}</td>
+        <td style="overflow:scroll;">{{value|e}}</td>
+        <td>
+          <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+</details>
+<p>{{ Version }}<br>(c) 2021-2023 宮坂肇 All rights reserved. </p>
+</body>
