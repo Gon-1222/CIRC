@@ -92,6 +92,7 @@ nobr {
 
 .manager {
   padding: 0;
+  padding-right: 1.5em;
   margin: 0 auto;
   text-align: right;
 }
