@@ -3,16 +3,17 @@ $.ajax({type:"GET",
         cache: false,
         timeout: 5000})
   .done(function(data) {
-    console.log("成功");
+    console.log("party:success");
     setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+    console.log("party:fail");
     console.log(XMLHttpRequest.status);
     console.log(textStatus);
     console.log(errorThrown);
     $('.loading').html('<i class="fa-solid fa-face-frown"></i><div class="japanese">取得できませんでした</div><div class="japanese">再読込してください</div>');
     //setTimeout(function(){$.ajax(this)}, 500 );
   }).always(function() {
-  console.log('complete');
+  console.log('party:complete');
 });
 
 $.ajax({type:"GET",
@@ -20,8 +21,11 @@ $.ajax({type:"GET",
         cache: false,
         timeout: 5000})
   .done(function(data) {
+    console.log("party:success");
+    setTimeout(function(){
     $(".news-banner__content2").addClass("news-banner__content");
     $('.news-banner__content2').html(data).trigger('create');
+    }, 500 );
   }).fail(function() {
     $(".news-banner__content2").addClass("news-banner__content");
     $('.news-banner__content2').html('<p><i class="fa-solid fa-face-frown"></i>取得できませんでした。</p>');
