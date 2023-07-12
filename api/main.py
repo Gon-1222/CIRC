@@ -326,6 +326,8 @@ def end():
 # 参加者一覧
 @app.route('/participants')
 def participants():
+    if not(request.args.get('UID',None)):
+        return app.send_static_file('plsblockme.html'), 200
     return app.send_static_file('participants.html'), 200
 
 
