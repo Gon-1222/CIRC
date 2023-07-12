@@ -48,9 +48,7 @@ def root_pages():
     #Friends = friend(file_data.data["Friends"])
     #Friends.RESET()
     #file_data.save_file()
-    file_data.data.update({"permission2":{"Ub8c1caec52f11da2a8c15e13dbc73025":"はじめ"},"req_permit2":{}})
-    file_data.save_file()
-    print("aa")
+
     return "ここにはなにもないよ", 404
 
 # Robots.txt
