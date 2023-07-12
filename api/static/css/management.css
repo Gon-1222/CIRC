@@ -75,4 +75,5 @@ button[type=submit]{
 td{
   text-align: center;
   vertical-align:middle;
+  white-space: nowrap;
 }
