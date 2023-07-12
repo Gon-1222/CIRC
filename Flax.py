@@ -4,7 +4,7 @@ class Flax:
     def DIC(self,IDS):
         url = os.environ["MY_URL"]
         touroku = url+'/questionaire?UID=' + IDS
-        check = url+"/participants"
+        check = url+"/participants?UID=" + IDS
         Payload = {
   "type": "bubble",
   "header": {
