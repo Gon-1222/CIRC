@@ -4,7 +4,7 @@ $.ajax({type:"GET",
         timeout: 5000})
   .done(function(data) {
     console.log("成功");
-    $('main').html(data).trigger('create');
+    setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
     console.log(XMLHttpRequest.status);
     console.log(textStatus);
