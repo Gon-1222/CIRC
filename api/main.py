@@ -219,7 +219,7 @@ def signpost():
         permit(3,file_data.data).Apply(request.form['userID'],profile.display_name)
     file_data.save_file()
     # Staticを実装するのが面倒だったと供述しており
-    return "すでに管理者の人から許可されるのをお待ち下さい", 200
+    return app.send_static_file('requested.html'), 200
 
 #管理者ページ
 @app.route('/management', methods=['get'])
@@ -289,7 +289,7 @@ def posts_data():
     else:
         return managers()
     file_data.save_file()
-    return "送信完了しましたブラウザバックしてください", 200
+    return app.send_static_file('sent.html'), 200
 
 
 #############################################
