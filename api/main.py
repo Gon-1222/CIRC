@@ -60,7 +60,9 @@ def robots_pages():
 def whatsnew_pages():
     return app.send_static_file('Whatsnew.html'), 200
 
-
+@app.errorhandler(403) # 404エラーが発生した場合の処理
+def error_404(error):
+    return app.send_static_file('403.html'),403
 
 #############################################
 ################LazyLoad関連#################
@@ -223,7 +225,7 @@ def signpost():
 @app.route('/management', methods=['get'])
 def managers():
     if not(permit(3,file_data.data).Check(request.args.get('UID'))):
-        return 'Forbidden', 403
+        abort(403)
 
     UID=request.args.get('UID')
     Name=line_bot_api.get_profile(UID).display_name
@@ -247,11 +249,11 @@ def posts_data():
     ###################################################################################
     if not(permit(3,file_data.data).Check(request.form.get('permission',None))):
         print("!!!!!")
-        return 'Forbidden', 403
+        abort(403)
 
     # エラー（タイプが無かったとき）
     if not(request.form.get('data_type', None)):
-        return 'Forbidden', 403
+        abort(403)
     # Historyに追加
     elif request.form.get('data_type', None) == "Add_history":
         string = request.form.get('Add_date', None).replace("-", "/")
