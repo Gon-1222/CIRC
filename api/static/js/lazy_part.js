@@ -11,7 +11,9 @@ $.ajax({type:"GET",
     console.log(errorThrown);
     $('.loading').html('<i class="fa-solid fa-face-frown"></i><div class="japanese">取得できませんでした</div><div class="japanese">再読込してください</div>');
     //setTimeout(function(){$.ajax(this)}, 500 );
-  })
+  }).always(function() {
+  console.log('complete');
+});
 
 $.ajax({type:"GET",
         url:'/news',
