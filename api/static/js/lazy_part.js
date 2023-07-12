@@ -1,7 +1,7 @@
 $.ajax({type:"GET",
         url:'/party',
         cache: false,
-        timeout: 10000})
+        timeout: 5000})
   .done(function(data) {
     $('main').html(data).trigger('create');
   }).fail(function() {
