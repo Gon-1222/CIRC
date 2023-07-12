@@ -1,3 +1,4 @@
+//参加者一覧
 $.ajax({type:"GET",
         url:'/party',
         cache: false,
@@ -15,7 +16,7 @@ $.ajax({type:"GET",
   }).always(function() {
   console.log('party:complete');
 });
-
+//ニュース欄
 $.ajax({type:"GET",
         url:'/news',
         cache: false,
@@ -30,6 +31,15 @@ $.ajax({type:"GET",
     $(".news-banner__content2").addClass("news-banner__content");
     $('.news-banner__content2').html('<p><i class="fa-solid fa-face-frown"></i>取得できませんでした。</p>');
   })
+  //マネージメントページ
+  function ManagementButton(){
+    var paramstr = document.location.search;
+    window.location.href = '/management'+paramstr;
+  }
+  function SignUpButton(){
+    var paramstr = document.location.search;
+    window.location.href = '/signup'+paramstr;
+  }
 /*$.get('/party')
   .done(function(data) {
     $('main').html(data).trigger('create');

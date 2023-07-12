@@ -4,141 +4,41 @@
 <head>
   <meta name="robots" content="noindex">
   <meta charset="UTF-8">
-  <title>管理者サイト-県央RC-BOT</title>
+  <title>管理者登録-県央RC-BOT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet">
+
   <script src="https://kit.fontawesome.com/8872f226af.js" crossorigin="anonymous"></script>
   <style>
-    body,
-    html {
-      width: 100%;
-    }
-
-    table {
-      border-collapse: collapse;
-    }
-
-    p {
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      margin: 60px auto 40px;
-    }
-
-    input[type="submit"],
-    input[type="text"],input[type="password"],
-    input[type="date"],
-    select,
-    textarea,
-    button {
-      -moz-appearance: none;
-      -webkit-appearance: none;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      outline: none;
-      border: none;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 
-    input[type="text"],input[type="password"],
-    input[type="date"],
-    textarea {
-      background: #f8f8f8;
-      display: block;
-      font-size: 16px;
-      padding: 12px 15px;
-      width: calc(100% - 54px);
-      transition: 0.8s;
-      border-radius: 0;
-    }
 
-    input[type="text"],input[type="password"],
-    input[type="date"]:focus,
-    textarea:focus {
-      background: #e9f5fb;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
+  body{
 
-    textarea[name="content"] {
-      display: inline-block;
-      width: 100%;
-      height: 200px;
-    }
+    font-family: 'Noto Sans JP', sans-serif;
 
-    input::placeholder,
-    textarea::placeholder {
-      color: #ccc;
-    }
-
-    ::-webkit-input-placeholder {
-      color: #ccc;
-      opacity: 1;
-    }
-
-    ::-moz-placeholder {
-      color: #ccc;
-      opacity: 1;
-    }
-
-    :-ms-input-placeholder {
-      color: #ccc;
-      opacity: 1;
-    }
-
-    .form-table {
-      width: calc(100%);
-    }
-
-    .form-table th,
-    .form-table td {
-      border-top: 1px solid #d7d7d7;
-      border-bottom: 1px solid #d7d7d7;
-      padding: 20px;
-
-    }
-
-    .form-table th {
-      background: #ffecea;
-      padding-left: 50px;
-      position: relative;
-      text-align: left;
-      width: 300px;
-    }
-
-    input[type=submit] {
-      display: block;
-      margin: 20px auto;
-    }
-
-    button[type=submit] {
-      display: block;
-      margin: 0 auto;
-    }
-
-    form {
-      margin: 0;
-      margin-bottom: 60px;
-    }
-
-    td>form {
-      margin: 5px auto;
-    }
-
-    @media screen and (max-width:800px) {
-
-      .form-table th,
-      .form-table td {
-        display: block;
-        width: calc(100% - 54px);
-        border-bottom: none;
-      }
-    }
+    text-align:center;
+  }
+  h1{
+    font-size:2em;
+  }
+  button{
+    font-size:20px;
+    padding:10px;
+    border:0px;
+    background-color: #444;
+    color:#eee;
+    border-radius: 5px;
+  }
   </style>
   <script type="text/javascript">
     //<!--
 
     function check() {
 
-      if (window.confirm('送信してよろしいですか？')) { // 確認ダイアログを表示
+      if (window.confirm('管理者リクエストを送信してよろしいですか？')) { // 確認ダイアログを表示
 
         return true; // 「OK」時は送信を実行
 
@@ -156,24 +56,12 @@
 </head>
 
 <body>
-  <h1>BOT管理者の登録画面です</h1>
-  <p>お願いした場合のみご利用ください。</p>
+  <h1>BOT管理者登録画面</h1>
+  <p>お願いした方のみご利用ください。</p>
+  <p>間違いでない場合は、<br>下のボタンを押してください。</p>
   <form method="post" action="" onSubmit="return check()">
-    <table class="form-table">
-      <tbody>
-        <tr>
-          <th>ユーザー名</th>
-          <td><input type="text" name="user" size="60" value="" placeholder="">
-          </td>
-        </tr>
-        <tr>
-          <th>パスワード</th>
-          <td><input type="password" name="pass" size="60" value="" placeholder="">
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <input type="submit" value="登録">
+    <input type="hidden" name="userID" value="{{UID|e}}">
+    <button type="submit" name="subscribe" >登録</button>
   </form>
 
 </body>

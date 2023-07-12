@@ -53,6 +53,7 @@
 </head>
 <body>
   <h1><i class="fa-solid fa-gears"></i>県央RC-BOT 設定</h1>
+  <p>{{Name|e}} さんおかえりなさい。</p>
 <details>
   <summary>
     <i class="fas fa-chevron-right icon"></i>
@@ -74,6 +75,7 @@
   <div class="contents">
     <p>過疎警報の間隔を設定します。<br>※未実装</p>
   <form class="new-GPT"method="get" action="/" onSubmit="return check()">
+    <input type="hidden" name="permission" value="{{UID|e}}">
     <input type="hidden" name="data_type" value="Add_history">
     <span><input type="number" name="Add_date" size="60" value="" placeholder="">日</span><br>
     <input type="submit" value="間隔を変更" disabled>
@@ -89,6 +91,7 @@
   <div class="contents">
   <p>3人以上参加予定で通知があった場合は<br>自動で追加されます。</p>
     <form class="new-GPT" method="post" action="" onSubmit="return check()">
+      <input type="hidden" name="permission" value="{{UID|e}}">
     <input type="hidden" name="data_type" value="Add_history">
     <input type="date" name="Add_date" size="60" value="" placeholder="">
     <input type="submit" value="ライド履歴を追加">
@@ -104,6 +107,8 @@
   <div class="contents">
   <p>諸事情により、ライドを実施しなかった際に<br>利用してください。</p>
   <form class="new-GPT" method="post" action="" onSubmit="return check()">
+    <input type="hidden" name="permission" value="{{UID|e}}">
+
     <input type="hidden" name="data_type" value="Del_history">
           <input type="date" name="Del_date" size="60" value="" placeholder="">
           <input type="submit" value="ライド履歴を削除">
@@ -121,6 +126,8 @@
   <p>「参加可能メンバー」の最上部の<br>内容の更新用です。</p>
   <form class="new-GPT"method="post" action="" onSubmit="return check()">
      <input type="hidden" name="data_type" value="News">
+     <input type="hidden" name="permission" value="{{UID|e}}">
+
      <input type="text" name="naiyo" size="200" class="news_input"value="" placeholder="">
      <input type="submit" value="ニュース欄を更新">
    </form>  </div>
@@ -135,6 +142,8 @@
   <p>BOTから全員に向けて<br>お知らせをするときに利用します。<br>200文字以内</p>
   <form class="new-GPT"method="post" action="" onSubmit="return check()">
    <input type="hidden" name="data_type" value="broad_cast">
+   <input type="hidden" name="permission" value="{{UID|e}}">
+
   <input type="text" name="message" size="200" value="" placeholder="">
    <input type="submit" value="全員へ送信">
  </form>
@@ -164,15 +173,15 @@
     <table border="1" class="members" style="table-layout:fixed;width:100%;">
       <tr>
         <th width="33%">ユーザー名</th>
-        <th width="33%">パスワードハッシュ</th>
+        <th width="33%">ユーザーID</th>
         <th width="33%">削除</th>
       </tr>
       {% for key,value in Now_manage.items() %}
       <tr>
-        <td width="50%" style="overflow:scroll;">{{key|e}}</td>
-        <td style="overflow:scroll;">{{value|e}}</td>
+        <td width="50%" style="overflow:scroll;">{{value|e}}</td>
+        <td style="overflow:scroll;">{{key|e}}</td>
         <td>
-          <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{key|e}}">削除</button></form>
+          <form method="post" action="" onSubmit="return check()"><input type="hidden" name="permission" value="{{UID|e}}"><input type="hidden" name="data_type" value="del_mana"><button type="submit" name="delete" value="{{value|e}}">削除</button></form>
         </td>
       </tr>
       {% endfor %}
@@ -190,21 +199,21 @@
 <table border="1" class="members" style="table-layout:fixed;width:100%;">
     <tr>
       <th width="33%">ユーザー名</th>
-      <th width="33%">パスワードハッシュ</th>
+      <th width="33%">ユーザーID</th>
       <th width="33%">許可</th>
     </tr>
     {% for key,value in Now_req.items() %}
     <tr>
-      <td width="50%" style="overflow:scroll;">{{key|e}}</td>
-      <td style="overflow:scroll;">{{value|e}}</td>
+      <td width="50%" style="overflow:scroll;">{{value|e}}</td>
+      <td style="overflow:scroll;">{{key|e}}</td>
       <td>
 
-        <form method="post" action="" onSubmit="return check()"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{key|e}}">許可</button></form>
+        <form method="post" action="" onSubmit="return check()">   <input type="hidden" name="permission" value="{{UID|e}}"><input type="hidden" name="data_type" value="permit_mana"><button type="submit" name="permit" value="{{value|e}}">許可</button></form>
       </td>
     </tr>
     {% endfor %}
   </table>
 </div>
 </details>
-<p>{{ Version }}<br>(c) 2021-2023 宮坂肇 All rights reserved. </p>
+<p>{{ Version |safe}}<br>(c) 2021-2023 宮坂肇 All rights reserved. </p>
 </body>

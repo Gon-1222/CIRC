@@ -5,7 +5,7 @@
 #------------------------------------------
 # Flask
 from flask import Flask, request, abort, render_template
-from flask_httpauth import HTTPBasicAuth
+#from flask_httpauth import HTTPBasicAuth
 # LINEAPI関連
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -24,7 +24,8 @@ from Flax import Flax
 from notification import notify
 from history import History
 from manager import Manager
-from permission import permit
+#from permission import permit
+from permission2 import permit
 from news import News
 from lazy import Lazy
 from All_data import All_Data
@@ -33,19 +34,13 @@ from All_data import All_Data
 CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 Group_ID = os.environ["LINE_MAIN_GROUP_ID"]
-versions = 'Ver 1.1　2023/07/11 \n Management-UI has been Changed.'
+versions = 'Ver 1.2　2023/07/12 <br>Elimination of wizard passwords'
 
 # オブジェクトの生成
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handle = WebhookHandler(LINE_CHANNEL_SECRET)
 app = Flask(__name__)
-auth = HTTPBasicAuth()
 file_data = All_Data()
-# パスワード判定
-@auth.verify_password
-def verify_password(username, password):
-    permission = permit(1,file_data.data)
-    return permission.Check(username, password)
 
 # ルートアクセス時
 @app.route('/')
@@ -53,6 +48,8 @@ def root_pages():
     #Friends = friend(file_data.data["Friends"])
     #Friends.RESET()
     #file_data.save_file()
+    file_data.data.update({"permission2":{"Ub8c1caec52f11da2a8c15e13dbc73025":"はじめ"},"req_permit2":{}})
+    file_data.save_file()
     print("aa")
     return "ここにはなにもないよ", 404
 
@@ -81,7 +78,7 @@ def part():
     return render_template('party.html',
                            data=Schedule.All_lists()), 200
 
-# メンバー一覧（要Auth）
+# メンバー一覧（要Auth）???
 @app.route('/lazy', methods=['get'])
 def lazy_load():
     if not(Lazy(file_data.data["lazy"]).check_data(request.headers.get("Auth_Key"))):
@@ -212,25 +209,28 @@ def checker():
 @app.route('/signup', methods=["get"])
 def signget():
     # Staticを実装するのが面倒だったと供述しており
-    return render_template('signup.html')
+    return render_template('signup.html',UID=request.args.get('UID'))
 
 #管理者の追加のPOST
 @app.route('/signup', methods=["post"])
 def signpost():
-    if request.form.get('user', None) and request.form.get('pass', None):
-        permit(3,file_data.data).Apply(request.form['user'], request.form['pass'])
+    if request.form.get('userID', None):
+        profile = line_bot_api.get_profile(request.form['userID'])
+        permit(3,file_data.data).Apply(request.form['userID'],profile.display_name)
     file_data.save_file()
     # Staticを実装するのが面倒だったと供述しており
     return "すでに管理者の人から許可されるのをお待ち下さい", 200
 
 #管理者ページ
 @app.route('/management', methods=['get'])
-@auth.login_required
 def managers():
+    if not(permit(3,file_data.data).Check(request.args.get('UID'))):
+        return 'Forbidden', 403
+
+    UID=request.args.get('UID')
+    Name=line_bot_api.get_profile(UID).display_name
     Now_manage, Now_req = permit(3,file_data.data).User_lists()
     buff=Lazy(file_data.data["lazy"]).New()
-    print(id(file_data.data["lazy"]))
-    print(buff)
 
     file_data.save_file()
     # News().get_data()
@@ -238,13 +238,19 @@ def managers():
                                 Now_manage=Now_manage,
                                 Now_req=Now_req,
                                 Version=versions,
-                                token_data=buff)
+                                token_data=buff,
+                                UID=UID,
+                                Name=Name)
 
 
 #管理者ページのPOST
 @app.route('/management', methods=['post'])
-@auth.login_required
 def posts_data():
+    ###################################################################################
+    if not(permit(3,file_data.data).Check(request.form.get('permission',None))):
+        print("!!!!!")
+        return 'Forbidden', 403
+
     # エラー（タイプが無かったとき）
     if not(request.form.get('data_type', None)):
         return 'Forbidden', 403
