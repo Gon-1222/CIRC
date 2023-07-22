@@ -5,7 +5,9 @@ $.ajax({type:"GET",
         timeout: 5000})
   .done(function(data) {
     console.log("party:success");
-    setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
+    let text = document.getElementsByTagName('main');
+    text.innerHTML=data;
+    //setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
     console.log("party:fail");
     console.log(XMLHttpRequest.status);
