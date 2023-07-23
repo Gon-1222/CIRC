@@ -21,6 +21,8 @@ h2{
 }
 p{
   margin:0.5em auto;
+  margin-left:1.5em;
   padding-left:1em;
+  text-indent: -1em;
   font-weight:400;
 }
