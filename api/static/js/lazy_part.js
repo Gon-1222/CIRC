@@ -8,7 +8,7 @@ $.ajax({type:"GET",
     let text = document.getElementsByTagName('main');
     console.log(data);
     console.log(text.innerHTML);
-    text.innerHTML = data;
+    text[0].innerHTML = data;
     console.log(text.innerHTML);
     //setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
