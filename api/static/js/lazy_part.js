@@ -1,4 +1,5 @@
 //参加者一覧
+$(function(){
 $.ajax({type:"GET",
         url:'/party',
         cache: false,
@@ -36,6 +37,7 @@ $.ajax({type:"GET",
     $(".news-banner__content2").addClass("news-banner__content");
     $('.news-banner__content2').html('<p><i class="fa-solid fa-face-frown"></i>取得できませんでした。</p>');
   })
+        })
   //マネージメントページ
   function ManagementButton(){
     var paramstr = document.location.search;
