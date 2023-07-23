@@ -328,7 +328,8 @@ def end():
 def participants():
     if not(request.args.get('UID',None)):
         return app.send_static_file('plsblockme.html'), 200
-    return app.send_static_file('participants.html'), 200
+    return render_template('participants.html'), 200
+    #    app.send_static_file('participants.html'), 200
 
 
 #############################################
