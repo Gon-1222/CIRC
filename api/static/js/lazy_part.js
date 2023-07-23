@@ -6,7 +6,10 @@ $.ajax({type:"GET",
   .done(function(data) {
     console.log("party:success");
     let text = document.getElementsByTagName('main');
-    text.innerHTML=data;
+    console.log(data);
+    console.log(text.innerHTML);
+    text.innerHTML = data;
+    console.log(text.innerHTML);
     //setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
     console.log("party:fail");
