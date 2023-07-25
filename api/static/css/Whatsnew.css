@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@200;600;700&display=swap');
 body{
+  background-color:#F4F5F7;
 font-family: 'Noto Sans JP', sans-serif;
-  color:#222;
+  color:#333;
 }
 h1{
   padding-left:0.5em;
@@ -12,7 +13,7 @@ h1{
 div{
   margin:0.5em;
   font-size: 1.3em;
-  border-top: solid 1.5px #eee;
+  border-top: solid 1.5px #e2e2e2;
 }
 h2{
   padding-left:0.5em;
