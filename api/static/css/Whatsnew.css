@@ -6,11 +6,15 @@ font-family: 'Noto Sans JP', sans-serif;
   color:#333;
 }
 a{
-  margin-left:1.5em;
-  margin-top:0.3em;
-  margin-bottom:0.3em;
+  display:block;
+  margin-left:0.5em;
+  margin-top:0.1em;
+  margin-bottom:0.1em;
   color:#333;
   font-size:1em;
+}
+.icons{
+   border-bottom: solid 1.5px #e2e2e2;
 }
 h1{
   padding-left:0.5em;
