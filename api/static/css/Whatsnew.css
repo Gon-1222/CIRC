@@ -7,6 +7,8 @@ font-family: 'Noto Sans JP', sans-serif;
 }
 a{
   margin-left:1.5em;
+  margin-top:0.3em;
+  margin-bottom:0.3em;
   color:#333;
   font-size:1em;
 }
@@ -16,9 +18,7 @@ h1{
   font-size: 2.5em;
   margin:0.5em auto;
 }
-.icons{
-  padding-top:0.5em;
-}
+
 div{
   margin:0.5em;
   font-size: 1.3em;
