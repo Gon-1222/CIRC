@@ -16,7 +16,7 @@ $.ajax({type:"GET",
     text_data+=data_json[key]["title"]
     text_data+="</p>"
 });
-$('.issues').html(text_data);
+$('.issues').append(text_data);
 
     //setTimeout(function(){$('main').html(data).trigger('create');}, 500 );
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -24,7 +24,7 @@ $('.issues').html(text_data);
     console.log(XMLHttpRequest.status);
     console.log(textStatus);
     console.log(errorThrown);
-    $('.loading').html('<i class="fa-solid fa-face-frown"></i><div class="japanese">取得できませんでした</div><div class="japanese">再読込してください</div>');
+    $('.issues').append('<i class="fa-solid fa-face-frown"></i><div class="japanese">取得できませんでした</div><div class="japanese">再読込してください</div>');
     //setTimeout(function(){$.ajax(this)}, 500 );
   }).always(function() {
   console.log('party:complete');
