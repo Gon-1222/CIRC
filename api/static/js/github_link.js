@@ -29,4 +29,4 @@ $('.issues').html(text_data);
   }).always(function() {
   console.log('party:complete');
 });
-}
+});
