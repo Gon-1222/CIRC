@@ -2,7 +2,7 @@
 $(function(){
 $.ajax({type:"GET",
         url:'https://api.github.com/repos/Gon-1222/CIRC-issues/issues',
-        dataType:"json"
+        dataType:"json",
         cache: false,
         timeout: 5000})
   .done(function(data) {
