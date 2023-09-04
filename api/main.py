@@ -394,10 +394,14 @@ def handle_follow(event):
                             alt_text='ご参加ありがとうございます。',
                             contents=Flaxes.DIC(event.source.user_id)
                         )
+    container_obj2 = FlexSendMessage(
+                            alt_text='ご参加ありがとうございます。',
+                            contents=Flaxes.DIC3()
+                        )
 
     # プッシュメッセージを送信(リプライのほうがよくね)
     line_bot_api.reply_message(event.reply_token,
-                                container_obj)
+                                [container_obj,container_obj2])
     return
 
 # 新たに参加した方
