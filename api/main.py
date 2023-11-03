@@ -146,7 +146,7 @@ def checker():
         string = current_dt.strftime('%Y/%m/%d')  # 上を文字列へ
         no = Schedule.count_part(string)  # 参加可能メンバーの人数が
         # 3人以上で且つ通知をしていなかったら
-        if (int(no) > 2) and (string not in Notify.data):
+        if (int(no) > 1) and (string not in Notify.data):
             # 通知履歴の追加と保存
             Notify.Add(string)
             # HP用ホームページの追加
@@ -174,7 +174,7 @@ def checker():
         dt = current_dt - buf
         print("前回の通知からの日数:", dt.days)
         # 前回の計画から4週間以上たった一週間ごと
-        if ((dt.days % 7 == 0) and dt.days>27):
+        if ((dt.days % 7 == 0) and dt.days>20):
             message = "ライドが"+str(int(dt.days/7))+"週間行われていません。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
             print("しばらくライドが行われなかった。")
