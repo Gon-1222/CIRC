@@ -175,8 +175,10 @@ def checker():
         print("前回の通知からの日数:", dt.days)
         # 前回の計画から4週間以上たった一週間ごと
         if ((dt.days % 7 == 0) and dt.days>20):
-            if (dt.days>50):
-                message = ""+str(int(dt.days/7))+"週間\"も\"ライドが行われていません。\n流石にライドを計画しませんか？笑\nこのメッセージが出るとは思えませんが。。。（煽"
+            if (dt.days>63):
+                message= "だれもが待ってる、スリルを求めて、\nアドレナリンが溢れる瞬間を感じたい、\nペダルを踏むたびに、笑顔が広がる、\nみんなが一つになれる、そんなイベントを待ってるんだ！"
+            else if (dt.days>50):
+                message = "ライドの魂が街を彩る、\nペダルの音が街を揺るがす、\n9週間の沈黙なんて、もう耐えられない、\n走る喜びを忘れさせるなんて、もったいない。"
             else:    
                 message = "ライドが"+str(int(dt.days/7))+"週間行われていません。\nそろそろライドを計画しませんか？"
             line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
