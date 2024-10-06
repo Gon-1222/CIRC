@@ -181,7 +181,7 @@ def checker():
                 message = "ライドの魂が街を彩る、\nペダルの音が街を揺るがす、\n9週間の沈黙なんて、もう耐えられない、\n走る喜びを忘れさせるなんて、もったいない。"
             else:    
                 message = "ライドが"+str(int(dt.days/7))+"週間行われていません。\nそろそろライドを計画しませんか？"
-            line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
+           # line_bot_api.push_message(Group_ID, TextSendMessage(text=message))
             print("しばらくライドが行われなかった。")
     # ----------------------------------------
     # メール転送
